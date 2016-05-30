@@ -15,7 +15,7 @@ Installer les prérequis pour Ubuntu 14.04
 
 ```
     sudo apt-get install nodejs npm
-    npm install -g bower
+    sudo npm install -g bower
 ```
 
 
