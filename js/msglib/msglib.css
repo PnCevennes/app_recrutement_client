@@ -1,0 +1,88 @@
+.msg-maincontainer{
+    background-color: rgba(50,30,30,0.5);
+    height: 100%;
+    padding: 0;
+    z-index: 9999;
+}
+
+.msg-maincontainer p{
+    padding: 5px;
+    margin: 5px;
+    margin-bottom: 0;
+    margin-left: 5px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px black;
+}
+
+.msg-maincontainer-hidden{
+    width: 0;
+    transition: width 0.2s;
+}
+
+.msg-maincontainer-shown{
+    width: 450px;
+    padding-left: 5px;
+    padding-right: 5px;
+    transition: width 0.2s;
+}
+
+.msg-info{
+    background-color: rgba(228, 228, 255, 1);
+    border: 2px solid rgba(208, 208, 235, 0.8);
+}
+.msg-error{
+    background-color: rgba(255, 128, 128, 1);
+    border: 2px solid rgba(235, 108, 108, 0.8);
+}
+.msg-success{
+    background-color: rgba(128, 255, 128, 1);
+    border: 2px solid rgba(108, 235, 108, 0.8);
+}
+
+.msg-modalcontainer{
+    background-color: rgba(50,30,30,0.7);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+}
+
+.msg-modalcontainer-msgcontainer{
+    position: fixed;
+    top: 50px;
+    left: 50%;
+    margin-left: -300px;
+    width: 600px;
+    border-radius: 10px;
+    background-color: rgba(228, 228, 255, 1);
+    border: 2px solid rgba(208, 208, 235, 0.8);
+}
+
+.msg-modalcontainer-msgcontainer *{
+    padding: 5px;
+}
+
+.msg-modalcontainer-msgcontainer p{
+    min-height: 200px;
+    border-top: 2px solid #CCC;
+}
+
+.msg-modalcontainer-msgcontainer button{
+    float: right;
+    margin: 5px;
+    border: 2px solid #555;
+    border-radius: 5px;
+    background: linear-gradient(to bottom, #FFF 10%, #CCC 80%, #999);
+}
+
+.msg-modalcontainer-hidden{
+    height: 0;
+    width: 0;
+    transition: height 0.2s;
+}
+
+.msg-modalcontainer-shown{
+    height: 100vh;
+    width: 100%;
+    transition: height 0.2s;
+}

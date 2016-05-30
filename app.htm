@@ -1,0 +1,102 @@
+<!doctype html>
+<html ng-app="recrutement">
+<head>
+<meta charset="utf8">
+<link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="/static/js/msglib/msglib.css" />
+<link rel="stylesheet" href="/static/css/style.css" />
+<script src="/static/bower_components/angular/angular.min.js"></script>
+<script src="/static/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="/static/js/msglib/msglib.js"></script>
+</head>
+<body ng-controller="principal as ctrl">
+<div class="navbar navbar-fixed-top navbar-inverse">
+    <div class="navbar-brand">{{ctrl.titre}}</div>
+</div>
+<div class="contenu">
+    <div class="col-lg-6">
+        <ul class="list-unstyled">
+            <li ng-repeat="agent in ctrl.agents" class="panel panel-primary" ng-click="ctrl.edit(agent.id)">
+                <div class="panel-heading">
+                    <div class="panel-title">{{agent.nom}} {{agent.prenom}}</div>
+                </div>
+                <div class="panel-body">
+                    Arrivée : {{agent.arrivee|datefr}} - Service: <thesaurus ref="{{agent.service_id}}"></thesaurus>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="col-lg-6 col-lg-offset">
+        <h3>Formulaire</h3>
+        <div class="form">
+            <form name="recrform">
+                <div>
+                    <label for="nom">Nom</label>
+                    <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
+                </div>
+                <div>
+                    <label for="prenom">Prénom</label>
+                    <input id="prenom" type="text" class="form-control" ng-model="ctrl.current.prenom" />
+                </div>
+                <div>
+                    <label for="services">Service</label>
+                    <http-select ref="services" ng-model="ctrl.current.service_id"></http-select>
+                </div>
+                <div>
+                    <label for="arrivee">Date d'arrivée</label>
+                    <div class="input-group">
+                        <input id="arrivee" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.arrivee" ng-model-options="{timezone: '+0200'}" is-open="ctrl.arrivee_open" ng-required="true" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="ctrl.arrivee_open=!ctrl.arrivee_open">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <label for="depart">Date de fin de contrat</label>
+                    <div class="input-group">
+                        <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '+0200'}" is-open="ctrl.depart_open" />
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" ng-click="ctrl.depart_open=!ctrl.depart_open">
+                                <span class="glyphicon glyphicon-calendar"></span>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div>
+                    <label for="desc_mission">Description de la mission</label>
+                    <textarea id="desc_mission" class="form-control" ng-model="ctrl.current.desc_mission"></textarea>
+                </div>
+                <div>
+                    <label for="contrats">Type de contrat</label>
+                    <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
+                </div>
+                <div>
+                    <label for="lieux">Lieu d'affectation</label>
+                    <http-select ref="lieux" ng-model="ctrl.current.lieu"></http-select>
+                </div>
+                <div>
+                    <label for="logements">Logement</label>
+                    <http-select ref="logements" ng-model="ctrl.current.logement"></http-select>
+                </div>
+            </div>
+            <div class="navbar">
+                <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <button type="button" class="btn btn-success navbar-btn navbar-right" ng-click="ctrl.save()" ng-disabled="!(recrform.$dirty&&recrform.$valid)">
+                    <span class="glyphicon glyphicon-ok"></span>
+                </button>
+                <button type="button" class="btn btn-info navbar-btn navbar-right" ng-click="ctrl.clear()">
+                    <span class="glyphicon glyphicon-erase"></span>
+                </button> 
+            </div>
+            <pre>{{recrform|json}}</pre>
+        </form>
+    </div>
+</div>
+<msg-dsp></msg-dsp>
+<script src="/static/js/app.js"></script>
+</body>
+</html>
