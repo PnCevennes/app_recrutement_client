@@ -8,12 +8,32 @@ angular.module('recrutement')
     this.current = {};
     this.arrivee_open = false;
     this.depart_open = false;
+    this.show_old = false;
     $http.get('/agents/').then(function(resp){
         resp.data.forEach(function(item){
             item.arrivee = new Date(item.arrivee);
             self.agents.push(item);
         });
     });
+
+    this.check_status = function(agent){
+        var today = new Date();
+        if(agent.arrivee>today) return 1;
+        else if(agent.depart>today) return 2;
+        return 3;
+    }
+
+    this.get_old_recrs = function(){
+        self.agents = [];
+        self.show_old = !self.show_old;
+        $http.get('/agents/?old='+self.show_old).then(function(resp){
+            resp.data.forEach(function(item){
+                item.arrivee = new Date(item.arrivee);
+                item.depart = new Date(item.depart);
+                self.agents.push(item);
+            });
+        });
+    };
 
     this.edit = function(id){
         $http.get('/agents/'+id).then(function(resp){

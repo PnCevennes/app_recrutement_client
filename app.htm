@@ -15,19 +15,31 @@
 </div>
 <div class="contenu">
     <div class="col-lg-6">
-        <ul class="list-unstyled">
-            <li ng-repeat="agent in ctrl.agents" class="panel panel-primary" ng-click="ctrl.edit(agent.id)">
-                <div class="panel-heading">
-                    <div class="panel-title">{{agent.nom}} {{agent.prenom}}</div>
-                </div>
-                <div class="panel-body">
-                    Arrivée : {{agent.arrivee|datefr}} - Service: <thesaurus ref="{{agent.service_id}}"></thesaurus>
-                </div>
-            </li>
-        </ul>
+        <div ng-if="ctrl.agents.length">
+            <ul class="list-unstyled">
+                <li ng-repeat="agent in ctrl.agents" 
+                    class="panel" 
+                    ng-class="{
+                        'panel-primary': ctrl.check_status(agent)==1, 
+                        'panel-warning': ctrl.check_status(agent)==2,
+                        'panel-danger': ctrl.check_status(agent)==3
+                    }" 
+                    ng-click="ctrl.edit(agent.id)">
+                    <div class="panel-heading">
+                        <div class="panel-title">{{agent.nom}} {{agent.prenom}}</div>
+                    </div>
+                    <div class="panel-body">
+                        Arrivée : {{agent.arrivee|datefr}} - Service: <thesaurus ref="{{agent.service_id}}"></thesaurus>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <h4 ng-if="!ctrl.agents.length">Pas de recrutement en cours</h4>
+        <a ng-click="ctrl.get_old_recrs()">Voir les anciennes fiches</a>
     </div>
     <div class="col-lg-6 col-lg-offset">
-        <h3>Formulaire</h3>
+        <h3 ng-if="ctrl.current.id">Modification de la fiche de {{ctrl.current.prenom}} {{ctrl.current.nom}}</h3>
+        <h3 ng-if="!ctrl.current.id">Créer une nouvelle fiche de recrutement</h3>
         <div class="form">
             <form name="recrform">
                 <div>
@@ -82,17 +94,16 @@
                 </div>
             </div>
             <div class="navbar">
-                <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id">
+                <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                     <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <button type="button" class="btn btn-success navbar-btn navbar-right" ng-click="ctrl.save()" ng-disabled="!(recrform.$dirty&&recrform.$valid)">
+                <button type="button" class="btn btn-success navbar-btn navbar-right" ng-click="ctrl.save()" ng-disabled="!(recrform.$dirty&&recrform.$valid)" tooltip-placement="top" uib-tooltip="Enregistrer la fiche">
                     <span class="glyphicon glyphicon-ok"></span>
                 </button>
-                <button type="button" class="btn btn-info navbar-btn navbar-right" ng-click="ctrl.clear()">
+                <button type="button" class="btn btn-info navbar-btn navbar-right" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
                     <span class="glyphicon glyphicon-erase"></span>
                 </button> 
             </div>
-            <pre>{{recrform|json}}</pre>
         </form>
     </div>
 </div>
