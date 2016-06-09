@@ -9,12 +9,43 @@ angular.module('recrutement')
     this.arrivee_open = false;
     this.depart_open = false;
     this.show_old = false;
-    $http.get('/agents/').then(function(resp){
-        resp.data.forEach(function(item){
-            item.arrivee = new Date(item.arrivee);
-            self.agents.push(item);
-        });
+
+    this.user = {}
+    this.user_is_logged = false;
+
+    $http.get('/auth/reconnect').then(function(resp){
+        self.user = resp.data;
+        self.user_is_logged = true;
+        self.get_data();
     });
+
+    this.login = function(){
+        $http.post('/auth/login', this.user).then(
+            function(resp){
+                self.user = resp.data.user;
+                self.user_is_logged = true;
+                MsgService.success('Bienvenue ' + self.user.login + ' !');
+                self.get_data();
+            });
+    };
+
+    this.logout = function(){
+        $http.get('/auth/logout').then(
+            function(resp){
+                MsgService.success('Au revoir ' + self.user.login + ' !');
+                self.user = {};
+                self.user_is_logged = false;
+            });
+    };
+
+    this.get_data = function(){
+        $http.get('/recrutement/').then(function(resp){
+            resp.data.forEach(function(item){
+                item.arrivee = new Date(item.arrivee);
+                self.agents.push(item);
+            });
+        });
+    }
 
     this.check_status = function(agent){
         var today = new Date();
@@ -26,7 +57,7 @@ angular.module('recrutement')
     this.get_old_recrs = function(){
         self.agents = [];
         self.show_old = !self.show_old;
-        $http.get('/agents/?old='+self.show_old).then(function(resp){
+        $http.get('/recrutement/?old='+self.show_old).then(function(resp){
             resp.data.forEach(function(item){
                 item.arrivee = new Date(item.arrivee);
                 item.depart = new Date(item.depart);
@@ -36,7 +67,7 @@ angular.module('recrutement')
     };
 
     this.edit = function(id){
-        $http.get('/agents/'+id).then(function(resp){
+        $http.get('/recrutement/'+id).then(function(resp){
             self.current = resp.data;
             self.current.arrivee = new Date(resp.data.arrivee);
             self.current.depart = new Date(resp.data.depart);
@@ -45,11 +76,11 @@ angular.module('recrutement')
 
     this.save = function(){
         if(this.current.id){
-            var url = '/agents/'+this.current.id;
+            var url = '/recrutement/'+this.current.id;
             var update = true;
         }
         else{
-            var url = '/agents/';
+            var url = '/recrutement/';
             var update = false;
         }
         $http.post(url, this.current).then(function(resp){
@@ -79,7 +110,7 @@ angular.module('recrutement')
 
     this.remove = function(){
         MsgService.confirm('Êtes vous sûr de vouloir supprimer ce recrutement ?').then(function(){
-            $http.delete('/agents/'+self.current.id).then(function(resp){
+            $http.delete('/recrutement/'+self.current.id).then(function(resp){
                 var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
@@ -104,7 +135,7 @@ angular.module('recrutement').directive('thesaurus', ['$http', function($http){
         },
         bindToController: true,
         controllerAs: 'ctrl',
-        template: '<span>{{ctrl.result}}',
+        template: '<span>{{ctrl.result}}</span>',
     }
 }]);
 

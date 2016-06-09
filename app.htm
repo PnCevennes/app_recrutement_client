@@ -12,8 +12,28 @@
 <body ng-controller="principal as ctrl">
 <div class="navbar navbar-fixed-top navbar-inverse">
     <div class="navbar-brand">{{ctrl.titre}}</div>
+    <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="ctrl.logout()" ng-if="ctrl.user_is_logged">Logout {{ctrl.user.login}}</button>
 </div>
-<div class="contenu">
+<div class="contenu" ng-if="!ctrl.user_is_logged">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">Veuillez vous authentifier</div>
+            </div>
+            <div class="panel-body">
+                <div class="form">
+                    <label for="login">Login</label>
+                    <input id="login" type="text" class="form-control" ng-model="ctrl.user.login" placeholder="Login" />
+                    <label for="password">Password</label>
+                    <input id="password" type="password" class="form-control" ng-model="ctrl.user.password" placeholder="Password" />
+                    <hr />
+                    <button type="button" class="btn btn-success pull-right" ng-click="ctrl.login()">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contenu" ng-if="ctrl.user_is_logged">
     <div class="col-lg-6">
         <div ng-if="ctrl.agents.length">
             <ul class="list-unstyled">
