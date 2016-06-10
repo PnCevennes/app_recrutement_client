@@ -66,19 +66,23 @@
             <div class="panel-body">
                 <div class="form">
                     <form name="recrform">
-                        <div>
+                        <div class="form-group">
                             <label for="nom">Nom</label>
                             <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="prenom">Prénom</label>
                             <input id="prenom" type="text" class="form-control" ng-model="ctrl.current.prenom" />
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="services">Service</label>
                             <http-select ref="services" ng-model="ctrl.current.service_id"></http-select>
                         </div>
-                        <div>
+                        <div class="form-group">
+                            <label for="contrats">Type de contrat</label>
+                            <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
+                        </div>
+                        <div class="form-group">
                             <label for="arrivee">Date d'arrivée</label>
                             <div class="input-group">
                                 <input id="arrivee" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.arrivee" ng-model-options="{timezone: '+0200'}" is-open="ctrl.arrivee_open" ng-required="true" />
@@ -89,10 +93,10 @@
                                 </span>
                             </div>
                         </div>
-                        <div>
+                        <div ng-if="ctrl.current.type_contrat!=22" class="form-group">
                             <label for="depart">Date de fin de contrat</label>
                             <div class="input-group">
-                                <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '+0200'}" is-open="ctrl.depart_open" />
+                                <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '+0200'}" is-open="ctrl.depart_open" ng-required="true" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-click="ctrl.depart_open=!ctrl.depart_open">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -100,21 +104,21 @@
                                 </span>
                             </div>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="desc_mission">Description de la mission</label>
                             <textarea id="desc_mission" class="form-control" ng-model="ctrl.current.desc_mission"></textarea>
                         </div>
-                        <div>
-                            <label for="contrats">Type de contrat</label>
-                            <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
-                        </div>
-                        <div>
+                        <div class="form-group">
                             <label for="lieux">Lieu d'affectation</label>
                             <http-select ref="lieux" ng-model="ctrl.current.lieu"></http-select>
                         </div>
-                        <div>
+                        <div class="form-group">
                             <label for="logements">Logement</label>
                             <http-select ref="logements" ng-model="ctrl.current.logement"></http-select>
+                        </div>
+                        <div class="form-group">
+                            <label>Matériel</label>
+                            <thesaurus-select ref="26" ng-model="ctrl.current.materiel"></thesaurus-select>
                         </div>
                     </div>
                     <div class="navbar">

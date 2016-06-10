@@ -5,7 +5,7 @@ angular.module('recrutement')
     var self = this;
     this.titre = 'Recrutement';
     this.agents = [];
-    this.current = {};
+    this.current = {materiel: []};
     this.arrivee_open = false;
     this.depart_open = false;
     this.show_old = false;
@@ -14,7 +14,7 @@ angular.module('recrutement')
     this.user_is_logged = false;
 
     $http.get('/auth/reconnect').then(function(resp){
-        self.user = resp.data;
+        self.user = resp.data.user;
         self.user_is_logged = true;
         self.get_data();
     });
@@ -100,12 +100,12 @@ angular.module('recrutement')
                 return x>y;
             });
             MsgService.success("Le recrutement " + self.current.nom + " a été enregistré.");
-            self.current = {};
+            self.current = {materiel: []};
         });
     };
 
     this.clear = function(){
-        this.current = {};
+        this.current = {materiel: []};
     };
 
     this.remove = function(){
@@ -115,7 +115,7 @@ angular.module('recrutement')
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
                 MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                self.current = {};
+                self.current = {materiel: []};
             });
         });
     };
@@ -136,6 +136,44 @@ angular.module('recrutement').directive('thesaurus', ['$http', function($http){
         bindToController: true,
         controllerAs: 'ctrl',
         template: '<span>{{ctrl.result}}</span>',
+    }
+}]);
+
+angular.module('recrutement').directive('thesaurusSelect', ['$http', function($http){
+    return {
+        restrict: 'E',
+        scope: {ref: '@', ngModel: '='},
+        controller: function(){
+            var self = this;
+            this.choices = [];
+
+            this.addrm = function(item_id){
+                var idx = self.ngModel.indexOf(item_id);
+                if(idx>-1){
+                    self.ngModel.splice(idx,1);
+                }
+                else{
+                    self.ngModel.push(item_id);
+                }
+            }
+
+            this.is_checked = function(id){
+                return self.ngModel.indexOf(id)>-1;
+            }
+            $http.get('/thesaurus/ref/'+this.ref).then(function(resp){
+                resp.data.forEach(function(item){
+                    self.choices.push(item)
+                });
+            });
+        },
+        template: `<ul class="list-unstyled">
+        <li ng-repeat="item in ctrl.choices track by $index">
+            <input type="checkbox" ng-click="ctrl.addrm(item.id)" ng-checked="ctrl.is_checked(item.id)"/> {{item.label}} 
+        </li>
+    </ul>
+    `,
+        controllerAs: 'ctrl',
+        bindToController: true
     }
 }]);
 
