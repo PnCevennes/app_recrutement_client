@@ -1,5 +1,8 @@
 angular.module('recrutement', ['ui.bootstrap', 'msglib']);
 
+var srv_app_url = '/recrutement_srv';
+//var srv_app_url = '';
+
 angular.module('recrutement')
     .controller('principal', ['$http', 'MsgService', function($http, MsgService){
     var self = this;
@@ -13,14 +16,14 @@ angular.module('recrutement')
     this.user = {}
     this.user_is_logged = false;
 
-    $http.get('/auth/reconnect').then(function(resp){
+    $http.get(srv_app_url + '/auth/reconnect').then(function(resp){
         self.user = resp.data.user;
         self.user_is_logged = true;
         self.get_data();
     });
 
     this.login = function(){
-        $http.post('/auth/login', this.user).then(
+        $http.post(srv_app_url + '/auth/login', this.user).then(
             function(resp){
                 self.user = resp.data.user;
                 self.user_is_logged = true;
@@ -30,7 +33,7 @@ angular.module('recrutement')
     };
 
     this.logout = function(){
-        $http.get('/auth/logout').then(
+        $http.get(srv_app_url + '/auth/logout').then(
             function(resp){
                 MsgService.success('Au revoir ' + self.user.login + ' !');
                 self.user = {};
@@ -39,7 +42,7 @@ angular.module('recrutement')
     };
 
     this.get_data = function(){
-        $http.get('/recrutement/').then(function(resp){
+        $http.get(srv_app_url + '/recrutement/').then(function(resp){
             resp.data.forEach(function(item){
                 item.arrivee = new Date(item.arrivee);
                 self.agents.push(item);
@@ -57,7 +60,7 @@ angular.module('recrutement')
     this.get_old_recrs = function(){
         self.agents = [];
         self.show_old = !self.show_old;
-        $http.get('/recrutement/?old='+self.show_old).then(function(resp){
+        $http.get(srv_app_url + '/recrutement/?old='+self.show_old).then(function(resp){
             resp.data.forEach(function(item){
                 item.arrivee = new Date(item.arrivee);
                 item.depart = new Date(item.depart);
@@ -67,7 +70,7 @@ angular.module('recrutement')
     };
 
     this.edit = function(id){
-        $http.get('/recrutement/'+id).then(function(resp){
+        $http.get(srv_app_url + '/recrutement/'+id).then(function(resp){
             self.current = resp.data;
             self.current.arrivee = new Date(resp.data.arrivee);
             self.current.depart = new Date(resp.data.depart);
@@ -76,11 +79,11 @@ angular.module('recrutement')
 
     this.save = function(){
         if(this.current.id){
-            var url = '/recrutement/'+this.current.id;
+            var url = srv_app_url + '/recrutement/'+this.current.id;
             var update = true;
         }
         else{
-            var url = '/recrutement/';
+            var url = srv_app_url + '/recrutement/';
             var update = false;
         }
         $http.post(url, this.current).then(function(resp){
@@ -110,7 +113,7 @@ angular.module('recrutement')
 
     this.remove = function(){
         MsgService.confirm('Êtes vous sûr de vouloir supprimer ce recrutement ?').then(function(){
-            $http.delete('/recrutement/'+self.current.id).then(function(resp){
+            $http.delete(srv_app_url + '/recrutement/'+self.current.id).then(function(resp){
                 var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
@@ -129,7 +132,7 @@ angular.module('recrutement').directive('thesaurus', ['$http', function($http){
         },
         controller: function(){
             var self = this;
-            $http.get('/thesaurus/id/'+this.id).then(function(res){
+            $http.get(srv_app_url + '/thesaurus/id/'+this.id).then(function(res){
                 self.result = res.data.label;
             });
         },
@@ -160,7 +163,7 @@ angular.module('recrutement').directive('thesaurusSelect', ['$http', function($h
             this.is_checked = function(id){
                 return self.ngModel.indexOf(id)>-1;
             }
-            $http.get('/thesaurus/ref/'+this.ref).then(function(resp){
+            $http.get(srv_app_url + '/thesaurus/ref/'+this.ref).then(function(resp){
                 resp.data.forEach(function(item){
                     self.choices.push(item)
                 });
@@ -184,7 +187,7 @@ angular.module('recrutement').directive('httpSelect', ['$http', function($http){
         controller: function(){
             var self = this;
             this.choices = [];
-            $http.get('/thesaurus/'+this.ref).then(function(res){
+            $http.get(srv_app_url + '/thesaurus/'+this.ref).then(function(res){
                 self.choices = res.data;
             });
         },

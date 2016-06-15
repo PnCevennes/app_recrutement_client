@@ -2,12 +2,12 @@
 <html ng-app="recrutement">
 <head>
 <meta charset="utf8">
-<link rel="stylesheet" href="/static/bower_components/bootstrap/dist/css/bootstrap.css" />
-<link rel="stylesheet" href="/static/js/msglib/msglib.css" />
-<link rel="stylesheet" href="/static/css/style.css" />
-<script src="/static/bower_components/angular/angular.min.js"></script>
-<script src="/static/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
-<script src="/static/js/msglib/msglib.js"></script>
+<link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.css" />
+<link rel="stylesheet" href="./js/msglib/msglib.css" />
+<link rel="stylesheet" href="./css/style.css" />
+<script src="./bower_components/angular/angular.min.js"></script>
+<script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<script src="./js/msglib/msglib.js"></script>
 </head>
 <body ng-controller="principal as ctrl">
 <div class="navbar navbar-fixed-top navbar-inverse">
@@ -38,7 +38,7 @@
         <div ng-if="ctrl.agents.length">
             <ul class="list-unstyled">
                 <li ng-repeat="agent in ctrl.agents" 
-                    class="panel" 
+                    class="recr_panel panel" 
                     ng-class="{
                         'panel-primary': ctrl.check_status(agent)==1, 
                         'panel-warning': ctrl.check_status(agent)==2,
@@ -82,6 +82,10 @@
                             <label for="contrats">Type de contrat</label>
                             <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
                         </div>
+                        <div class="form-group" ng-if="ctrl.current.type_contrat==25">
+                            <label for="referent">Adresse e-mail du référent</label>
+                            <input type="mail" class="form-control" ng-model="ctrl.current.referent" />
+                        </div>
                         <div class="form-group">
                             <label for="arrivee">Date d'arrivée</label>
                             <div class="input-group">
@@ -117,7 +121,7 @@
                             <http-select ref="logements" ng-model="ctrl.current.logement"></http-select>
                         </div>
                         <div class="form-group">
-                            <label>Matériel</label>
+                            <label>Matériel à fournir</label>
                             <thesaurus-select ref="26" ng-model="ctrl.current.materiel"></thesaurus-select>
                         </div>
                     </div>
@@ -138,6 +142,6 @@
     </div>
 </div>
 <msg-dsp></msg-dsp>
-<script src="/static/js/app.js"></script>
+<script src="./js/app.js"></script>
 </body>
 </html>
