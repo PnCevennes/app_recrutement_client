@@ -34,112 +34,14 @@
     </div>
 </div>
 <div class="contenu" ng-if="ctrl.user_is_logged">
-    <div class="col-lg-6">
-        <div ng-if="ctrl.agents.length">
-            <ul class="list-unstyled">
-                <li ng-repeat="agent in ctrl.agents" 
-                    class="recr_panel panel" 
-                    ng-class="{
-                        'panel-primary': ctrl.check_status(agent)==1, 
-                        'panel-warning': ctrl.check_status(agent)==2,
-                        'panel-danger': ctrl.check_status(agent)==3
-                    }" 
-                    ng-click="ctrl.edit(agent.id)">
-                    <div class="panel-heading">
-                        <div class="panel-title">{{agent.nom}} {{agent.prenom}}</div>
-                    </div>
-                    <div class="panel-body">
-                        Arrivée : {{agent.arrivee|datefr}} - Service: <thesaurus ref="{{agent.service_id}}"></thesaurus>
-                    </div>
-                </li>
-            </ul>
-        </div>
-        <h4 ng-if="!ctrl.agents.length">Pas de recrutement en cours</h4>
-        <a ng-click="ctrl.get_old_recrs()">Voir les anciennes fiches</a>
-    </div>
-    <div class="col-lg-6">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <div class="panel-title" ng-if="ctrl.current.id">Modification de la fiche de {{ctrl.current.prenom}} {{ctrl.current.nom}}</div>
-                <div class="panel-title" ng-if="!ctrl.current.id">Créer une nouvelle fiche de recrutement</div>
-            </div>
-            <div class="panel-body">
-                <div class="form">
-                    <form name="recrform">
-                        <div class="form-group">
-                            <label for="nom">Nom</label>
-                            <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="prenom">Prénom</label>
-                            <input id="prenom" type="text" class="form-control" ng-model="ctrl.current.prenom" />
-                        </div>
-                        <div class="form-group">
-                            <label for="services">Service</label>
-                            <http-select ref="services" ng-model="ctrl.current.service_id"></http-select>
-                        </div>
-                        <div class="form-group">
-                            <label for="contrats">Type de contrat</label>
-                            <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
-                        </div>
-                        <div class="form-group" ng-if="ctrl.current.type_contrat==25">
-                            <label for="referent">Adresse e-mail du référent</label>
-                            <input type="mail" class="form-control" ng-model="ctrl.current.referent" />
-                        </div>
-                        <div class="form-group">
-                            <label for="arrivee">Date d'arrivée</label>
-                            <div class="input-group">
-                                <input id="arrivee" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.arrivee" ng-model-options="{timezone: '+0200'}" is-open="ctrl.arrivee_open" ng-required="true" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" ng-click="ctrl.arrivee_open=!ctrl.arrivee_open">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        <div ng-if="ctrl.current.type_contrat!=22" class="form-group">
-                            <label for="depart">Date de fin de contrat</label>
-                            <div class="input-group">
-                                <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '+0200'}" is-open="ctrl.depart_open" ng-required="true" />
-                                <span class="input-group-btn">
-                                    <button class="btn btn-default" ng-click="ctrl.depart_open=!ctrl.depart_open">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </button>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="desc_mission">Description de la mission</label>
-                            <textarea id="desc_mission" class="form-control" ng-model="ctrl.current.desc_mission"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label for="lieux">Lieu d'affectation</label>
-                            <http-select ref="lieux" ng-model="ctrl.current.lieu"></http-select>
-                        </div>
-                        <div class="form-group">
-                            <label for="logements">Logement</label>
-                            <http-select ref="logements" ng-model="ctrl.current.logement"></http-select>
-                        </div>
-                        <div class="form-group">
-                            <label>Matériel à fournir</label>
-                            <thesaurus-select ref="26" ng-model="ctrl.current.materiel"></thesaurus-select>
-                        </div>
-                    </div>
-                    <div class="navbar">
-                        <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
-                            <span class="glyphicon glyphicon-remove"></span>
-                        </button>
-                        <button type="button" class="btn btn-success navbar-btn navbar-right" ng-click="ctrl.save()" ng-disabled="!(recrform.$dirty&&recrform.$valid)" tooltip-placement="top" uib-tooltip="Enregistrer la fiche">
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </button>
-                        <button type="button" class="btn btn-info navbar-btn navbar-right" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
-                            <span class="glyphicon glyphicon-erase"></span>
-                        </button> 
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Recrutement">
+            <div style="margin-top: 1em;" recrutement-form></div>
+        </uib-tab>
+        <uib-tab index="1" heading="Ajout utilisateur" ng-if="ctrl.user_is_admin">
+            <div style="margin-top: 1em;" user-form></div>
+        </uib-tab>
+    </uib-tabset>
 </div>
 <msg-dsp></msg-dsp>
 <script src="./js/app.js"></script>
