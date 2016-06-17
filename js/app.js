@@ -127,7 +127,14 @@ angular.module('recrutement').directive('recrutementForm', ['$http', 'APP_URL', 
                         self.agents.push(item);
                     });
                 });
-            }
+            };
+
+            this.setGratification = function(data){
+                if(!arguments.length){
+                    return self.current.gratification == 1;
+                }
+                self.current.gratification = data ? 1 : 0;
+            };
 
             this.check_status = function(agent){
                 var today = new Date();

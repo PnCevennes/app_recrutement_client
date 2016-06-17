@@ -54,6 +54,21 @@
                             <label for="referent">Adresse e-mail du référent</label>
                             <input type="mail" class="form-control" ng-model="ctrl.current.referent" />
                         </div>
+                        <div class="form-group" ng-if="ctrl.current.type_contrat==25">
+                            <input type="checkbox" ng-model="ctrl.setGratification" ng-model-options="{getterSetter: true}" /> Gratification
+                        </div>
+                        <div class="form-group" ng-if="ctrl.current.type_contrat!=25">
+                            <label for="ttrav">Catégorie</label>
+                            <http-select ref="ref/38" ng-model="ctrl.current.categorie"></http-select>
+                        </div>
+                        <div class="form-group">
+                            <label for="ttrav">Temps de travail</label>
+                            <http-select ref="ref/32" ng-model="ctrl.current.temps_travail"></http-select>
+                        </div>
+                        <div class="form-group" ng-if="ctrl.current.temps_travail==37">
+                            <label for="ttrav2">Temps de travail (autre)</label>
+                            <input type="text" class="form-control" ng-model="ctrl.current.temps_travail_autre" />
+                        </div>
                         <div class="form-group">
                             <label for="arrivee">Date d'arrivée</label>
                             <div class="input-group">
@@ -83,6 +98,10 @@
                         <div class="form-group">
                             <label for="lieux">Lieu d'affectation</label>
                             <http-select ref="lieux" ng-model="ctrl.current.lieu"></http-select>
+                        </div>
+                        <div class="form-group">
+                            <label for="res_adm">Résidence administrative</label>
+                            <input id="res_adm" type="text" class="form-control" ng-model="ctrl.current.residence_administrative" />
                         </div>
                         <div class="form-group">
                             <label for="logements">Logement</label>
