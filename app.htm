@@ -11,10 +11,11 @@
 </head>
 <body ng-controller="principal as ctrl">
 <div class="navbar navbar-fixed-top navbar-inverse">
-    <div class="navbar-brand">{{ctrl.titre}}</div>
+    <div class="navbar-brand">Recrutement</div>
+    <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="ctrl.toggle_login_form()" ng-if="!ctrl.user_is_logged">Login</button>
     <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="ctrl.logout()" ng-if="ctrl.user_is_logged">Logout {{ctrl.user.login}}</button>
 </div>
-<div class="contenu" ng-if="!ctrl.user_is_logged">
+<div class="contenu" ng-if="ctrl.login_form_shown">
     <div class="col-lg-6 col-lg-offset-3">
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -33,7 +34,7 @@
         </div>
     </div>
 </div>
-<div class="contenu" ng-if="ctrl.user_is_logged">
+<div class="contenu" ng-if="!ctrl.login_form_shown">
     <uib-tabset active="active">
         <uib-tab index="0" heading="Recrutement">
             <div style="margin-top: 1em;" recrutement-form></div>

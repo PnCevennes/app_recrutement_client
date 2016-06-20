@@ -6,12 +6,13 @@
 }
 
 .msg-maincontainer p{
-    padding: 5px;
+    padding: 10px;
     margin: 5px;
     margin-bottom: 0;
     margin-left: 5px;
-    border-radius: 5px;
+    border-radius: 2px;
     box-shadow: 1px 1px 5px black;
+    background: linear-gradient(to bottom, #F0F0F0 90%, #CCC);
 }
 
 .msg-maincontainer-hidden{
@@ -27,16 +28,16 @@
 }
 
 .msg-info{
-    background-color: rgba(228, 228, 255, 1);
-    border: 2px solid rgba(208, 208, 235, 0.8);
+    border: 1px solid #CCC;
+    border-left: 5px solid rgba(228, 228, 255, 1);
 }
 .msg-error{
-    background-color: rgba(255, 128, 128, 1);
-    border: 2px solid rgba(235, 108, 108, 0.8);
+    border: 1px solid #DDD;
+    border-left: 5px solid rgba(255, 108, 108, 1);
 }
 .msg-success{
-    background-color: rgba(128, 255, 128, 1);
-    border: 2px solid rgba(108, 235, 108, 0.8);
+    border: 1px solid #DDD;
+    border-left: 5px solid rgba(100, 235, 100, 1);
 }
 
 .msg-modalcontainer{

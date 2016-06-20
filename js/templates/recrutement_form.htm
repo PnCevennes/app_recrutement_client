@@ -1,4 +1,4 @@
-    <div class="col-lg-6">
+    <div class="col-lg-6 hidden-print">
         <div ng-if="ctrl.agents.length">
             <ul class="list-unstyled">
                 <li ng-repeat="agent in ctrl.agents" 
@@ -21,7 +21,7 @@
         <h4 ng-if="!ctrl.agents.length">Pas de recrutement en cours</h4>
         <a ng-click="ctrl.get_old_recrs()">Voir les anciennes fiches</a>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-6 form-container">
         <div ng-if="ctrl.current.id">
             <button class="btn btn-primary" ng-click="ctrl.clear()">Nouvelle fiche</button>
             <hr />

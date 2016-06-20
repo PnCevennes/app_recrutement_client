@@ -219,6 +219,11 @@ angular.module('recrutement')
             this.user = {}
             this.user_is_logged = false;
             this.user_is_admin = false;
+            this.login_form_shown = false;
+
+            this.toggle_login_form = function(){
+                self.login_form_shown = !self.login_form_shown;
+            }
 
             $http.get(APP_URL + '/auth/reconnect').then(function(resp){
                 self.user = resp.data.user;
@@ -240,6 +245,7 @@ angular.module('recrutement')
                             }    
                         });
                         self.user_is_logged = true;
+                        self.login_form_shown = false;
                         MsgService.success('Bienvenue ' + self.user.login + ' !');
                     });
             };
