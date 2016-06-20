@@ -104,7 +104,7 @@ angular.module('recrutement').directive('userForm', ['$http', 'APP_URL', 'MsgSer
 }]);
 
 
-angular.module('recrutement').directive('recrutementForm', ['$http', 'APP_URL', 'MsgService', function($http, APP_URL, MsgService){
+angular.module('recrutement').directive('recrutementForm', ['$http', '$location', 'APP_URL', 'MsgService', function($http, $location, APP_URL, MsgService){
     return {
         restrict: 'A',
         scope: true,
@@ -124,6 +124,9 @@ angular.module('recrutement').directive('recrutementForm', ['$http', 'APP_URL', 
                 $http.get(APP_URL + '/recrutement/').then(function(resp){
                     resp.data.forEach(function(item){
                         item.arrivee = new Date(item.arrivee);
+                        if(item.id == $location.path().slice(1)){
+                            self.edit(item.id);
+                        }
                         self.agents.push(item);
                     });
                 });
@@ -158,6 +161,14 @@ angular.module('recrutement').directive('recrutementForm', ['$http', 'APP_URL', 
             this.edit = function(id){
                 $http.get(APP_URL + '/recrutement/'+id).then(function(resp){
                     self.current = resp.data;
+                    self.agents.map(function(item){
+                        if(item.id == id){
+                            item.__selected__ = true;
+                        }
+                        else{
+                            item.__selected__ = false;
+                        }
+                    });
                     self.current.arrivee = new Date(resp.data.arrivee);
                     self.current.depart = new Date(resp.data.depart);
                 });
@@ -195,10 +206,13 @@ angular.module('recrutement').directive('recrutementForm', ['$http', 'APP_URL', 
 
             this.clear = function(){
                 this.current = {materiel: []};
+                self.agents.map(function(item){
+                    item.__selected__ = false;
+                });
             };
 
             this.remove = function(){
-                MsgService.confirm('Êtes vous sûr de vouloir supprimer ce recrutement ?').then(function(){
+                MsgService.confirm('Êtes vous sûr de vouloir supprimer cette fiche ?').then(function(){
                     $http.delete(APP_URL + '/recrutement/'+self.current.id).then(function(resp){
                         var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
                         var idx = self.agents.indexOf(current);

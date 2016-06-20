@@ -10,7 +10,7 @@
                     }" 
                     ng-click="ctrl.edit(agent.id)">
                     <div class="panel-heading">
-                        <div class="panel-title">{{agent.nom}} {{agent.prenom}}</div>
+                        <div class="panel-title"><span class="glyphicon glyphicon-pencil" ng-if="agent.__selected__"></span> {{agent.nom}} {{agent.prenom}}</div>
                     </div>
                     <div class="panel-body">
                         Arrivée : {{agent.arrivee|datefr}} - Service: <thesaurus ref="{{agent.service_id}}"></thesaurus>
@@ -22,9 +22,10 @@
         <a ng-click="ctrl.get_old_recrs()">Voir les anciennes fiches</a>
     </div>
     <div class="col-lg-6 form-container">
-        <div ng-if="ctrl.current.id">
-            <button class="btn btn-primary" ng-click="ctrl.clear()">Nouvelle fiche</button>
-            <hr />
+        <div ng-if="ctrl.current.id" class="hidden-print">
+            <div class="navbar">
+                <button class="btn btn-primary navbar-btn navbar-right" ng-click="ctrl.clear()">Nouvelle fiche</button>
+            </div>
         </div>
         <div class="panel panel-default">
             <div class="panel-heading">
