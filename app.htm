@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="./js/msglib/msglib.css" />
 <link rel="stylesheet" href="./css/style.css" />
 <script src="./bower_components/angular/angular.min.js"></script>
+<script src="./bower_components/angular-route/angular-route.min.js"></script>
 <script src="./bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="./js/msglib/msglib.js"></script>
 </head>
@@ -15,35 +16,7 @@
     <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="ctrl.toggle_login_form()" ng-if="!ctrl.user_is_logged">Login</button>
     <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="ctrl.logout()" ng-if="ctrl.user_is_logged">Logout {{ctrl.user.login}}</button>
 </div>
-<div class="contenu" ng-if="ctrl.login_form_shown">
-    <div class="col-lg-6 col-lg-offset-3">
-        <div class="panel panel-primary">
-            <div class="panel-heading">
-                <div class="panel-title">Veuillez vous authentifier</div>
-            </div>
-            <div class="panel-body">
-                <div class="form">
-                    <label for="login">Login</label>
-                    <input id="login" type="text" class="form-control" ng-model="ctrl.user.login" placeholder="Login" />
-                    <label for="password">Password</label>
-                    <input id="password" type="password" class="form-control" ng-model="ctrl.user.password" placeholder="Password" />
-                    <hr />
-                    <button type="button" class="btn btn-success pull-right" ng-click="ctrl.login()">Login</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="contenu" ng-if="!ctrl.login_form_shown">
-    <uib-tabset active="active">
-        <uib-tab index="0" heading="Recrutement">
-            <div class="printer-visible" style="margin-top: 1em;" recrutement-form></div>
-        </uib-tab>
-        <uib-tab index="1" heading="Ajout utilisateur" ng-if="ctrl.user_is_admin">
-            <div style="margin-top: 1em;" user-form></div>
-        </uib-tab>
-    </uib-tabset>
-</div>
+<ng-view></ng-view>
 <msg-dsp></msg-dsp>
 <script src="./js/app.js"></script>
 </body>

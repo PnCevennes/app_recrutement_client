@@ -1,0 +1,30 @@
+<div class="contenu" ng-if="ctrl.login_form_shown">
+    <div class="col-lg-6 col-lg-offset-3">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <div class="panel-title">Veuillez vous authentifier</div>
+            </div>
+            <div class="panel-body">
+                <div class="form">
+                    <label for="login">Login</label>
+                    <input id="login" type="text" class="form-control" ng-model="ctrl.user.login" placeholder="Login" />
+                    <label for="password">Password</label>
+                    <input id="password" type="password" class="form-control" ng-model="ctrl.user.password" placeholder="Password" />
+                    <hr />
+                    <button type="button" class="btn btn-success pull-right" ng-click="ctrl.login()">Login</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="contenu" ng-if="!ctrl.login_form_shown">
+    <uib-tabset active="active">
+        <uib-tab index="0" heading="Recrutement">
+        <div recrutement-form class="printer-visible" style="margin-top: 1em;"></div>
+        </uib-tab>
+        <uib-tab index="1" heading="Ajout utilisateur" ng-if="ctrl.user_is_admin">
+            <div style="margin-top: 1em;" user-form></div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+

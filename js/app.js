@@ -1,4 +1,12 @@
-angular.module('recrutement', ['ui.bootstrap', 'msglib']);
+angular.module('recrutement', ['ui.bootstrap', 'ngRoute', 'msglib']);
+
+
+angular.module('recrutement').config(['$routeProvider', function($routeProvider){
+    $routeProvider
+        .when('/',{controller: 'principal', templateUrl: 'js/templates/principal.htm'})
+        .when('/agent/:id', {controller: 'principal', templateUrl: 'js/templates/principal.htm'})
+        .otherwise({redirectTo: '/'});
+}]);
 
 
 angular.module('recrutement').constant('APP_URL', '');
@@ -104,14 +112,16 @@ angular.module('recrutement').directive('userForm', ['$http', 'APP_URL', 'MsgSer
 }]);
 
 
-angular.module('recrutement').directive('recrutementForm', ['$http', '$location', 'APP_URL', 'MsgService', function($http, $location, APP_URL, MsgService){
+angular.module('recrutement').directive('recrutementForm', ['$http', '$location', '$routeParams', 'APP_URL', 'MsgService', function($http, $location, $routeParams, APP_URL, MsgService){
     return {
         restrict: 'A',
         scope: true,
+        bindToController: true,
         controllerAs: 'ctrl',
         templateUrl: 'js/templates/recrutement_form.htm',
         controller: function(){
             var self = this;
+            this.agentid = $routeParams.id;
             this.titre = 'Recrutement';
             this.agents = [];
             this.current = {materiel: []};
@@ -124,8 +134,8 @@ angular.module('recrutement').directive('recrutementForm', ['$http', '$location'
                 $http.get(APP_URL + '/recrutement/').then(function(resp){
                     resp.data.forEach(function(item){
                         item.arrivee = new Date(item.arrivee);
-                        if(item.id == $location.path().slice(1)){
-                            self.edit(item.id);
+                        if(self.agentid){
+                            self.edit(self.agentid);
                         }
                         self.agents.push(item);
                     });
@@ -171,7 +181,15 @@ angular.module('recrutement').directive('recrutementForm', ['$http', '$location'
                     });
                     self.current.arrivee = new Date(resp.data.arrivee);
                     self.current.depart = new Date(resp.data.depart);
+                    self.current.meta_create = new Date(resp.data.meta_create);
+                    if(self.current.meta_update){
+                        self.current.meta_update = new Date(resp.data.meta_update);
+                    }
                 });
+            };
+
+            this.editPage = function(id){
+                $location.url('agent/'+id);
             };
 
             this.save = function(){
@@ -349,6 +367,7 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
 
 angular.module('recrutement').filter('datefr', function(){
     return function(x){
+        if(!x) return '';
         return ('00' + x.getDate()).slice(-2) + '/' + ('00'+(x.getMonth()+1)).slice(-2) + '/' + x.getFullYear();
     }
 })

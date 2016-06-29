@@ -8,7 +8,7 @@
                         'panel-warning': ctrl.check_status(agent)==2,
                         'panel-danger': ctrl.check_status(agent)==3
                     }" 
-                    ng-click="ctrl.edit(agent.id)">
+                    ng-click="ctrl.editPage(agent.id)">
                     <div class="panel-heading">
                         <div class="panel-title"><span class="glyphicon glyphicon-pencil" ng-if="agent.__selected__"></span> {{agent.nom}} {{agent.prenom}}</div>
                     </div>
@@ -33,6 +33,13 @@
                 <div class="panel-title" ng-if="!ctrl.current.id">Créer une nouvelle fiche de recrutement</div>
             </div>
             <div class="panel-body">
+                <div ng-if="ctrl.current.id">
+                    <ul class="list-unstyled">
+                        <li>Date de création de la fiche : {{ctrl.current.meta_create|datefr}}</li>
+                        <li>Dernière modification de la fiche : {{ctrl.current.meta_update|datefr}}</li>
+                    </ul>
+                    <hr />
+                </div>
                 <div class="form">
                     <form name="recrform">
                         <div class="form-group">
