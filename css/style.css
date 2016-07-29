@@ -21,3 +21,11 @@
 .recr_panel{
     cursor: pointer; 
 }
+
+.table_row_selected, .table_row:hover{
+    background-color: #DDE;
+}
+
+.navbar-custom{
+    background-color: #FF8020;
+}

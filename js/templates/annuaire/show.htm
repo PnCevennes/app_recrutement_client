@@ -1,0 +1,41 @@
+<div class="panel panel-success">
+    <div class="panel-heading">
+        <div class="panel-title">{{ctrl.current.label}}
+            <button class="close pull-right" ng-click="ctrl.close_show()"><span>&times;</span></button>
+        </div>
+    </div>
+    <table class="table">
+        <tr ng-if="ctrl.current.type_entite=='correspondant'">
+            <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
+        </tr>
+        <tr>
+            <th>Adresse</th><td ng-bind-html="ctrl.current.adresse|nl2br"</td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='commune'">
+            <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
+        </tr>
+        <tr>
+            <th>N° de téléphone</th><td>{{ctrl.current.telephone}}</td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'">
+            <th>N° de mobile</th><td>{{ctrl.current.mobile}}</td>
+        </tr>
+        <tr>
+            <th>Adresse email</th><td><a ng-href="mailto:{{ctrl.current.email}}">{{ctrl.current.email}}</a></td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='commune'">
+            <th>Site internet</th><td><a ng-href="{{ctrl.current.site_internet}}">{{ctrl.current.site_internet}}</a></td>
+        </tr>
+        <tr>
+            <th>Groupes</th>
+            <td>
+                <ul class="list-unstyled">
+                    <li ng-repeat="groupe in ctrl.current.parents"><a ng-href="#/annuaire?s={{groupe.id}}&e={{ctrl.current.id}}">{{groupe.label}}</a></li>
+                </ul>
+            </td>
+        </tr>
+        <tr>
+            <th>Observations</th><td ng-bind-html="ctrl.current.observations|nl2br"</td>
+        </tr>
+    </table>
+</div>

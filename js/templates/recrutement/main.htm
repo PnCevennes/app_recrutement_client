@@ -1,5 +1,16 @@
     <div class="col-lg-6 hidden-print">
+        <div class="panel">
+            <div class="input-group">
+                <span class="input-group-addon">Année de recrutement</span>
+                <input type="number" class="form-control" ng-model="ctrl.annee_recr_list" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="ctrl.setAnnee()">afficher</button>
+                </span>
+            </div>
+        </div>
         <div ng-if="ctrl.agents.length">
+            <h4>Recrutements en {{ctrl.annee_recr_aff}}</h4>
+            <hr />
             <ul class="list-unstyled">
                 <li ng-repeat="agent in ctrl.agents" 
                     class="recr_panel panel" 
@@ -18,8 +29,7 @@
                 </li>
             </ul>
         </div>
-        <h4 ng-if="!ctrl.agents.length">Pas de recrutement en cours</h4>
-        <a ng-click="ctrl.get_old_recrs()">Voir les anciennes fiches</a>
+        <h4 ng-if="!ctrl.agents.length">Pas de recrutement pour {{ctrl.annee_recr_aff}}</h4>
     </div>
     <div class="col-lg-6 form-container">
         <div ng-if="ctrl.current.id" class="hidden-print">
@@ -41,7 +51,7 @@
                     <hr />
                 </div>
                 <div class="form">
-                    <form name="recrform">
+                    <form name="recrForm">
                         <div class="form-group">
                             <label for="nom">Nom</label>
                             <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
@@ -125,12 +135,14 @@
                     <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
-                    <button type="button" class="btn btn-success navbar-btn navbar-right" ng-click="ctrl.save()" ng-disabled="!(recrform.$dirty&&recrform.$valid)" tooltip-placement="top" uib-tooltip="Enregistrer la fiche">
-                        <span class="glyphicon glyphicon-ok"></span>
-                    </button>
-                    <button type="button" class="btn btn-info navbar-btn navbar-right" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
-                        <span class="glyphicon glyphicon-erase"></span>
-                    </button> 
+                    <div class="navbar-right" style="margin-right: 0px;">
+                        <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </button> 
+                        <button type="button" class="btn btn-success navbar-btn" ng-click="ctrl.save()" ng-disabled="!(recrForm.$dirty&&recrForm.$valid)" tooltip-placement="left" uib-tooltip="Enregistrer la fiche">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
