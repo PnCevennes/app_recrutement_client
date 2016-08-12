@@ -72,7 +72,8 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         $location.search(params)
     }
 
-    this.edit = function(elem){
+    this.edit = function(elem, evt){
+        evt.stopPropagation();
         if(!elem){
             self.model = {type_entite: 'entite', parents: [null]};
         }

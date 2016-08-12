@@ -20,7 +20,7 @@
                 </tr>
                 <tr ng-repeat="item in ctrl.searchResults" ng-click="ctrl.show(item)" ng-class="{'table_row': item.id!=ctrl.current.id, 'table_row_selected': item.id==ctrl.current.id}">
                     <td ng-if="ctrl.user_is_admin" >
-                        <button type="button" class="btn btn-warning btn-sm" ng-click="ctrl.edit(item)"><span class="glyphicon glyphicon-file"></span></button>
+                        <button type="button" class="btn btn-warning btn-sm" ng-click="ctrl.edit(item, $event)"><span class="glyphicon glyphicon-file"></span></button>
                     </td>
                     <td ng-repeat="col in ctrl.columns">
                         {{item[col.name]}}
