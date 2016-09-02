@@ -1,0 +1,81 @@
+<div class="form-container">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">Edition
+                <button class="close pull-right" ng-click="ctrl.close_edit()"><span>&times;</span></button>
+            </div>
+        </div>
+        <div class="panel-content" style="padding: 5px">
+            <form name="editForm">
+                <div class="form-group">
+                    <div class="btn-group">
+                        <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'entite'">Groupe</label>
+                        <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'commune'">Commune</label>
+                        <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'correspondant'">Correspondant</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="nom">Nom</label>
+                    <input class="form-control" id="nom" type="text" ng-model="ctrl.model.nom" min-length="2"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
+                    <label for="prenom">Prénom</label>
+                    <input class="form-control" type="text" id="prenom" ng-model="ctrl.model.prenom"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
+                    <label for="fonction">Fonction</label>
+                    <input class="form-control" type="text" id="fonction" ng-model="ctrl.model.fonction"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
+                    <label for="adresse">Adresse</label>
+                    <textarea class="form-control" id="adresse" ng-model="ctrl.model.adresse"></textarea>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='commune'">
+                    <label for="cp">Code postal</label>
+                    <input class="form-control" type="text" id="cp" ng-model="ctrl.model.code_postal"></input>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
+                    <label for="telephone">Numéro de téléphone</label>
+                    <input class="form-control" type="text" id="telephone" ng-model="ctrl.model.telephone"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
+                    <label for="mobile">Numéro de mobile</label>
+                    <input class="form-control" type="text" id="mobile" ng-model="ctrl.model.mobile"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
+                    <label for="email">Adresse email</label>
+                    <input class="form-control" type="email" id="email" ng-model="ctrl.model.email"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='commune'">
+                    <label for="www">Site internet</label>
+                    <input class="form-control" type="text" id="www" ng-model="ctrl.model.site_internet"/>
+                </div>
+                <div class="form-group">
+                    <label for="adresse">Observations</label>
+                    <textarea class="form-control" id="observations" ng-model="ctrl.model.observations"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Groupes</label>
+                    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.model.parents"></http-search>
+                </div>
+                <div class="form-group">
+                    <label>Éléments dépendants</label>
+                    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.model.relations"></http-search>
+                </div>
+                <div class="navbar">
+                    <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <div class="navbar-right" style="margin-right: 0px;">
+                        <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
+                            <span class="glyphicon glyphicon-erase"></span>
+                        </button> 
+                        <button type="button" class="btn btn-success navbar-btn" ng-click="ctrl.save()" ng-disabled="!(editForm.$dirty&&editForm.$valid)" tooltip-placement="left" uib-tooltip="Enregistrer la fiche">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

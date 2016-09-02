@@ -3,9 +3,19 @@ angular.module('recrutement', ['ui.bootstrap', 'ngRoute', 'msglib']);
 
 angular.module('recrutement').config(['$routeProvider', function($routeProvider){
     $routeProvider
-        .when('/',{controller: 'principal', templateUrl: 'js/templates/principal.htm'})
-        .when('/agent/:id', {controller: 'principal', templateUrl: 'js/templates/principal.htm'})
-        .otherwise({redirectTo: '/'});
+        .when('/admin',{
+            controller: 'adminCtrl', 
+            controllerAs: 'ctrl',
+            templateUrl: 'js/templates/utilisateur/main.htm'})
+        .when('/recrutement', {
+            controller: 'recrutementCtrl', 
+            controllerAs: 'ctrl',
+            templateUrl: 'js/templates/recrutement/main.htm'})
+        .when('/annuaire', {
+            controller: 'annuaireCtrl',
+            controllerAs: 'ctrl',
+            templateUrl: 'js/templates/annuaire/main.htm'})
+        .otherwise({redirectTo: '/annuaire'});
 }]);
 
 
@@ -13,242 +23,55 @@ angular.module('recrutement').constant('APP_URL', '');
 //angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
 
 
-angular.module('recrutement').directive('userForm', ['$http', 'APP_URL', 'MsgService', function($http, APP_URL, MsgService){
-    return {
-        restrict: 'A',
-        scope: true,
-        controllerAs: 'ctrl',
-        templateUrl: 'js/templates/utilisateur_form.htm',
-        controller: function(){
-            var self = this;
-            this.current = {applications: [{id:1, niveau: 2}]};
-            this.agents = [];
-
-            this.clear = function(){
-                this.current = {applications: [{id:1, niveau: 2}]};
-            };
-
-            this.get_data = function(){
-                $http.get(APP_URL + '/auth/users').then(function(resp){
-                    resp.data.forEach(function(item){
-                        self.agents.push(item);
-                    });
-                });
-            };
-
-            this.check_status = function(agent){
-                try{
-                    var x = agent.applications.filter(function(item){return item.id == 1})[0];
-                    return x.niveau == 6 ? 1 : 2;
-                }
-                catch(e){
-                    return 3;
-                }
-            };
-
-            this.setAdmin = function(value){
-                if(!arguments.length){ return self.current.admin; }
-                self.current.admin = value;
-                try{
-                    var x = self.current.applications.filter(function(item){return item.id == 1})[0];
-                    x.niveau = value ? 6 : 2;
-                }
-                catch(e){
-                    self.current.applications.push({id: 1, niveau: value ? 6 : 2});
-                }
-            };
-
-            this.edit = function(id){
-                $http.get(APP_URL + '/auth/user/'+id).then(function(resp){
-                    self.current = resp.data;
-                    self.current.admin = (self.check_status(self.current) == 1)
-                });
-            };
-
-            this.save = function(){
-                if(this.current.id){
-                    var url = APP_URL + '/auth/user/'+this.current.id;
-                    var update = true;
-                }
-                else{
-                    var url = APP_URL + '/auth/user';
-                    var update = false;
-                }
-                $http.post(url, this.current).then(function(resp){
-                    if(update){
-                        var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
-                        var idx = self.agents.indexOf(current);
-                        var result = angular.copy(self.current);
-                        self.agents[idx] = result;
-                    }
-                    else{
-                        self.current.id = resp.data.id;
-                        self.agents.push(angular.copy(self.current));
-                    }
-                    self.agents.sort(function(a, b){
-                        var x = a.arrivee;
-                        var y = b.arrivee;
-                        return x>y;
-                    });
-                    MsgService.success("L'utilisateur " + self.current.login + " a été enregistré.");
-                    self.current = {};
-                });
-            };
-
-            this.remove = function(){
-                MsgService.confirm('Êtes vous sûr de vouloir supprimer cet agent ?').then(function(){
-                    $http.delete(APP_URL + '/auth/user/'+self.current.id).then(function(resp){
-                        var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
-                        var idx = self.agents.indexOf(current);
-                        self.agents.splice(idx, 1);
-                        MsgService.info("L'agent " + self.current.login + ' a été supprimé.');
-                        self.current = {applications: [{id: 1, niveau: 2}]};
-                    });
-                });
-            }
-            this.get_data();
-        }
-    }
-}]);
-
-
-angular.module('recrutement').directive('recrutementForm', ['$http', '$location', '$routeParams', 'APP_URL', 'MsgService', function($http, $location, $routeParams, APP_URL, MsgService){
+angular.module('recrutement').factory('AppGlobals', [function(){
     return {
-        restrict: 'A',
-        scope: true,
-        bindToController: true,
-        controllerAs: 'ctrl',
-        templateUrl: 'js/templates/recrutement_form.htm',
-        controller: function(){
-            var self = this;
-            this.agentid = $routeParams.id;
-            this.titre = 'Recrutement';
-            this.agents = [];
-            this.current = {materiel: []};
-            this.arrivee_open = false;
-            this.depart_open = false;
-            this.show_old = false;
+        recrutement_list_annee: new Date().getFullYear(),
+    };
+}]);
 
+angular.module('recrutement').service('UserService', [function(){
+    var self = this;
+    this.observers = [];
+    this.user = {};
 
-            this.get_data = function(){
-                $http.get(APP_URL + '/recrutement/').then(function(resp){
-                    resp.data.forEach(function(item){
-                        item.arrivee = new Date(item.arrivee);
-                        if(self.agentid){
-                            self.edit(self.agentid);
-                        }
-                        self.agents.push(item);
-                    });
-                });
-            };
+    this.set_user = function(user){
+        self.user = user;
+        self.notify();
+        return user;
+    }
 
-            this.setGratification = function(data){
-                if(!arguments.length){
-                    return self.current.gratification == 1;
-                }
-                self.current.gratification = data ? 1 : 0;
-            };
+    this.add_observer = function(fn){
+        if(self.observers.indexOf(fn) == -1){
+            self.observers.push(fn);
+        }
+    };
 
-            this.check_status = function(agent){
-                var today = new Date();
-                if(agent.arrivee>today) return 1;
-                else if(agent.depart>today) return 2;
-                return 3;
-            }
+    this.notify = function(){
+        self.observers.forEach(function(obs){
+            obs();
+        });
+    };
 
-            this.get_old_recrs = function(){
-                self.agents = [];
-                self.show_old = !self.show_old;
-                $http.get(APP_URL + '/recrutement/?old='+self.show_old).then(function(resp){
-                    resp.data.forEach(function(item){
-                        item.arrivee = new Date(item.arrivee);
-                        item.depart = new Date(item.depart);
-                        self.agents.push(item);
-                    });
-                });
-            };
-
-            this.edit = function(id){
-                $http.get(APP_URL + '/recrutement/'+id).then(function(resp){
-                    self.current = resp.data;
-                    self.agents.map(function(item){
-                        if(item.id == id){
-                            item.__selected__ = true;
-                        }
-                        else{
-                            item.__selected__ = false;
-                        }
-                    });
-                    self.current.arrivee = new Date(resp.data.arrivee);
-                    self.current.depart = new Date(resp.data.depart);
-                    self.current.meta_create = new Date(resp.data.meta_create);
-                    if(self.current.meta_update){
-                        self.current.meta_update = new Date(resp.data.meta_update);
-                    }
-                });
-            };
-
-            this.editPage = function(id){
-                $location.url('agent/'+id);
-            };
-
-            this.save = function(){
-                if(this.current.id){
-                    var url = APP_URL + '/recrutement/'+this.current.id;
-                    var update = true;
-                }
-                else{
-                    var url = APP_URL + '/recrutement/';
-                    var update = false;
-                }
-                $http.post(url, this.current).then(function(resp){
-                    if(update){
-                        var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
-                        var idx = self.agents.indexOf(current);
-                        var result = angular.copy(self.current);
-                        self.agents[idx] = result;
-                    }
-                    else{
-                        self.current.id = resp.data.id_agent;
-                        self.agents.push(angular.copy(self.current));
-                    }
-                    self.agents.sort(function(a, b){
-                        var x = a.arrivee;
-                        var y = b.arrivee;
-                        return x>y;
-                    });
-                    MsgService.success("Le recrutement " + self.current.nom + " a été enregistré.");
-                    self.current = {materiel: []};
-                });
-            };
-
-            this.clear = function(){
-                this.current = {materiel: []};
-                self.agents.map(function(item){
-                    item.__selected__ = false;
-                });
-            };
-
-            this.remove = function(){
-                MsgService.confirm('Êtes vous sûr de vouloir supprimer cette fiche ?').then(function(){
-                    $http.delete(APP_URL + '/recrutement/'+self.current.id).then(function(resp){
-                        var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
-                        var idx = self.agents.indexOf(current);
-                        self.agents.splice(idx, 1);
-                        MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                        self.current = {materiel: []};
-                    });
-                });
-            };
-            this.get_data();
+    this.check_user_level = function(id_app, value){
+        try{
+            app = self.user.applications.filter(function(item){
+                return item.id == id_app && item.niveau >= value;
+            })[0];
+            return app != undefined;
+        }
+        catch(e){
+            return false;
         }
     }
 }]);
+
+
+
 
 angular.module('recrutement')
-    .controller('principal', ['$http', 'APP_URL', 'MsgService', function($http, APP_URL, MsgService){
+    .controller('principal', ['$http', 'APP_URL', 'MsgService', 'UserService', function($http, APP_URL, MsgService, UserService){
             var self = this;
-            this.user = {}
+            this.user = {};
             this.user_is_logged = false;
             this.user_is_admin = false;
             this.login_form_shown = false;
@@ -257,25 +80,19 @@ angular.module('recrutement')
                 self.login_form_shown = !self.login_form_shown;
             }
 
+            UserService.add_observer(function(){
+                self.user_is_admin = UserService.check_user_level(1, 6);
+            });
+
             $http.get(APP_URL + '/auth/reconnect').then(function(resp){
-                self.user = resp.data.user;
-                self.user.applications.forEach(function(item){
-                    if(item.id == 1 && item.niveau == 6){
-                            self.user_is_admin = true;
-                    }    
-                });
+                self.user = UserService.set_user(resp.data.user);
                 self.user_is_logged = true;
             });
 
             this.login = function(){
                 $http.post(APP_URL + '/auth/login', this.user).then(
                     function(resp){
-                        self.user = resp.data.user;
-                        self.user.applications.forEach(function(item){
-                            if(item.id == 1 && item.niveau == 6){
-                                    self.user_is_admin = true;
-                            }    
-                        });
+                        self.user = UserService.set_user(resp.data.user);
                         self.user_is_logged = true;
                         self.login_form_shown = false;
                         MsgService.success('Bienvenue ' + self.user.login + ' !');
@@ -286,8 +103,9 @@ angular.module('recrutement')
                 $http.get(APP_URL + '/auth/logout').then(
                     function(resp){
                         MsgService.success('Au revoir ' + self.user.login + ' !');
-                        self.user = {};
+                        self.user = UserService.set_user({});
                         self.user_is_logged = false;
+                        self.user_is_admin = false;
                     });
             };
     }]);
@@ -365,9 +183,60 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
     }
 }]);
 
+
+angular.module('recrutement').directive('httpSearch', ['$http', function($http){
+    return {
+        restrict: 'E',
+        scope: {url: '@', ngModel: '='},
+        controller: function(){
+            var self = this;
+            this.searchString = this.ngModel;
+            if(!this.searchString.length){
+                this.searchString.push(null);
+            }
+            this.getSearch = function(searchStr){
+                return $http.get(this.url+searchStr).then(function(resp){
+                    return resp.data;
+                });
+            };
+
+            this.addSearchItem = function(){
+                self.searchString.push(null);
+            };
+
+            this.removeSearchItem = function(idx){
+                self.searchString.splice(idx, 1);
+            };
+
+        },
+        bindToController: true,
+        controllerAs: 'htsearch',
+        template: `
+    <div class="input-group" ng-repeat="st in htsearch.searchString track by $index">
+        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="text" ng-model="htsearch.searchString[$index]" uib-typeahead="elem as elem.label for elem in htsearch.getSearch($viewValue)" typeahead-loading="htsearch.loadingSearch" typeahead-no-results="htsearch.noResults" class="form-control">
+        <div class="input-group-addon" ng-show="htsearch.loadingSearch"><span class="glyphicon glyphicon-refresh"></span></div>
+        <span class="input-group-btn" ng-if="htsearch.searchString.length>1">
+            <button type="button" class="btn btn-default" ng-click="htsearch.removeSearchItem($index)"><span class="glyphicon glyphicon-minus"></span></button>
+        </span>
+        <span class="input-group-btn" ng-if="$last">
+            <button type="button" class="btn btn-default" ng-click="htsearch.addSearchItem()"><span class="glyphicon glyphicon-plus"></span></button>
+        </span>
+    </div>
+    `
+    };
+}]);
+
 angular.module('recrutement').filter('datefr', function(){
     return function(x){
         if(!x) return '';
         return ('00' + x.getDate()).slice(-2) + '/' + ('00'+(x.getMonth()+1)).slice(-2) + '/' + x.getFullYear();
     }
-})
+});
+
+angular.module('recrutement').filter('nl2br', ['$sce', function($sce){
+    return function nl2br(x){
+        if(!x) return;
+        return $sce.trustAsHtml(x.replace(/\n/g, '<br />'));
+    };
+}]);

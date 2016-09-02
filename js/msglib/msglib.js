@@ -1,24 +1,18 @@
 angular.module('msglib', []);
 
-angular.module('msglib').factory('MsgService', ['$rootScope', function($rootScope){
-    return {
-        info: function(txt){
-            $rootScope.$broadcast('msg-info', txt);
-        },
-        error: function(txt){
-            $rootScope.$broadcast('msg-error', txt);
-        },
-        success: function(txt){
-            $rootScope.$broadcast('msg-success', txt);
-        }
-    }
+angular.module('msglib').factory('MsgService', [function(){
+    /*
+     * Expose les méthodes de la directive msgDsp
+     */
+    return {};
 }]);
 
-angular.module('msglib').directive('msgDsp', ['$rootScope', '$timeout', '$q', 'MsgService', function($rootScope, $timeout, $q, MsgService){
+angular.module('msglib').directive('msgDsp', ['$timeout', '$q', 'MsgService', function($timeout, $q, MsgService){
     return {
         restrict: 'E',
         controllerAs: 'msgd',
         controller: function(){
+            var self = this;
             this.msg_shown = false;
             this.modal_message = '';
             this.modal_title = '';
@@ -27,62 +21,60 @@ angular.module('msglib').directive('msgDsp', ['$rootScope', '$timeout', '$q', 'M
             this.deferred = null;
 
             var addMsg = function(type){
-                return function(ev, msg){
-                    this.messages.push({type: type, content: msg});
-                    $timeout(angular.bind(this, function(){
-                        this.messages.splice(0, 1);
-                    }), 5000);
+                return function(msg){
+                    self.messages.push({type: type, content: msg});
+                    $timeout(function(){
+                        self.messages.splice(0, 1);
+                    }, 5000);
                 }
             };
 
-            this.open_modal = function(txt){
-                this.modal_message = txt;
-                this.msg_shown = true;
-                var dfd = this.deferred = $q.defer();
-                return dfd.promise;
+            MsgService.info = addMsg(0);
+            MsgService.error = addMsg(1);
+            MsgService.success = addMsg(2);
+
+            this.open_modal = function(txt, title){
+                self.modal_message = txt;
+                self.modal_title = title;
+                self.msg_shown = true;
+                self.deferred = $q.defer();
+                return self.deferred.promise;
             };
 
-            this.open_confirm = function(txt){
-                this.modal_confirm = true;
-                this.modal_title = 'Confirm';
-                return this.open_modal(txt);
+            this.open_confirm = function(txt, title){
+                self.modal_confirm = true;
+                return self.open_modal(txt, title || 'Confirm');
             }
-            MsgService.confirm = angular.bind(this, this.open_confirm);
+            MsgService.confirm = this.open_confirm;
 
-            this.open_alert = function(txt){
-                this.modal_confirm = false;
-                this.modal_title = 'Alerte';
-                return this.open_modal(txt);
+            this.open_alert = function(txt, title){
+                self.modal_confirm = false;
+                return self.open_modal(txt, title || 'Alert');
             }
-            MsgService.alert = angular.bind(this, this.open_alert);
+            MsgService.alert = this.open_alert;
 
             this.close_modal = function(){
-                this.msg_shown = false;
+                self.msg_shown = false;
             };
 
             this.dismiss = function(){
-                this.close_modal();
-                if(this.modal_confirm){
-                    this.deferred.reject();
+                self.close_modal();
+                if(self.modal_confirm){
+                    self.deferred.reject();
                 }
                 else{
-                    this.deferred.resolve();
+                    self.deferred.resolve();
                 }
             };
 
             this.accept = function(){
-                this.close_modal();
-                this.deferred.resolve();
+                self.close_modal();
+                self.deferred.resolve();
             };
 
             this.cancel_close = function(evt){
                 evt.stopPropagation();
             };
-
-
-            $rootScope.$on('msg-info', angular.bind(this, addMsg(0)));
-            $rootScope.$on('msg-error', angular.bind(this, addMsg(1)));
-            $rootScope.$on('msg-success', angular.bind(this, addMsg(2)));
         },
         template: `
 <div class="msg-maincontainer" ng-class="{'msg-maincontainer-hidden': !msgd.messages.length, 'msg-maincontainer-shown': msgd.messages.length}">
@@ -90,11 +82,19 @@ angular.module('msglib').directive('msgDsp', ['$rootScope', '$timeout', '$q', 'M
 </div>
 <div class="msg-modalcontainer" ng-class="{'msg-modalcontainer-hidden': !msgd.msg_shown, 'msg-modalcontainer-shown': msgd.msg_shown}" ng-click="msgd.dismiss()">
     <div class="msg-modalcontainer-msgcontainer" ng-if="msgd.msg_shown" ng-click="msgd.cancel_close($event)">
-        <h1>{{msgd.modal_title}}</h1>
-        <p>{{msgd.modal_message}}</p>
-        <div class="msg-modalcontainer-buttons">
-            <button ng-click="msgd.dismiss()" ng-if="msgd.modal_confirm">Cancel</button>
-            <button ng-click="msgd.accept()">OK</button>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">{{msgd.modal_title}}</div>
+            </div>
+            <div class="panel-body">
+                <p>{{msgd.modal_message}}</p>
+                <div class="navbar">
+                    <div class="navbar-right">
+                        <button type="button" class="btn btn-warning" ng-click="msgd.dismiss()" ng-if="msgd.modal_confirm">Cancel</button>
+                        <button type="button" class="btn btn-success" ng-click="msgd.accept()">OK</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>`
