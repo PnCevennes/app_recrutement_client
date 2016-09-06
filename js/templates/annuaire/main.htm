@@ -10,28 +10,56 @@
 
 <div class="col-lg-6" ng-if="ctrl.showing" ng-include="'/static/js/templates/annuaire/show.htm'">
 </div>
-<div ng-class="{'col-lg-12': !(ctrl.editing || ctrl.showing), 'col-lg-6': (ctrl.editing || ctrl.showing)}" ng-if="ctrl.searchResults.length">
+<div ng-class="{'col-lg-12': !(ctrl.editing || ctrl.showing), 'col-lg-6': (ctrl.editing || ctrl.showing)}">
     <div class="panel panel-primary"> 
         <div class="panel-heading">
             <div class="panel-title">Resultats de la recherche</div>
         </div>
         <div class="panel-content">
-            <p class="form">Résultats affichés : 
-                <input type="checkbox" ng-model="ctrl.types_shown.correspondant">Correspondants -- 
-                <input type="checkbox" ng-model="ctrl.types_shown.entite">Groupes -- 
-                <input type="checkbox" ng-model="ctrl.types_shown.commune">Communes
-            </p>
+            <ul class="list-inline">
+                <li>Résultats affichés : </li>
+                <li><input id="type1" type="checkbox" ng-model="ctrl.types_shown.correspondant"><label for="type1">Correspondants</label></li>
+                <li><input id="type2" type="checkbox" ng-model="ctrl.types_shown.entite"><label for="type2">Groupes</label></li>
+                <li><input id="type3" type="checkbox" ng-model="ctrl.types_shown.commune"><label for="type3">Communes</label></li>
+            </ul>
             <table class="table table-striped table-bordered">
-                <tr>
-                    <th>Nom</th>
-                    <th>N° de téléphone</th>
-                    <th>Adresse email</th>
-                </tr>
-                <tr ng-repeat="item in ctrl.searchResults" ng-if="ctrl.types_shown[item.type_entite]" ng-click="ctrl.show(item)">
-                    <td>{{item.label}}</td>
-                    <td>{{item.telephone}}</td>
-                    <td><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
-                </tr>
+                <thead>
+                    <tr>
+                        <th>Nom</th>
+                        <th>N° de téléphone</th>
+                        <th>Adresse email</th>
+                    </tr>
+                </thead>
+                <tbody ng-if="ctrl.types_shown['correspondant']">
+                    <tr ng-if="ctrl.searchResults['correspondant'].length">
+                        <th colspan="3">Correspondants
+                            <small><a ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a></small>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in ctrl.searchResults['correspondant']" ng-click="ctrl.show(item)">
+                        <td>{{item.label}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="ctrl.types_shown['commune']">
+                    <tr ng-if="ctrl.searchResults['commune'].length">
+                        <th colspan="3">Communes</th>
+                    </tr>
+                    <tr ng-repeat="item in ctrl.searchResults['commune']" ng-click="ctrl.show(item)">
+                        <td>{{item.label}}</td>
+                        <td>{{item.telephone}}</td>
+                        <td><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="ctrl.types_shown['entite']">
+                    <tr ng-if="ctrl.searchResults['entite'].length">
+                        <th colspan="3">Groupes</th>
+                    </tr>
+                    <tr ng-repeat="item in ctrl.searchResults['entite']" ng-click="ctrl.show(item)">
+                        <td colspan="3">{{item.label}}</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
