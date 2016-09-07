@@ -73,7 +73,9 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
     }
 
     this.edit = function(elem, evt){
-        evt.stopPropagation();
+        if(evt){
+            evt.stopPropagation();
+        }
         if(!elem){
             self.model = {type_entite: 'entite', parents: [null]};
         }
@@ -92,7 +94,7 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         else{
             var url = '/annuaire/entite'
         }
-        $http.post(url, self.model).then(
+        $http.post(APP_URL + url, self.model).then(
             function(resp){
                 MsgService.success("L'enregistrement a été effectué");
                 if(!self.model.id){
