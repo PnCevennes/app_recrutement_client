@@ -53,6 +53,11 @@
                 <div class="form">
                     <form name="recrForm">
                         <div class="form-group">
+                            <label for="auteur">Créateur de la fiche</label>
+                            <input id="auteur" type="text" class="form-control" ng-model="ctrl.current.meta_createur_fiche" required />
+                            <p>Nom du créateur de la fiche ou référent pour les informations relatives à cette fiche de recrutement</p>
+                        </div>
+                        <div class="form-group">
                             <label for="nom">Nom</label>
                             <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
                         </div>
@@ -128,6 +133,10 @@
                         <div class="form-group">
                             <label>Matériel à fournir</label>
                             <thesaurus-select ref="26" ng-model="ctrl.current.materiel"></thesaurus-select>
+                        </div>
+                        <div class="form-group">
+                            <label for="observations">Observations</label>
+                            <textarea id="observations" class="form-control" ng-model="ctrl.current.observations"></textarea>
                         </div>
                     </form>
                 </div>
