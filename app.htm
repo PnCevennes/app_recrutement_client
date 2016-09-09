@@ -41,9 +41,9 @@
     </div>
     <div class="contenu" ng-if="!ctrl.login_form_shown">
         <ul class="nav nav-pills">
-            <li ng-if="ctrl.user_is_admin"><a href="#/admin">Administration</a></li>
-            <li><a href="#/recrutement">Recrutement</a></li>
             <li><a href="#/annuaire">Annuaire</a></li>
+            <li><a href="#/recrutement">Recrutement</a></li>
+            <li ng-if="ctrl.user_is_admin"><a href="#/admin">Administration</a></li>
         </ul>
         <div style="margin-top: 5px;">
             <ng-view></ng-view>

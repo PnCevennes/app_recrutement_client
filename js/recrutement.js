@@ -2,13 +2,21 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     var self = this;
     var params = $location.search();
     this.agentid = params.agent;
-    //this.agentid = $routeParams.id;
     this.titre = 'Recrutement';
     this.agents = [];
+    this.agents_orig = null;
+    if(!AppGlobals.recrutement_sort_order){
+        AppGlobals.recrutement_sort_order = {
+            nom: null,
+            arrivee: true,
+            service_id: null
+            };
+
+    }
+    this.sort_order = AppGlobals.recrutement_sort_order;
     this.current = {materiel: []};
     this.arrivee_open = false;
     this.depart_open = false;
-    this.show_old = false;
     if(params.annee){
         AppGlobals.recrutement_list_annee = parseInt(params.annee);
     }
@@ -29,8 +37,31 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
             if(self.agentid){
                 self.edit(self.agentid);
             }
+            self.sort_agents_init();
         });
     };
+
+    this.sort_agents_init = function(){
+        console.log(self.sort_order);
+        for(k in self.sort_order){
+            if(self.sort_order[k]){
+                self.sort_order[k] = !self.sort_order[k];
+                self.sort_agents_by(k);
+            }
+        }
+    };
+
+    this.sort_agents_by = function(field){
+        for(k in self.sort_order){
+            if(k != field){
+                self.sort_order[k] = null;
+            }
+        }
+        self.sort_order[field] = !self.sort_order[field];
+        self.agents.sort(function(a, b){
+            return self.sort_order[field] ? b[field]<a[field] : a[field]<b[field];
+        });
+    }
 
     this.setGratification = function(data){
         if(!arguments.length){
