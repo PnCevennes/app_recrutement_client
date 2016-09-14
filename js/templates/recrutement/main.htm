@@ -83,6 +83,11 @@
                             <p>Nom du créateur de la fiche ou référent pour les informations relatives à cette fiche de recrutement</p>
                         </div>
                         <div class="form-group">
+                            <input id="notif" type="checkbox" ng-model="ctrl.current.ctrl_notif" />
+                            <label for="notif">Notifier</label>
+                            <p>Envoie une notification par e-mail aux administrateurs</p>
+                        </div>
+                        <div class="form-group">
                             <label for="nom">Nom</label>
                             <input id="nom" type="text" class="form-control" ng-model="ctrl.current.nom" required />
                         </div>
@@ -103,7 +108,8 @@
                             <input type="mail" class="form-control" ng-model="ctrl.current.referent" />
                         </div>
                         <div class="form-group" ng-if="ctrl.current.type_contrat==25">
-                            <input type="checkbox" ng-model="ctrl.setGratification" ng-model-options="{getterSetter: true}" /> Gratification
+                            <input id="gratif" type="checkbox" ng-model="ctrl.setGratification" ng-model-options="{getterSetter: true}" /> 
+                            <label for="gratif">Gratification</label>
                         </div>
                         <div class="form-group" ng-if="ctrl.current.type_contrat!=25">
                             <label for="ttrav">Catégorie</label>

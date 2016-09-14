@@ -14,7 +14,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
 
     }
     this.sort_order = AppGlobals.recrutement_sort_order;
-    this.current = {materiel: []};
+    this.current = {materiel: [], ctrl_notif: true};
     this.arrivee_open = false;
     this.depart_open = false;
     if(params.annee){
@@ -94,6 +94,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
             if(self.current.meta_update){
                 self.current.meta_update = new Date(resp.data.meta_update);
             }
+            self.current.ctrl_notif = true;
         });
     };
 
@@ -132,7 +133,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     };
 
     this.clear = function(){
-        this.current = {materiel: []};
+        this.current = {materiel: [], ctrl_notif: true};
         self.agents.map(function(item){
             item.__selected__ = false;
         });
@@ -146,7 +147,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
                 MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                self.current = {materiel: []};
+                self.current = {materiel: [], ctrl_notif: true};
             });
         });
     };

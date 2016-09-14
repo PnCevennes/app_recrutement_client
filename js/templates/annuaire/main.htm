@@ -32,9 +32,11 @@
                 </thead>
                 <tbody ng-if="ctrl.types_shown['correspondant']">
                     <tr ng-if="ctrl.searchResults['correspondant'].length">
-                        <th colspan="3">Correspondants
-                            <small><a ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a></small>
+                        <th colspan="2">Correspondants
                         </th>
+                        <td>
+                            <small><a ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a></small>
+                        </td>
                     </tr>
                     <tr ng-repeat="item in ctrl.searchResults['correspondant']" ng-click="ctrl.show(item)">
                         <td>{{item.label}}</td>
