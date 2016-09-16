@@ -6,15 +6,15 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
         .when('/admin',{
             controller: 'adminCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/utilisateur/main.htm'})
+            templateUrl: 'static/js/templates/utilisateur/main.htm'})
         .when('/recrutement', {
             controller: 'recrutementCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/recrutement/main.htm'})
+            templateUrl: 'static/js/templates/recrutement/main.htm'})
         .when('/annuaire', {
             controller: 'annuaireCtrl',
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/annuaire/main.htm'})
+            templateUrl: 'static/js/templates/annuaire/main.htm'})
         .otherwise({redirectTo: '/annuaire'});
 }]);
 
