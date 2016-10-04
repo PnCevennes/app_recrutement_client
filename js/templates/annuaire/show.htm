@@ -9,17 +9,17 @@
         <tr ng-if="ctrl.current.type_entite=='correspondant'">
             <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
         </tr>
-        <tr ng-if="ctrl.current.type_entite!='entite'">
+        <tr ng-if="ctrl.current.type_entite!='entite'&&ctrl.current.adresse.length">
             <th>Adresse</th><td ng-bind-html="ctrl.current.adresse|nl2br"</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='commune'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
-            <th>N° de téléphone</th><td>{{ctrl.current.telephone}}</td>
+            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}</td>
         </tr>
-        <tr ng-if="ctrl.current.type_entite=='correspondant'">
-            <th>N° de mobile</th><td>{{ctrl.current.mobile}}</td>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'&&ctrl.current.mobile">
+            <th>N° de mobile</th><td>{{ctrl.current.mobile|formatTel}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Adresse email</th><td><a ng-href="mailto:{{ctrl.current.email}}">{{ctrl.current.email}}</a></td>
@@ -35,7 +35,7 @@
                 </ul>
             </td>
         </tr>
-        <tr>
+        <tr ng-if="ctrl.current.relations.length">
             <th>Éléments dépendants</th>
             <td>
                 <ul class="list-unstyled">
@@ -43,7 +43,7 @@
                 </ul>
             </td>
         </tr>
-        <tr>
+        <tr ng-if="ctrl.current.observations.length">
             <th>Observations</th><td ng-bind-html="ctrl.current.observations|nl2br"</td>
         </tr>
     </table>

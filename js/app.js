@@ -19,8 +19,8 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
 }]);
 
 
-angular.module('recrutement').constant('APP_URL', '');
-//angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
+//angular.module('recrutement').constant('APP_URL', '');
+angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
 
 
 angular.module('recrutement').factory('AppGlobals', [function(){
@@ -239,4 +239,17 @@ angular.module('recrutement').filter('nl2br', ['$sce', function($sce){
         if(!x) return;
         return $sce.trustAsHtml(x.replace(/\n/g, '<br />'));
     };
+}]);
+
+
+angular.module('recrutement').filter('formatTel', [function(){
+    return function(x){
+        if(!x){
+            return '';
+        }
+        if(x.length == 10){
+            return [x.slice(0,2), x.slice(2,4), x.slice(4,6), x.slice(6,8), x.slice(8,10)].join(' ');
+        }
+        return x;
+    }
 }]);

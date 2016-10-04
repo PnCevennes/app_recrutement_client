@@ -1,0 +1,32 @@
+diff --git a/js/app.js b/js/app.js
+index bb92679..ae0444e 100644
+--- a/js/app.js
++++ b/js/app.js
+@@ -19,8 +19,8 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
+ }]);
+ 
+ 
+-angular.module('recrutement').constant('APP_URL', '');
+-//angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
++//angular.module('recrutement').constant('APP_URL', '');
++angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
+ 
+ 
+ angular.module('recrutement').factory('AppGlobals', [function(){
+diff --git a/js/templates/annuaire/main.htm b/js/templates/annuaire/main.htm
+index deab877..1d21eac 100644
+--- a/js/templates/annuaire/main.htm
++++ b/js/templates/annuaire/main.htm
+@@ -5,10 +5,10 @@
+ </div>
+ <button type="button" ng-if="ctrl.user_is_admin" class="btn btn-success" ng-click="ctrl.create_new()">Nouveau</button>
+ <hr />
+-<div ng-class="{'col-lg-6': ctrl.searchResults.length, 'col-lg-12': !ctrl.searchResults.length}" ng-if="ctrl.editing" ng-include="'/static/js/templates/annuaire/form.htm'">
++<div ng-class="{'col-lg-6': ctrl.searchResults.length, 'col-lg-12': !ctrl.searchResults.length}" ng-if="ctrl.editing" ng-include="'/js/templates/annuaire/form.htm'">
+ </div>
+ 
+-<div class="col-lg-6" ng-if="ctrl.showing" ng-include="'/static/js/templates/annuaire/show.htm'">
++<div class="col-lg-6" ng-if="ctrl.showing" ng-include="'/js/templates/annuaire/show.htm'">
+ </div>
+ <div ng-class="{'col-lg-12': !(ctrl.editing || ctrl.showing), 'col-lg-6': (ctrl.editing || ctrl.showing)}">
+     <div class="panel panel-primary"> 
