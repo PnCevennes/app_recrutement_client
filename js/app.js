@@ -89,6 +89,13 @@ angular.module('recrutement')
                 self.user_is_logged = true;
             });
 
+            this.get_url = function(url){
+                /*
+                    retourne une url relative complétée avec l'url de base de l'application
+                */
+                return APP_URL + url;
+            };
+
             this.login = function(){
                 $http.post(APP_URL + '/auth/login', this.user).then(
                     function(resp){

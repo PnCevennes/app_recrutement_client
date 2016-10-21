@@ -42,7 +42,7 @@
                         <td>{{item.label}}</td>
                         <td>{{item.telephone|formatTel}}</td>
                         <td><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
-                        <td><a ng-href="/annuaire/vcard/{{item.id}}" target="_blank"><small>VCARD</small></a></td>
+                        <td><a ng-href="{{princ_ctrl.get_url('/annuaire/vcard/')}}{{item.id}}" target="_blank"><small>VCARD</small></a></td>
                     </tr>
                 </tbody>
                 <tbody ng-if="ctrl.types_shown['commune']">
