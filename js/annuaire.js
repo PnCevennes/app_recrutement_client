@@ -92,7 +92,7 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
                 mails.push(item.label + '<' + item.email + '>');
             }
         });
-        return mails.join(';');
+        return mails.join(',');
     };
 
     this._show = function(elem){

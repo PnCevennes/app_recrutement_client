@@ -27,6 +27,9 @@
         <tr ng-if="ctrl.current.type_entite=='commune'">
             <th>Site internet</th><td><a ng-href="{{ctrl.current.site_internet}}">{{ctrl.current.site_internet}}</a></td>
         </tr>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'">
+            <th>Carte de visite (VCARD)</th><td><a ng-href="/annuaire/vcard/{{ctrl.current.id}}" target="_blank">Télécharger</a></td>
+        </tr>
         <tr>
             <th>Membre des groupes</th>
             <td>

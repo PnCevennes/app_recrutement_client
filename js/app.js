@@ -6,21 +6,21 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
         .when('/admin',{
             controller: 'adminCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/utilisateur/main.htm'})
+            templateUrl: 'static/js/templates/utilisateur/main.htm'})
         .when('/recrutement', {
             controller: 'recrutementCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/recrutement/main.htm'})
+            templateUrl: 'static/js/templates/recrutement/main.htm'})
         .when('/annuaire', {
             controller: 'annuaireCtrl',
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/annuaire/main.htm'})
+            templateUrl: 'static/js/templates/annuaire/main.htm'})
         .otherwise({redirectTo: '/annuaire'});
 }]);
 
 
-//angular.module('recrutement').constant('APP_URL', '');
-angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
+angular.module('recrutement').constant('APP_URL', '');
+//angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
 
 
 angular.module('recrutement').factory('AppGlobals', [function(){
@@ -155,12 +155,13 @@ angular.module('recrutement').directive('thesaurusSelect', ['$http', 'APP_URL', 
                 });
             });
         },
-        template: `<ul class="list-unstyled">
-        <li ng-repeat="item in ctrl.choices track by $index">
-            <input type="checkbox" ng-click="ctrl.addrm(item.id)" ng-checked="ctrl.is_checked(item.id)"/> {{item.label}} 
-        </li>
-    </ul>
-    `,
+        template: `
+            <ul class="list-unstyled">
+                <li ng-repeat="item in ctrl.choices track by $index">
+                    <input type="checkbox" ng-click="ctrl.addrm(item.id)" ng-checked="ctrl.is_checked(item.id)"/> {{item.label}} 
+                </li>
+            </ul>
+        `,
         controllerAs: 'ctrl',
         bindToController: true
     }
