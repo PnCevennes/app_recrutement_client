@@ -19,7 +19,7 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
 }]);
 
 
-angular.module('recrutement').constant('APP_URL', '');
+angular.module('recrutement').constant('APP_URL', CFG_APPLICATION_URL);
 //angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
 
 
