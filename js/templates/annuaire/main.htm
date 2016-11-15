@@ -35,7 +35,10 @@
                         <th colspan="2">Correspondants
                         </th>
                         <td colspan="2">
-                            <small><a ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a></small>
+                            {{ctrl.url_params|json}}
+                            <a ng-href="mailto:{{ctrl.mail_all('correspondant')}}"><small>Ecrire à tous</small></a> - 
+                            <a ng-href="{{princ_ctrl.get_url('/annuaire/vcards?params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank"><small>VCARD</small></a> - 
+                            <a ng-href="{{princ_ctrl.get_url('/annuaire/csv?params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank"><small>CSV</small></a>
                         </td>
                     </tr>
                     <tr ng-repeat="item in ctrl.searchResults['correspondant']" ng-click="ctrl.show(item)" style="cursor: pointer;">
