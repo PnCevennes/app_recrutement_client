@@ -35,17 +35,17 @@
                         <th colspan="2">Correspondants
                         </th>
                         <td colspan="2">
-                            <a ng-href="mailto:{{ctrl.mail_all('correspondant')}}"><small>Ecrire à tous</small></a> - 
-                            <a ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=vcard&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank"><small>VCARD</small></a> - 
-                            <a ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank"><small>CSV</small></a> -
-                            <a ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank"><small>CSV (Excel)</small></a>
+                            <a class="btn btn-xs btn-primary" ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a>  
+                            <a class="btn btn-xs btn-info" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=vcard&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">VCARD</a> 
+                            <a class="btn btn-xs btn-success" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV</a> 
+                            <a class="btn btn-xs btn-warning" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV (Excel)</a>
                         </td>
                     </tr>
                     <tr ng-repeat="item in ctrl.searchResults['correspondant']" ng-click="ctrl.show(item)" style="cursor: pointer;">
                         <td>{{item.label}}</td>
                         <td>{{item.telephone|formatTel}}</td>
                         <td><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
-                        <td><a ng-href="{{princ_ctrl.get_url('/annuaire/entite/')}}{{item.id}}?format=vcard" target="_blank"><small>VCARD</small></a></td>
+                        <td><a class="btn btn-xs btn-info" ng-href="{{princ_ctrl.get_url('/annuaire/entite/')}}{{item.id}}?format=vcard" target="_blank">VCARD</a></td>
                     </tr>
                 </tbody>
                 <tbody ng-if="ctrl.types_shown['commune']">
