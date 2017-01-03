@@ -31,7 +31,9 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
         $http.get(APP_URL + '/recrutement/?annee='+AppGlobals.recrutement_list_annee).then(function(resp){
             resp.data.forEach(function(item){
                 item.arrivee = new Date(item.arrivee);
-                item.depart = new Date(item.depart);
+                if(item.depart != "None"){
+                    item.depart = new Date(item.depart);
+                }
                 self.agents.push(item);
             });
             if(self.agentid){
@@ -73,6 +75,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     this.check_status = function(agent){
         var today = new Date();
         if(agent.arrivee>today) return 1;
+        if(agent.depart=="None") return 2;
         else if(agent.depart>today) return 2;
         return 3;
     }

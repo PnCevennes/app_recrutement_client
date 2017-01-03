@@ -88,9 +88,11 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         }
         var mails = [];
         self.searchResults[_type].forEach(function(item){
-            mails.push(item.label + '<' + item.email + '>');
+            if(item.email){
+                mails.push(item.label + '<' + item.email + '>');
+            }
         });
-        return mails.join(';');
+        return mails.join(',');
     };
 
     this._show = function(elem){

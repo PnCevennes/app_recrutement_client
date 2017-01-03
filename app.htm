@@ -11,16 +11,16 @@
 <script src="./static/bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="./static/js/msglib/msglib.js"></script>
 </head>
-<body ng-controller="principal as ctrl">
+<body ng-controller="principal as princ_ctrl">
 <div class="container-fluid">
     <div class="navbar navbar-fixed-top navbar-inverse">
         <div class="navbar-brand">TiZouTis</div>
         <div class="navbar-right" style="margin-right: 5px">
-            <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="ctrl.toggle_login_form()" ng-if="!ctrl.user_is_logged">Login</button>
-            <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="ctrl.logout()" ng-if="ctrl.user_is_logged">Logout {{ctrl.user.login}}</button>
+            <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="princ_ctrl.toggle_login_form()" ng-if="!princ_ctrl.user_is_logged">Login</button>
+            <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="princ_ctrl.logout()" ng-if="princ_ctrl.user_is_logged">Logout {{princ_ctrl.user.login}}</button>
         </div>
     </div>
-    <div class="contenu" ng-if="ctrl.login_form_shown">
+    <div class="contenu" ng-if="princ_ctrl.login_form_shown">
         <div class="col-lg-6 col-lg-offset-3">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -29,21 +29,21 @@
                 <div class="panel-body">
                     <div class="form">
                         <label for="login">Login</label>
-                        <input id="login" type="text" class="form-control" ng-model="ctrl.user.login" placeholder="Login" />
+                        <input id="login" type="text" class="form-control" ng-model="princ_ctrl.user.login" placeholder="Login" />
                         <label for="password">Password</label>
-                        <input id="password" type="password" class="form-control" ng-model="ctrl.user.password" placeholder="Password" />
+                        <input id="password" type="password" class="form-control" ng-model="princ_ctrl.user.password" placeholder="Password" />
                         <hr />
-                        <button type="button" class="btn btn-success pull-right" ng-click="ctrl.login()">Login</button>
+                        <button type="button" class="btn btn-success pull-right" ng-click="princ_ctrl.login()">Login</button>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="contenu" ng-if="!ctrl.login_form_shown">
+    <div class="contenu" ng-if="!princ_ctrl.login_form_shown">
         <ul class="nav nav-pills">
             <li><a href="#/annuaire">Annuaire</a></li>
             <li><a href="#/recrutement">Recrutement</a></li>
-            <li ng-if="ctrl.user_is_admin"><a href="#/admin">Administration</a></li>
+            <li ng-if="princ_ctrl.user_is_admin"><a href="#/admin">Administration</a></li>
         </ul>
         <div style="margin-top: 5px;">
             <ng-view></ng-view>
@@ -51,6 +51,7 @@
     </div>
     <msg-dsp></msg-dsp>
 </div>
+<script src="./static/js/config.js"></script>
 <script src="./static/js/app.js"></script>
 <script src="./static/js/admin.js"></script>
 <script src="./static/js/recrutement.js"></script>

@@ -14,6 +14,10 @@
                         <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'correspondant'">Correspondant</label>
                     </div>
                 </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
+                    <label for="nom">Civilité</label>
+                    <input class="form-control" id="civilite" type="text" ng-model="ctrl.model.civilite" />
+                </div>
                 <div class="form-group">
                     <label for="nom">Nom</label>
                     <input class="form-control" id="nom" type="text" ng-model="ctrl.model.nom" min-length="2"/>
