@@ -14,6 +14,10 @@
                         <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'correspondant'">Correspondant</label>
                     </div>
                 </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
+                    <label for="nom">Civilité</label>
+                    <input class="form-control" id="civilite" type="text" ng-model="ctrl.model.civilite" />
+                </div>
                 <div class="form-group">
                     <label for="nom">Nom</label>
                     <input class="form-control" id="nom" type="text" ng-model="ctrl.model.nom" min-length="2"/>
@@ -32,7 +36,7 @@
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='commune'">
                     <label for="cp">Code postal</label>
-                    <textarea class="form-control" id="cp" ng-model="ctrl.model.code_postal"></textarea>
+                    <input class="form-control" type="text" id="cp" ng-model="ctrl.model.code_postal"></input>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="telephone">Numéro de téléphone</label>
@@ -51,8 +55,16 @@
                     <input class="form-control" type="text" id="www" ng-model="ctrl.model.site_internet"/>
                 </div>
                 <div class="form-group">
+                    <label for="adresse">Observations</label>
+                    <textarea class="form-control" id="observations" ng-model="ctrl.model.observations"></textarea>
+                </div>
+                <div class="form-group">
                     <label>Groupes</label>
                     <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.model.parents"></http-search>
+                </div>
+                <div class="form-group">
+                    <label>Éléments dépendants</label>
+                    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.model.relations"></http-search>
                 </div>
                 <div class="navbar">
                     <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">

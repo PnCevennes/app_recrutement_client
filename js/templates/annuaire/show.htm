@@ -1,40 +1,52 @@
 <div class="panel panel-success">
     <div class="panel-heading">
-        <div class="panel-title">{{ctrl.current.label}}
+        <div class="panel-title">{{ctrl.current.civilite}} {{ctrl.current.label}}
             <button class="close pull-right" ng-click="ctrl.close_show()"><span>&times;</span></button>
+            <small class="pull-right"><a ng-if="ctrl.user_is_admin" ng-click="ctrl.edit(ctrl.current, $event)">Modifier</a> &nbsp;</small>
         </div>
     </div>
     <table class="table">
         <tr ng-if="ctrl.current.type_entite=='correspondant'">
             <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
         </tr>
-        <tr>
+        <tr ng-if="ctrl.current.type_entite!='entite'&&ctrl.current.adresse.length">
             <th>Adresse</th><td ng-bind-html="ctrl.current.adresse|nl2br"</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='commune'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
-        <tr>
-            <th>N° de téléphone</th><td>{{ctrl.current.telephone}}</td>
+        <tr ng-if="ctrl.current.type_entite!='entite'">
+            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}</td>
         </tr>
-        <tr ng-if="ctrl.current.type_entite=='correspondant'">
-            <th>N° de mobile</th><td>{{ctrl.current.mobile}}</td>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'&&ctrl.current.mobile">
+            <th>N° de mobile</th><td>{{ctrl.current.mobile|formatTel}}</td>
         </tr>
-        <tr>
+        <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Adresse email</th><td><a ng-href="mailto:{{ctrl.current.email}}">{{ctrl.current.email}}</a></td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='commune'">
             <th>Site internet</th><td><a ng-href="{{ctrl.current.site_internet}}">{{ctrl.current.site_internet}}</a></td>
         </tr>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'">
+            <th>Carte de visite (VCARD)</th><td><a ng-href="{{princ_ctrl.get_url('/annuaire/vcard/')}}{{ctrl.current.id}}" target="_blank">Télécharger</a></td>
+        </tr>
         <tr>
-            <th>Groupes</th>
+            <th>Membre des groupes</th>
             <td>
                 <ul class="list-unstyled">
-                    <li ng-repeat="groupe in ctrl.current.parents"><a ng-href="#/annuaire?s={{groupe.id}}&e={{ctrl.current.id}}">{{groupe.label}}</a></li>
+                    <li ng-repeat="groupe in ctrl.current.parents"><a ng-href="#/annuaire?s={{groupe.id}}&e={{groupe.id}}">{{groupe.label}}</a></li>
                 </ul>
             </td>
         </tr>
-        <tr>
+        <tr ng-if="ctrl.current.relations.length">
+            <th>Éléments dépendants</th>
+            <td>
+                <ul class="list-unstyled">
+                    <li ng-repeat="rel in ctrl.current.relations"><a ng-href="#/annuaire?s={{ctrl.current.id}}&e={{rel.id}}">{{rel.label}}</a></li>
+                </ul>
+            </td>
+        </tr>
+        <tr ng-if="ctrl.current.observations.length">
             <th>Observations</th><td ng-bind-html="ctrl.current.observations|nl2br"</td>
         </tr>
     </table>

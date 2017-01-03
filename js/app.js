@@ -6,20 +6,20 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
         .when('/admin',{
             controller: 'adminCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/utilisateur/main.htm'})
+            templateUrl: 'static/js/templates/utilisateur/main.htm'})
         .when('/recrutement', {
             controller: 'recrutementCtrl', 
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/recrutement/main.htm'})
+            templateUrl: 'static/js/templates/recrutement/main.htm'})
         .when('/annuaire', {
             controller: 'annuaireCtrl',
             controllerAs: 'ctrl',
-            templateUrl: 'js/templates/annuaire/main.htm'})
+            templateUrl: 'static/js/templates/annuaire/main.htm'})
         .otherwise({redirectTo: '/annuaire'});
 }]);
 
 
-angular.module('recrutement').constant('APP_URL', '');
+angular.module('recrutement').constant('APP_URL', CFG_APPLICATION_URL);
 //angular.module('recrutement').constant('APP_URL', '/recrutement_srv');
 
 
@@ -89,6 +89,13 @@ angular.module('recrutement')
                 self.user_is_logged = true;
             });
 
+            this.get_url = function(url){
+                /*
+                    retourne une url relative complétée avec l'url de base de l'application
+                */
+                return APP_URL + url;
+            };
+
             this.login = function(){
                 $http.post(APP_URL + '/auth/login', this.user).then(
                     function(resp){
@@ -155,12 +162,13 @@ angular.module('recrutement').directive('thesaurusSelect', ['$http', 'APP_URL', 
                 });
             });
         },
-        template: `<ul class="list-unstyled">
-        <li ng-repeat="item in ctrl.choices track by $index">
-            <input type="checkbox" ng-click="ctrl.addrm(item.id)" ng-checked="ctrl.is_checked(item.id)"/> {{item.label}} 
-        </li>
-    </ul>
-    `,
+        template: `
+            <ul class="list-unstyled">
+                <li ng-repeat="item in ctrl.choices track by $index">
+                    <input type="checkbox" ng-click="ctrl.addrm(item.id)" ng-checked="ctrl.is_checked(item.id)"/> {{item.label}} 
+                </li>
+            </ul>
+        `,
         controllerAs: 'ctrl',
         bindToController: true
     }
@@ -191,6 +199,9 @@ angular.module('recrutement').directive('httpSearch', ['$http', function($http){
         controller: function(){
             var self = this;
             this.searchString = this.ngModel;
+            if(!this.searchString.length){
+                this.searchString.push(null);
+            }
             this.getSearch = function(searchStr){
                 return $http.get(this.url+searchStr).then(function(resp){
                     return resp.data;
@@ -234,6 +245,19 @@ angular.module('recrutement').filter('datefr', function(){
 angular.module('recrutement').filter('nl2br', ['$sce', function($sce){
     return function nl2br(x){
         if(!x) return;
-        return $sce.trustAsHtml(x.replace('\n', '<br />'));
+        return $sce.trustAsHtml(x.replace(/\n/g, '<br />'));
     };
+}]);
+
+
+angular.module('recrutement').filter('formatTel', [function(){
+    return function(x){
+        if(!x){
+            return '';
+        }
+        if(x.length == 10){
+            return [x.slice(0,2), x.slice(2,4), x.slice(4,6), x.slice(6,8), x.slice(8,10)].join(' ');
+        }
+        return x;
+    }
 }]);

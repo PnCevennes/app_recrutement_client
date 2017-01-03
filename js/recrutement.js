@@ -2,13 +2,21 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     var self = this;
     var params = $location.search();
     this.agentid = params.agent;
-    //this.agentid = $routeParams.id;
     this.titre = 'Recrutement';
     this.agents = [];
-    this.current = {materiel: []};
+    this.agents_orig = null;
+    if(!AppGlobals.recrutement_sort_order){
+        AppGlobals.recrutement_sort_order = {
+            nom: null,
+            arrivee: true,
+            service_id: null
+            };
+
+    }
+    this.sort_order = AppGlobals.recrutement_sort_order;
+    this.current = {materiel: [], ctrl_notif: true};
     this.arrivee_open = false;
     this.depart_open = false;
-    this.show_old = false;
     if(params.annee){
         AppGlobals.recrutement_list_annee = parseInt(params.annee);
     }
@@ -23,14 +31,39 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
         $http.get(APP_URL + '/recrutement/?annee='+AppGlobals.recrutement_list_annee).then(function(resp){
             resp.data.forEach(function(item){
                 item.arrivee = new Date(item.arrivee);
-                item.depart = new Date(item.depart);
+                if(item.depart != "None"){
+                    item.depart = new Date(item.depart);
+                }
                 self.agents.push(item);
             });
             if(self.agentid){
                 self.edit(self.agentid);
             }
+            self.sort_agents_init();
         });
     };
+
+    this.sort_agents_init = function(){
+        console.log(self.sort_order);
+        for(k in self.sort_order){
+            if(self.sort_order[k]){
+                self.sort_order[k] = !self.sort_order[k];
+                self.sort_agents_by(k);
+            }
+        }
+    };
+
+    this.sort_agents_by = function(field){
+        for(k in self.sort_order){
+            if(k != field){
+                self.sort_order[k] = null;
+            }
+        }
+        self.sort_order[field] = !self.sort_order[field];
+        self.agents.sort(function(a, b){
+            return self.sort_order[field] ? b[field]<a[field] : a[field]<b[field];
+        });
+    }
 
     this.setGratification = function(data){
         if(!arguments.length){
@@ -42,6 +75,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     this.check_status = function(agent){
         var today = new Date();
         if(agent.arrivee>today) return 1;
+        if(agent.depart=="None") return 2;
         else if(agent.depart>today) return 2;
         return 3;
     }
@@ -63,6 +97,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
             if(self.current.meta_update){
                 self.current.meta_update = new Date(resp.data.meta_update);
             }
+            self.current.ctrl_notif = true;
         });
     };
 
@@ -101,7 +136,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     };
 
     this.clear = function(){
-        this.current = {materiel: []};
+        this.current = {materiel: [], ctrl_notif: true};
         self.agents.map(function(item){
             item.__selected__ = false;
         });
@@ -115,7 +150,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
                 MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                self.current = {materiel: []};
+                self.current = {materiel: [], ctrl_notif: true};
             });
         });
     };

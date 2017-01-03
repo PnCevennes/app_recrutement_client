@@ -4,16 +4,20 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
     this.showing = false;
     self.user_is_admin = UserService.check_user_level(2, 6);
 
-    this.columns = [
-        {name: 'label', label: 'Nom'}, 
-        {name: 'telephone', label: 'Téléphone'},
-        {name: 'email', label: 'Adresse email'}
-    ];
+    this.types_shown = {
+        entite: true,
+        commune: true,
+        correspondant: true
+    };
+
     this.searchString = [null];
-    this.searchResults = [];
+    this.searchResults = {};
     this.current = null;
     this.searchUrl = APP_URL+'/annuaire/entites/';
     this.url_params = $location.search();
+    if(this.url_params.u){
+        delete(this.url_params.u);
+    }
 
     UserService.add_observer(function(){
         self.user_is_admin = UserService.check_user_level(2, 6);
@@ -23,6 +27,10 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         self.editing = false;
         self.showing = true;
     };
+
+    this.cancel_event = function(evt){
+        evt.stopPropagation();
+    }
 
     this.close_show = function(){
         delete(self.url_params.e);
@@ -40,49 +48,85 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
 
     this._search = function(){
         if(!self.url_params.s){
+            if(self.url_params.n){
+                delete(self.url_params.n);
+                self.edit(null);
+            }
             return;
         }
-        $http.get(APP_URL+'/annuaire/lib_entites', {params: {params: self.url_params.s}}).then(function(resp){
-            self.searchString.splice(0);
-            resp.data.forEach(function(item){
-                self.searchString.push(item);
-            });
-        });
         
         $http.get(APP_URL+'/annuaire/entites', {params: {params: self.url_params.s}}).then(function(resp){
-            self.searchResults = resp.data;
+            //self.searchResults = resp.data;
+            self.searchResults = {};
+            for(_type in self.types_shown){
+                if(!self.searchResults[_type]){
+                    self.searchResults[_type] = [];
+                }
+            }
+            resp.data.forEach(function(item){
+                self.searchResults[item.type_entite].push(item);
+            });
             if(self.url_params.e){
                 self._show(self.url_params.e);
             }
+            if(self.url_params.n){
+                delete(self.url_params.n);
+                self.edit(null);
+            }
+            $http.get(APP_URL+'/annuaire/lib_entites', {params: {params: self.url_params.s}}).then(function(resp){
+                self.searchString.splice(0);
+                resp.data.forEach(function(item){
+                    self.searchString.push(item);
+                });
+            });
         });
     };
 
+    this.mail_all = function(_type){
+        if(!self.searchResults[_type]){
+            return;
+        }
+        var mails = [];
+        self.searchResults[_type].forEach(function(item){
+            if(item.email){
+                mails.push(item.label + '<' + item.email + '>');
+            }
+        });
+        return mails.join(',');
+    };
+
     this._show = function(elem){
-        self.current = self.searchResults.filter(function(item){
-            return item.id == elem;
-        })[0];
-        if(self.current != undefined){
-            self.showing = true;
+        for(_type in self.types_shown){
+            self.current = self.searchResults[_type].filter(function(item){
+                return item.id == elem;
+            })[0];
+            if(self.current != undefined){
+                self.showing = true;
+                return;
+            }
         }
     };
 
     this.show = function(elem){
-        var params = self.url_params;
-        params.e = elem.id;
-        $location.search(params)
+        if(self.url_params.e == elem.id){
+            self.url_params.u=new Date().getTime();
+        }
+        self.url_params.e = elem.id;
+        $location.search(self.url_params)
     }
 
-    this.edit = function(elem, evt){
-        if(evt){
-            evt.stopPropagation();
-        }
+    this.create_new = function(){
+        delete(self.url_params.e);
+        self.url_params.n = 1;
+        $location.search(self.url_params);
+    };
+
+    this.edit = function(elem){
         if(!elem){
-            self.model = {type_entite: 'entite', parents: [null]};
+            elem = {type_entite: 'entite', parents: [null], relations: [null]};
         }
-        else{
-            self.current = elem;
-            self.model = angular.copy(elem);
-        }
+        self.current = elem;
+        self.model = angular.copy(elem);
         self.editing = true;
         self.showing = false;
     };
@@ -97,14 +141,6 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         $http.post(APP_URL + url, self.model).then(
             function(resp){
                 MsgService.success("L'enregistrement a été effectué");
-                if(!self.model.id){
-                    self.searchResults.push(resp.data);
-                }
-                else{
-                    var idx = self.searchResults.indexOf(self.current);
-                    self.searchResults[idx] = resp.data;
-                }
-                self.editing = false;
                 self.show(resp.data);
             }, 
             function(err){
@@ -122,10 +158,15 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
     this.remove = function(){
         MsgService.confirm('Êtes vous sûr de vouloir supprimer cet élément ?').then(function(){
             $http.delete(APP_URL+'/annuaire/entite/'+self.current.id).then(function(resp){
-                var idx = self.searchResults.indexOf(self.current);
-                self.searchResults.splice(idx, 1);
-                self.current = {type_entite: 'entite'},
-                self.model = angular.copy(self.current);
+                delete(self.url_params.e);
+                if(self.current.id == self.url_params.s){
+                    delete(self.url_params.s);
+                } 
+                if(self.url_params.indexOf && self.url_params.indexOf(self.current.id)>-1){
+                    self.url_params.splice(self.url_params.indexOf(self.current.id), 1);
+                }
+                self.url_params.u = new Date().getTime();
+                $location.search(self.url_params)
             });
         });
     };
