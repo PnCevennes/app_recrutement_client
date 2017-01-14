@@ -87,7 +87,7 @@ angular.module('recrutement')
             $http.get(APP_URL + '/auth/reconnect').then(function(resp){
                 self.user = UserService.set_user(resp.data.user);
                 self.user_is_logged = true;
-            });
+            }, function(err){console.log(err)});
 
             this.get_url = function(url){
                 /*
@@ -156,11 +156,13 @@ angular.module('recrutement').directive('thesaurusSelect', ['$http', 'APP_URL', 
             this.is_checked = function(id){
                 return self.ngModel.indexOf(id)>-1;
             }
-            $http.get(APP_URL + '/thesaurus/ref/'+this.ref).then(function(resp){
-                resp.data.forEach(function(item){
-                    self.choices.push(item)
+            this.$onInit = function(){
+                $http.get(APP_URL + '/thesaurus/ref/'+this.ref).then(function(resp){
+                    resp.data.forEach(function(item){
+                        self.choices.push(item)
+                    });
                 });
-            });
+            }
         },
         template: `
             <ul class="list-unstyled">
@@ -180,10 +182,12 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
         scope: {ref: '@', ngModel: '='},
         controller: function(){
             var self = this;
-            this.choices = [];
-            $http.get(APP_URL + '/thesaurus/'+this.ref).then(function(res){
-                self.choices = res.data;
-            });
+            this.$onInit = function(){
+                this.choices = [];
+                $http.get(APP_URL + '/thesaurus/'+this.ref).then(function(res){
+                    self.choices = res.data;
+                });
+            }
         },
         bindToController: true,
         controllerAs: 'htsel',
@@ -198,9 +202,12 @@ angular.module('recrutement').directive('httpSearch', ['$http', function($http){
         scope: {url: '@', ngModel: '='},
         controller: function(){
             var self = this;
-            this.searchString = this.ngModel;
-            if(!this.searchString.length){
-                this.searchString.push(null);
+            this.$onInit = function(){
+                self.url = this.url;
+                self.searchString = this.ngModel;
+                if(!this.searchString.length){
+                    this.searchString.push(null);
+                }
             }
             this.getSearch = function(searchStr){
                 return $http.get(this.url+searchStr).then(function(resp){

@@ -37,6 +37,12 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         $location.search(self.url_params);
     };
 
+    this.checkKey = function(evt){
+        if(evt.keyCode == 13){
+            self.search();
+        }
+    };
+
     this.search = function(){
         var searchParams = self.searchString.filter(function(x){
                 return x != null;

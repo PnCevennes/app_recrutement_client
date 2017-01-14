@@ -1,6 +1,6 @@
 <div class="panel">
     <h3>Rechercher<small class="pull-right"><a href="http://192.168.10.10:5000/pnc/documentation_generale/wikis/annuaire_tizoutis" target="_blank">Aide</a></small></h3>
-    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.searchString"></http-search>
+    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.searchString" ng-keyup="ctrl.checkKey($event)"></http-search>
     <button class="btn btn-success pull-right" ng-click="ctrl.search()">Afficher</button>
 </div>
 <button type="button" ng-if="ctrl.user_is_admin" class="btn btn-success" ng-click="ctrl.create_new()">Nouveau</button>
