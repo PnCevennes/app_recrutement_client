@@ -45,11 +45,18 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
 
     this.search = function(){
         var searchParams = self.searchString.filter(function(x){
-                return x != null;
+                return x != null || x != undefined;
             }).map(function(item){
                 return item.id;
             });
-        $location.search({s: searchParams});
+        var hasErrors = searchParams.filter(function(item){ return item == undefined }).length;
+        if(hasErrors){
+            MsgService.error('Un des paramêtres de recherche est inconnu. Veuillez modifier vos paramêtres de recherche en sélectionnant une des propositions qui vous sont faites au cours de votre saisie.');
+            return;
+        }
+        if(searchParams){
+            $location.search({s: searchParams});
+        }
     };
 
     this._search = function(){
