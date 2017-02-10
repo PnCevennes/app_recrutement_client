@@ -1,9 +1,11 @@
 <div class="panel">
-    <h3>Rechercher<small class="pull-right"><a href="http://192.168.10.10:5000/pnc/documentation_generale/wikis/annuaire_tizoutis" target="_blank">Aide</a></small></h3>
+    <h3>Rechercher</h3>
     <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.searchString"></http-search>
     <button class="btn btn-success pull-right" ng-click="ctrl.search()">Afficher</button>
 </div>
-<button type="button" ng-if="ctrl.user_is_admin" class="btn btn-success" ng-click="ctrl.create_new()">Nouveau</button>
+<div ng-if="ctrl.user_is_admin">
+<button type="button" class="btn btn-success" ng-click="ctrl.create_new()">Nouveau</button>
+</div>
 <br />
 <div ng-class="{'col-lg-6': ctrl.searchResults.length, 'col-lg-12': !ctrl.searchResults.length}" ng-if="ctrl.editing" ng-include="'static/js/templates/annuaire/form.htm'">
 </div>
@@ -73,24 +75,72 @@
 </div>
 <div class="container" ng-if="!ctrl.searchResults['correspondant'].length&&!ctrl.searchResults['commune'].length&&!ctrl.searchResults['entite'].length">
     <h3>Aucune recherche ou aucun résultat à afficher</h3><hr />
-    <h4>Comment rechercher ?</h4>
-    <p>Tapez votre recherche dans la barre du dessus et veillez bien à sélectionner un élément parmis ceux qui vous sont proposés. S'il n'y a aucune proposition en fonction de votre frappe, vous n'obtiendrez aucun résultat.</p>
-    <p>Vous pouvez rechercher directement sur le nom d'une personne ou d'une commune, ou rechercher par groupes. Par exemple une recherche sur PNC affichera tous les agents du Parc.</p>
-    <p>La liste de résultats affiche un résumé des informations diponibles pour chaque correspondant ou commune. Il suffit de cliquer sur un des résultats pour afficher des informations plus détaillées.</p>
-    <hr />
-    <h4>Affiner sa recherche</h4>
-    <p>Il est possible de saisir plusieurs critères de recherche en cliquant sur le bouton <span class="btn btn-xs btn-default glyphicon glyphicon-plus"></span> situé à droite de la barre de recherche. Les résultats affichés seront alors ceux qui correspondent à tous les critères de recherche saisis.<p>
-    <p>Exemple : Une recherche sur PNC + SCVT + Aigoual n'affichera que les agents du SCVT du massif Aigoual.</p>
-    <p>Afficher plus de barres de recherche que nécessaire ne pose aucun problème, il est cependant possible de supprimer les barres inutiles (ou des saisies fausses) en cliquant sur le bouton <span class="btn btn-xs btn-default glyphicon glyphicon-minus"></span> situé à droite des barres de recherche.</p>
-    <hr />
-    <h4>Boutons utiles</h4>
-    <p>Plusieurs boutons sont affichés en tête de la colonne "Adresse email" :</p>
-    <ul class="list">
-        <li><span class="btn btn-primary btn-xs">Ecrire à tous</span> Permet de créer un nouveau message (en utilisant un client mail compatible comme thunderbird par exemple) avec pour destinataires tous les correspondants affichés.</li>
-        <li><span class="btn btn-info btn-xs">VCARD</span> Permet de télécharger la liste des correspondants affichés au format VCARD, pour ensuite l'importer dans votre client mail comme carnet d'adressse, ou dans votre téléphone mobile.</li>
-        <li><span class="btn btn-success btn-xs">CSV</span> Permet de télécharger la liste des correspondants au format CSV, utilisable dans LibreOffice ou les versions récentes de MS Office pour générer des listes de publipostage.</li>
-        <li><span class="btn btn-warning btn-xs">CSV (Excel)</span> Permet de télécharger la liste dans une variante du format CSV, utilisable dans les anciennes versions de MS Office.</li>
-    </ul>
-    <p>L'adresse email de chaque correspondant est cliquable et permet de créer un nouveau message avec le correspondant pour destinataire.</p>
-    <p>Le bouton <span class="btn btn-info btn-xs">VCARD</span> situé à droite de l'adresse email de chaque correspondant permet de télécharger la VCARD de cet unique correspondant</p>
+    <uib-tabset active="tab_active">
+        <uib-tab index="0" heading="Comment rechercher ?">
+            <div style="border: 1px solid #ddd; border-top: none; padding: 1em;">
+                <p>Tapez votre recherche dans la barre du dessus et veillez bien à sélectionner un élément parmis ceux qui vous sont proposés. S'il n'y a aucune proposition en fonction de votre frappe, vous n'obtiendrez aucun résultat.</p>
+                <p>Vous pouvez rechercher directement sur le nom d'une personne ou d'une commune, ou rechercher par groupes. Par exemple une recherche sur PNC affichera tous les agents du Parc.</p>
+                <p>La liste de résultats affiche un résumé des informations diponibles pour chaque correspondant ou commune. Il suffit de cliquer sur un des résultats pour afficher des informations plus détaillées.</p>
+                <hr />
+                <h4>Affiner sa recherche</h4>
+                <p>Il est possible de saisir plusieurs critères de recherche en cliquant sur le bouton <span class="btn btn-xs btn-default glyphicon glyphicon-plus"></span> situé à droite de la barre de recherche. Les résultats affichés seront alors ceux qui correspondent à tous les critères de recherche saisis.<p>
+                <p>Exemple : Une recherche sur PNC + SCVT + Aigoual n'affichera que les agents du SCVT du massif Aigoual.</p>
+                <p>Afficher plus de barres de recherche que nécessaire ne pose aucun problème, il est cependant possible de supprimer les barres inutiles (ou des saisies fausses) en cliquant sur le bouton <span class="btn btn-xs btn-default glyphicon glyphicon-minus"></span> situé à droite des barres de recherche.</p>
+                <hr />
+                <h4>Boutons utiles</h4>
+                <p>Plusieurs boutons sont affichés en tête de la colonne "Adresse email" :</p>
+                <ul class="list">
+                    <li><span class="btn btn-primary btn-xs">Ecrire à tous</span> Permet de créer un nouveau message (en utilisant un client mail compatible comme thunderbird par exemple) avec pour destinataires tous les correspondants affichés.</li>
+                    <li><span class="btn btn-info btn-xs">VCARD</span> Permet de télécharger la liste des correspondants affichés au format VCARD, pour ensuite l'importer dans votre client mail comme carnet d'adressse, ou dans votre téléphone mobile.</li>
+                    <li><span class="btn btn-success btn-xs">CSV</span> Permet de télécharger la liste des correspondants au format CSV, utilisable dans LibreOffice ou les versions récentes de MS Office pour générer des listes de publipostage.</li>
+                    <li><span class="btn btn-warning btn-xs">CSV (Excel)</span> Permet de télécharger la liste dans une variante du format CSV, utilisable dans les anciennes versions de MS Office.</li>
+                </ul>
+                <p>L'adresse email de chaque correspondant est cliquable et permet de créer un nouveau message avec le correspondant pour destinataire.</p>
+                <p>Le bouton <span class="btn btn-info btn-xs">VCARD</span> situé à droite de l'adresse email de chaque correspondant permet de télécharger la VCARD de cet unique correspondant</p>
+            </div>
+        </uib-tab>
+        <uib-tab index="1" heading="Comment saisir ?" ng-if="ctrl.user_is_admin">
+            <div style="border: 1px solid #ddd; border-top: none; padding: 1em;">
+                <p>
+                Une fois connecté, il suffit de cliquer sur le bouton <span class="btn btn-xs btn-success">Nouveau</span> pour créer un nouvel élément.
+                </p>
+                <p>
+                Pour modifier un élément existant, il faut afficher le détail de l'élément puis cliquer sur <span class="btn btn-xs btn-warning">Modifier</span> dans la barre de titre de la fenetre de détail.
+                </p>
+                <hr />
+                <h4>Types d'éléments</h4>
+                <p>3 types d'éléments peuvent être saisis :
+                <ul class="list">
+                    <li>Le groupe - l'élément le plus simple, qui n'est défini que par son nom.</li>
+                    <li>Le correspondant - qui permet de saisir les informations relatives à une personne (nom, prenom, téléphone...).</li>
+                    <li>La commune - qui permet de saisir des informations relatives à une commune (nom, adresse mairie, site internet...).</li>
+                </ul>
+                Il suffit de cliquer sur l'un des boutons en haut du formulaire de saisie pour sélectionner le type d'élément que l'on veut créer.
+                </p>
+                <p><span class="text-danger">ATTENTION :</span> Lorsque l'on modifie un élément, si l'on veut changer le type d'un élément, il est préférable de le supprimer puis de le recréer.</p>
+                </p>
+                <hr />
+                <h4>Groupes et éléments dépendants</h4>
+                <p>Le champ "Groupes" permet de saisir les éléments qui permettent de lister l'élement en cours de création.</p>
+                <p>Le champ "Éléments dépendants" permet de saisir les éléments qui seront listés lorsque la recherche portera sur l'élément en cours de création</p>
+                <hr />
+                <h4>Enregistrer</h4>
+                <p>Le bouton d'enregistrement <span class="btn btn-success glyphicon glyphicon-ok"></span> se situe en bas du formulaire de saisie. S'il est désactivé, c'est que la saisie comporte des erreurs. Les champs en erreur apparaissent alors entourés de rouge.</p>
+                <p>Le bouton <span class="btn btn-warning glyphicon glyphicon-erase"></span> situé à coté permet de remettre le formulaire dans son état initial</p>
+                <hr />
+                <h4>Supprimer un élément</h4>
+                <p>Le bouton de suppression <span class="btn btn-danger glyphicon glyphicon-remove"></span>
+                se situe en bas à droite du formulaire de modification.</p>
+                <p>Supprimer un élément ne supprime pas les éléments qui lui sont liés. Chaque élément doit être supprimé explicitement.</p>
+                <hr />
+                <h4>Logique de l'annuaire</h4>
+                <p>Créer des relations entre les éléments permet de récupérer des listes filtrées selon une certaine logique. Sans relations, le seul filtrage possible est l'orthographe des noms.</p>
+                <p>La première chose à bien comprendre dans les relations entre les éléments, c'est que la notion de hiérarchie est très limitée. Chaque élément peut avoir un ou plusieurs éléments "parents", ou aucun. Et de la même manière, un, plusieurs, ou aucun élément "dépendant". Un élément dépendant d'un autre n'a par contre aucun rapport avec l'élément parent de celui ci.</p>
+                <p>Par exemple : SCVT est un groupe dépendant de PNC (le SCVT est un service du PNC après tout). Cependant, un élément peut être relié à SCVT sans pour autant être relié à PNC (cas d'un prestataire extérieur par exemple).</p>
+                <p class="text-primary">Les relations indirectes n'existent pas, chaque relation doit être saisie de manière explicite.</p>
+                <p>Il est très important de choisir judicieusement les relations de chaque élément, de manière à ce qu'une recherche soit évidente pour n'importe quel utilisateur, et que les possibilités de filtrage permettent de réduire au maximum le nombre de résultats</p>
+                <p>L'élément de base pour filtrer des résultats est le groupe (il porte bien son nom). Cependant il faut savoir que n'importe quel élément peut être utilisé. Un élément de type "Commune" peut être logiquement utilisé comme "parent" pour des "Correspondants". Mais un élément de type "Correspondant" pourrait également servir de la même manière, même si c'est plutôt à déconseiller.</p>
+            </div>
+        </uib-tab>
+    </uib-tabset>
 <div>

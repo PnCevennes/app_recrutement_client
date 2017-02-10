@@ -1,8 +1,8 @@
 <div class="panel panel-success">
     <div class="panel-heading">
-        <div class="panel-title">{{ctrl.current.civilite}} {{ctrl.current.label}}
+        <div class="panel-title">{{ctrl.current.label}}
             <button class="close pull-right" ng-click="ctrl.close_show()"><span>&times;</span></button>
-            <small class="pull-right"><a ng-if="ctrl.user_is_admin" ng-click="ctrl.edit(ctrl.current, $event)">Modifier</a> &nbsp;</small>
+            <span class="pull-right"><a class="btn btn-xs btn-warning" ng-if="ctrl.user_is_admin" ng-click="ctrl.edit(ctrl.current, $event)">Modifier</a> &nbsp;</span>
         </div>
     </div>
     <table class="table">
