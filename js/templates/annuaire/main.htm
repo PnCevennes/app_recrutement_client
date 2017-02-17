@@ -39,8 +39,8 @@
                         <td colspan="2">
                             <a class="btn btn-xs btn-primary" ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a>  
                             <a class="btn btn-xs btn-info" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=vcard&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">VCARD</a> 
-                            <a class="btn btn-xs btn-success" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV</a> 
-                            <a class="btn btn-xs btn-warning" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV (Excel)</a>
+                            <a class="btn btn-xs btn-success" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&type=correspondant&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV</a> 
+                            <a class="btn btn-xs btn-warning" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&type=correspondant&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV (Excel)</a>
                         </td>
                     </tr>
                     <tr ng-repeat="item in ctrl.searchResults['correspondant']" ng-click="ctrl.show(item)" style="cursor: pointer;">
@@ -52,7 +52,11 @@
                 </tbody>
                 <tbody ng-if="ctrl.types_shown['commune']">
                     <tr ng-if="ctrl.searchResults['commune'].length">
-                        <th colspan="4">Communes <small class="text-info">({{ctrl.searchResults['commune'].length}} résultats)</small>
+                        <th colspan="2">Communes <small class="text-info">({{ctrl.searchResults['commune'].length}} résultats)</small>
+                        </th>
+                        <th colspan="2">
+                            <a class="btn btn-xs btn-success" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&type=commune&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV</a> 
+                            <a class="btn btn-xs btn-warning" ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&type=commune&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV (Excel)</a>
                         </th>
                     </tr>
                     <tr ng-repeat="item in ctrl.searchResults['commune']" ng-click="ctrl.show(item)" style="cursor: pointer;">

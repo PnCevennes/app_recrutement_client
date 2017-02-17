@@ -7,12 +7,15 @@
     </div>
     <table class="table">
         <tr ng-if="ctrl.current.type_entite=='correspondant'">
+            <th>Civilité</th><td>{{ctrl.current.civilite}}</td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='correspondant'">
             <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'&&ctrl.current.adresse.length">
             <th>Adresse</th><td ng-bind-html="ctrl.current.adresse|nl2br"</td>
         </tr>
-        <tr ng-if="ctrl.current.type_entite=='commune'">
+        <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
