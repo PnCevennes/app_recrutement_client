@@ -126,7 +126,7 @@
                         <div class="form-group">
                             <label for="arrivee">Date d'arrivée</label>
                             <div class="input-group">
-                                <input id="arrivee" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.arrivee" ng-model-options="{timezone: '+0200'}" is-open="ctrl.arrivee_open" ng-required="true" />
+                                <input id="arrivee" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.arrivee" ng-model-options="{timezone: '-0200'}" is-open="ctrl.arrivee_open" ng-required="true" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-click="ctrl.arrivee_open=!ctrl.arrivee_open">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -137,7 +137,7 @@
                         <div ng-if="ctrl.current.type_contrat!=22" class="form-group">
                             <label for="depart">Date de fin de contrat</label>
                             <div class="input-group">
-                                <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '+0200'}" is-open="ctrl.depart_open" ng-required="true" />
+                                <input id="depart" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.depart" ng-model-options="{timezone: '-0200'}" is-open="ctrl.depart_open" ng-required="true" />
                                 <span class="input-group-btn">
                                     <button class="btn btn-default" ng-click="ctrl.depart_open=!ctrl.depart_open">
                                         <span class="glyphicon glyphicon-calendar"></span>
@@ -184,6 +184,7 @@
                         </button>
                     </div>
                 </div>
+                <pre>{{ctrl.current|json}}</pre>
             </div>
         </div>
     </div>
