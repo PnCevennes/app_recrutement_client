@@ -1,10 +1,11 @@
-angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location', '$routeParams', 'APP_URL', 'AppGlobals', 'MsgService', function($http, $location, $routeParams, APP_URL, AppGlobals, MsgService){
+angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location', '$routeParams', 'APP_URL', 'AppGlobals', 'MsgService', 'UserService', function($http, $location, $routeParams, APP_URL, AppGlobals, MsgService, UserService){
     var self = this;
     var params = $location.search();
     this.agentid = params.agent;
     this.titre = 'Recrutement';
     this.agents = [];
     this.agents_orig = null;
+    this.user_is_admin = UserService.check_user_level(3, 2);
     if(!AppGlobals.recrutement_sort_order){
         AppGlobals.recrutement_sort_order = {
             nom: null,

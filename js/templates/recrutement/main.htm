@@ -171,7 +171,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="navbar">
+                <div class="navbar" ng-show="ctrl.user_is_admin">
                     <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>
