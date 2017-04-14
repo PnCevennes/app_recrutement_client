@@ -15,7 +15,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
 
     }
     this.sort_order = AppGlobals.recrutement_sort_order;
-    this.current = {materiel: [], fichiers: [], ctrl_notif: true};
+    this.current = {materiel: [], ctrl_notif: true};
     this.arrivee_open = false;
     this.depart_open = false;
     if(params.annee){
@@ -84,7 +84,6 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     this.edit = function(id){
         $http.get(APP_URL + '/recrutement/'+id).then(function(resp){
             self.current = resp.data;
-            console.log(self.current);
             self.agents.map(function(item){
                 if(item.id == id){
                     item.__selected__ = true;
@@ -133,12 +132,12 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 return x>y;
             });
             MsgService.success("Le recrutement " + self.current.nom + " a été enregistré.");
-            self.current = {materiel: [], fichiers: []};
+            self.current = {materiel: []};
         });
     };
 
     this.clear = function(){
-        this.current = {materiel: [], fichiers: [], ctrl_notif: true};
+        this.current = {materiel: [], ctrl_notif: true};
         self.agents.map(function(item){
             item.__selected__ = false;
         });
@@ -152,7 +151,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
                 MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                self.current = {materiel: [], fichiers: [], ctrl_notif: true};
+                self.current = {materiel: [], ctrl_notif: true};
             });
         });
     };
