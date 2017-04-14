@@ -1,4 +1,4 @@
-angular.module('recrutement', ['ui.bootstrap', 'ngRoute', 'msglib']);
+angular.module('recrutement', ['ui.bootstrap', 'ngRoute', 'msglib', 'ngFileUpload']);
 
 
 angular.module('recrutement').config(['$routeProvider', function($routeProvider){
@@ -232,6 +232,66 @@ angular.module('recrutement').directive('httpSearch', ['$http', function($http){
         </span>
     </div>
     `
+    };
+}]);
+
+angular.module('recrutement').directive('fileUpload', ['Upload', '$http', function(Upload, $http){
+    return {
+        restrict: 'E',
+        scope: {ngModel: '=', url: '@', isUploadAllowed: '='},
+        controller: function(){
+            var self=this;
+            this.upload = function(file){
+                Upload.upload({
+                    url: self.url,
+                    data: {fichier: file}
+                }).then(
+                    function(success){
+                        self.ngModel.push(success.data);
+                        self.file = null;
+                    }, 
+                    function(error){
+                        console.log(error);
+                    }, 
+                    function(evt){
+                        console.log(evt);
+                    }
+
+                );
+            };
+
+            this.delete = function(item_id){
+                console.log('delete : ' + item_id);
+                $http.delete(self.url+'/'+item_id).then(
+                        function(success){
+                            self.ngModel = self.ngModel.filter(function(elem){return elem.id != item_id});
+                        },
+                        function(error){
+                        }
+                        );
+            };
+        },
+        bindToController: true,
+        controllerAs: 'uploadCtrl',
+        template: `
+                <p class="text-danger" ng-if="!uploadCtrl.ngModel.length">Aucun fichier</p>
+                <table class="table table-striped table-condensed">
+
+                    <tr ng-repeat="elem in uploadCtrl.ngModel">
+                        <td>
+                            <a ng-href="{{uploadCtrl.url}}/{{elem.file_uri}}">{{elem.filename}}</a>
+                        </td>
+                        <td ng-if="uploadCtrl.isUploadAllowed"><button class="btn btn-xs btn-danger" ng-click="uploadCtrl.delete(elem.id)"><span class="glyphicon glyphicon-remove"></span></button>
+                        </td>
+                    </tr>
+                </table>
+            <div ng-if="uploadCtrl.isUploadAllowed">
+                <strong>Ajouter un fichier </strong>
+                <button class="btn btn-xs btn-primary" ngf-select ng-model="uploadCtrl.file"><span class="glyphicon glyphicon-search"></span></button>
+                <span class="bg-info">{{uploadCtrl.file.name}}</span>
+                <button class="btn btn-xs btn-success" ng-click="uploadCtrl.upload(uploadCtrl.file)" ng-disabled="!uploadCtrl.file"><span class="glyphicon glyphicon-send"></span></button>
+            </div>
+            `
     };
 }]);
 
