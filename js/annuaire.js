@@ -89,9 +89,12 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         });
     };
 
-    this.mail_all = function(_type){
+    this.mail_all = function(_type, method){
         if(!self.searchResults[_type]){
             return;
+        }
+        if(!method){
+            method = 'clear';
         }
         var mails = [];
         self.searchResults[_type].forEach(function(item){
@@ -99,7 +102,10 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
                 mails.push(item.label + '<' + item.email + '>');
             }
         });
-        return mails.join(',');
+        if(method=='clear'){
+            return mails.join(',');
+        }
+        return (UserService.user.email || '') + '?bcc=' + mails.join(',');
     };
 
     this._show = function(elem){
@@ -178,5 +184,6 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         });
     };
 
+    MsgService.confirm("Tizoutis a déménagé vers <a href=\"http://tizoutis.pnc.int\">http://tizoutis.pnc.int</a> ! <br />Merci de ne plus utiliser ce lien pour saisir vos données et de le réserver au développement de nouvelles fonctionnalités.", "Déplacement de l'application !").then(function(){window.location.href = 'http://tizoutis.pnc.int'});
     this._search();
 }]);
