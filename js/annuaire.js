@@ -7,7 +7,8 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
     this.types_shown = {
         entite: true,
         commune: true,
-        correspondant: true
+        correspondant: true,
+        entreprise: true
     };
 
     this.searchString = [null];

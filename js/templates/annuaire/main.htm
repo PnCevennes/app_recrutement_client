@@ -23,6 +23,7 @@
                 <li><input id="type1" type="checkbox" ng-model="ctrl.types_shown.correspondant"><label for="type1">Correspondants <small class="text-info">({{ctrl.searchResults['correspondant'].length}})</small></label></li>
                 <li><input id="type2" type="checkbox" ng-model="ctrl.types_shown.entite"><label for="type2">Groupes <small class="text-info">({{ctrl.searchResults['entite'].length}})</small></label></li>
                 <li><input id="type3" type="checkbox" ng-model="ctrl.types_shown.commune"><label for="type3">Communes <small class="text-info">({{ctrl.searchResults['commune'].length}})</small></label></li>
+                <li><input id="type4" type="checkbox" ng-model="ctrl.types_shown.entreprise"><label for="type4">Entreprises <small class="text-info">({{ctrl.searchResults['entreprise'].length}})</small></label></li>
             </ul>
             <table class="table table-striped table-bordered">
                 <thead>
@@ -98,11 +99,38 @@
                         <td colspan="5">{{item.label}}</td>
                     </tr>
                 </tbody>
+                <tbody ng-if="ctrl.types_shown['entreprise']">
+                    <tr ng-if="ctrl.searchResults['entreprise']length">
+                        <th colspan="3">Entreprises <small class="text-info">({{ctrl.searchResults['entreprise'].length}} résultats)</small>
+                        </th>
+                        <th colspan="2">
+                            <span uib-dropdown>
+                                <a href class="btn btn-primary btn-xs" uib-dropdown-toggle><span class="glyphicon glyphicon-envelope"></span> Ecrire <span class="caret"></span></a>
+                                <ul uib-dropdown-menu>
+                                    <li><a ng-href="mailto:{{ctrl.mail_all('entreprise')}}">Ecrire à tous</a></li>
+                                    <li><a ng-href="mailto:{{ctrl.mail_all('entreprise', 'bcc')}}">Ecrire à tous caché</a></li>
+                                </ul>
+                            </span>
+                            <span uib-dropdown>
+                                <a href class="btn btn-success btn-xs" uib-dropdown-toggle><span class="glyphicon glyphicon-save"></span> Enregistrer <span class="caret"></span></a>
+                                <ul uib-dropdown-menu>
+                                    <li><a ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=csv&type=entreprise&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV</a></li>
+                                    <li><a ng-href="{{princ_ctrl.get_url('/annuaire/entites?format=tsv&type=entreprise&params=')}}{{ctrl.url_params.s.join('&params=') || ctrl.url_params.s}}" target="_blank">CSV (Excel)</a></li>
+                                </ul>
+                            </span>
+                        </th>
+                    </tr>
+                    <tr ng-repeat="item in ctrl.searchResults['entreprise']" ng-click="ctrl.show(item)" style="cursor: pointer;">
+                        <td colspan="2">{{item.label}}</td>
+                        <td>{{item.telephone|formatTel}}</td>
+                        <td colspan="2"><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>
 </div>
-<div class="container" ng-if="!ctrl.searchResults['correspondant'].length&&!ctrl.searchResults['commune'].length&&!ctrl.searchResults['entite'].length">
+<div class="container" ng-if="!ctrl.searchResults['correspondant'].length&&!ctrl.searchResults['commune'].length&&!ctrl.searchResults['entite'].length&&!ctrl.searchResults['entreprise'].length">
     <h3>Aucune recherche ou aucun résultat à afficher</h3><hr />
     <uib-tabset active="tab_active">
         <uib-tab index="0" heading="Comment rechercher ?">
@@ -119,10 +147,15 @@
                 <h4>Boutons utiles</h4>
                 <p>Plusieurs boutons sont affichés en tête de la colonne "Adresse email" :</p>
                 <ul class="list">
-                    <li><span class="btn btn-primary btn-xs">Ecrire à tous</span> Permet de créer un nouveau message (en utilisant un client mail compatible comme thunderbird par exemple) avec pour destinataires tous les correspondants affichés.</li>
-                    <li><span class="btn btn-info btn-xs">VCARD</span> Permet de télécharger la liste des correspondants affichés au format VCARD, pour ensuite l'importer dans votre client mail comme carnet d'adressse, ou dans votre téléphone mobile.</li>
-                    <li><span class="btn btn-success btn-xs">CSV</span> Permet de télécharger la liste des correspondants au format CSV, utilisable dans LibreOffice ou les versions récentes de MS Office pour générer des listes de publipostage.</li>
-                    <li><span class="btn btn-warning btn-xs">CSV (Excel)</span> Permet de télécharger la liste dans une variante du format CSV, utilisable dans les anciennes versions de MS Office.</li>
+                    <li><span class="btn btn-primary btn-xs">Ecrire</span> Permet de créer un nouveau message (en utilisant un client mail compatible comme thunderbird par exemple) avec pour destinataires tous les correspondants affichés, optionnellement en copie cachée.</li>
+                    <li>
+                        <span class="btn btn-success btn-xs">Enregistrer</span>
+                        <ul>
+                            <li><span>VCARD</span> Permet de télécharger la liste des correspondants affichés au format VCARD, pour ensuite l'importer dans votre client mail comme carnet d'adressse, ou dans votre téléphone mobile.</li>
+                            <li><span>CSV</span> Permet de télécharger la liste des correspondants au format CSV, utilisable dans LibreOffice ou les versions récentes de MS Office pour générer des listes de publipostage.</li>
+                            <li><span>CSV (Excel)</span> Permet de télécharger la liste dans une variante du format CSV, utilisable dans les anciennes versions de MS Office.</li>
+                        </ul>
+                    </li>
                 </ul>
                 <p>L'adresse email de chaque correspondant est cliquable et permet de créer un nouveau message avec le correspondant pour destinataire.</p>
                 <p>Le bouton <span class="btn btn-info btn-xs">VCARD</span> situé à droite de l'adresse email de chaque correspondant permet de télécharger la VCARD de cet unique correspondant</p>

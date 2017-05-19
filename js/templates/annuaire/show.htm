@@ -13,13 +13,13 @@
             <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'&&ctrl.current.adresse.length">
-            <th>Adresse</th><td ng-bind-html="ctrl.current.adresse|nl2br"</td>
+            <th>Adresse</th><td>{{ctrl.current.adresse}}<br />{{ctrl.current.adresse2}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
-            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}</td>
+            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}<br />{{ctrl.current.telephone2}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='correspondant'&&ctrl.current.mobile">
             <th>N° de mobile</th><td>{{ctrl.current.mobile|formatTel}}</td>

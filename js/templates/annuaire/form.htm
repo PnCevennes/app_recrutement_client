@@ -12,6 +12,7 @@
                         <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'entite'">Groupe</label>
                         <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'commune'">Commune</label>
                         <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'correspondant'">Correspondant</label>
+                        <label class="btn btn-default" ng-model="ctrl.model.type_entite" uib-btn-radio="'entreprise'">Entreprise</label>
                     </div>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
@@ -30,9 +31,18 @@
                     <label for="fonction">Fonction</label>
                     <input class="form-control" type="text" id="fonction" ng-model="ctrl.model.fonction"/>
                 </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
+                    <label for="nom_gerant">Nom du gérant</label>
+                    <input class="form-control" type="text" id="nom_gerant" ng-model="ctrl.model.nom_gerant"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
+                    <label for="prenom_gerant">Prénom du gérant</label>
+                    <input class="form-control" type="text" id="prenom_gerant" ng-model="ctrl.model.prenom_gerant"/>
+                </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="adresse">Adresse</label>
-                    <textarea class="form-control" id="adresse" ng-model="ctrl.model.adresse"></textarea>
+                    <input class="form-control" type="text" id="adresse" ng-model="ctrl.model.adresse"/>
+                    <input class="form-control" type="text" id="adresse2" ng-model="ctrl.model.adresse2"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="cp">Code postal</label>
@@ -41,6 +51,7 @@
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="telephone">Numéro de téléphone</label>
                     <input class="form-control" type="text" id="telephone" ng-model="ctrl.model.telephone"/>
+                    <input class="form-control" type="text" id="telephone2" ng-model="ctrl.model.telephone2" ng-if="ctrl.model.type_entite=='entreprise'"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='correspondant'">
                     <label for="mobile">Numéro de mobile</label>
@@ -50,7 +61,7 @@
                     <label for="email">Adresse email</label>
                     <input class="form-control" type="email" id="email" ng-model="ctrl.model.email"/>
                 </div>
-                <div class="form-group" ng-if="ctrl.model.type_entite=='commune'">
+                <div class="form-group" ng-if="ctrl.model.type_entite=='commune' || ctrl.model.type_entite=='entreprise'">
                     <label for="www">Site internet</label>
                     <input class="form-control" type="text" id="www" ng-model="ctrl.model.site_internet"/>
                 </div>
