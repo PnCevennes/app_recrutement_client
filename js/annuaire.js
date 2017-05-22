@@ -185,6 +185,5 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         });
     };
 
-    MsgService.confirm("Tizoutis a déménagé vers <a href=\"http://tizoutis.pnc.int\">http://tizoutis.pnc.int</a> ! <br />Merci de ne plus utiliser ce lien pour saisir vos données et de le réserver au développement de nouvelles fonctionnalités.", "Déplacement de l'application !").then(function(){window.location.href = 'http://tizoutis.pnc.int'});
     this._search();
 }]);

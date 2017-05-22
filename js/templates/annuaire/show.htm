@@ -13,13 +13,13 @@
             <th>Fonction</th><td>{{ctrl.current.fonction}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'&&ctrl.current.adresse.length">
-            <th>Adresse</th><td>{{ctrl.current.adresse}}<br />{{ctrl.current.adresse2}</td>
+            <th>Adresse</th><td>{{ctrl.current.adresse}}<br />{{ctrl.current.adresse2}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
-            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}<br />{{ctrl.current.telephone2}}</td>
+            <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}<br />{{ctrl.current.telephone2|formatTel}}</td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='correspondant'&&ctrl.current.mobile">
             <th>N° de mobile</th><td>{{ctrl.current.mobile|formatTel}}</td>
@@ -27,7 +27,7 @@
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Adresse email</th><td><a ng-href="mailto:{{ctrl.current.email}}">{{ctrl.current.email}}</a></td>
         </tr>
-        <tr ng-if="ctrl.current.type_entite=='commune'">
+        <tr ng-if="ctrl.current.type_entite=='commune'||ctrl.current.type_entite=='entreprise'">
             <th>Site internet</th><td><a ng-href="{{ctrl.current.site_internet}}">{{ctrl.current.site_internet}}</a></td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='correspondant'">

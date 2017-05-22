@@ -21,9 +21,9 @@
             <ul class="list-inline">
                 <li>Résultats affichés : </li>
                 <li><input id="type1" type="checkbox" ng-model="ctrl.types_shown.correspondant"><label for="type1">Correspondants <small class="text-info">({{ctrl.searchResults['correspondant'].length}})</small></label></li>
-                <li><input id="type2" type="checkbox" ng-model="ctrl.types_shown.entite"><label for="type2">Groupes <small class="text-info">({{ctrl.searchResults['entite'].length}})</small></label></li>
                 <li><input id="type3" type="checkbox" ng-model="ctrl.types_shown.commune"><label for="type3">Communes <small class="text-info">({{ctrl.searchResults['commune'].length}})</small></label></li>
                 <li><input id="type4" type="checkbox" ng-model="ctrl.types_shown.entreprise"><label for="type4">Entreprises <small class="text-info">({{ctrl.searchResults['entreprise'].length}})</small></label></li>
+                <li><input id="type2" type="checkbox" ng-model="ctrl.types_shown.entite"><label for="type2">Groupes <small class="text-info">({{ctrl.searchResults['entite'].length}})</small></label></li>
             </ul>
             <table class="table table-striped table-bordered">
                 <thead>
@@ -36,7 +36,7 @@
                 </thead>
                 <tbody ng-if="ctrl.types_shown['correspondant']">
                     <tr ng-if="ctrl.searchResults['correspondant'].length">
-                        <th colspan="3">Correspondants <small class="text-info">({{ctrl.searchResults['correspondant'].length}} résultats)</small>
+                        <th colspan="3">Correspondants <small class="text-info">({{ctrl.searchResults['correspondant'].length|resultat}})</small>
                         </th>
                         <td colspan="2">
                             <span uib-dropdown>
@@ -66,7 +66,7 @@
                 </tbody>
                 <tbody ng-if="ctrl.types_shown['commune']">
                     <tr ng-if="ctrl.searchResults['commune'].length">
-                        <th colspan="3">Communes <small class="text-info">({{ctrl.searchResults['commune'].length}} résultats)</small>
+                        <th colspan="3">Communes <small class="text-info">({{ctrl.searchResults['commune'].length|resultat}})</small>
                         </th>
                         <th colspan="2">
                             <span uib-dropdown>
@@ -91,17 +91,9 @@
                         <td colspan="2"><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
                     </tr>
                 </tbody>
-                <tbody ng-if="ctrl.types_shown['entite']">
-                    <tr ng-if="ctrl.searchResults['entite'].length">
-                        <th colspan="5">Groupes</th>
-                    </tr>
-                    <tr ng-repeat="item in ctrl.searchResults['entite']" ng-click="ctrl.show(item)" style="cursor: pointer;">
-                        <td colspan="5">{{item.label}}</td>
-                    </tr>
-                </tbody>
                 <tbody ng-if="ctrl.types_shown['entreprise']">
-                    <tr ng-if="ctrl.searchResults['entreprise']length">
-                        <th colspan="3">Entreprises <small class="text-info">({{ctrl.searchResults['entreprise'].length}} résultats)</small>
+                    <tr ng-if="ctrl.searchResults['entreprise'].length">
+                        <th colspan="3">Entreprises <small class="text-info">({{ctrl.searchResults['entreprise'].length|resultat}})</small>
                         </th>
                         <th colspan="2">
                             <span uib-dropdown>
@@ -124,6 +116,14 @@
                         <td colspan="2">{{item.label}}</td>
                         <td>{{item.telephone|formatTel}}</td>
                         <td colspan="2"><a ng-href="mailto:{{item.email}}" ng-click="ctrl.cancel_event($event)">{{item.email}}</a></td>
+                    </tr>
+                </tbody>
+                <tbody ng-if="ctrl.types_shown['entite']">
+                    <tr ng-if="ctrl.searchResults['entite'].length">
+                        <th colspan="5">Groupes</th>
+                    </tr>
+                    <tr ng-repeat="item in ctrl.searchResults['entite']" ng-click="ctrl.show(item)" style="cursor: pointer;">
+                        <td colspan="5">{{item.label}}</td>
                     </tr>
                 </tbody>
             </table>

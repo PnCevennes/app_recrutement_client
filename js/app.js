@@ -321,3 +321,9 @@ angular.module('recrutement').filter('formatTel', [function(){
         return x;
     }
 }]);
+
+angular.module('recrutement').filter('resultat', [function(){
+    return function(x){
+        return x + (x>1 ? ' résultats': ' résultat');
+    }
+}]);
