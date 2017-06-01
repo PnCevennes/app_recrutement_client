@@ -102,7 +102,7 @@ angular.module('recrutement')
                         self.user = UserService.set_user(resp.data.user);
                         self.user_is_logged = true;
                         self.login_form_shown = false;
-                        MsgService.success('Bienvenue ' + self.user.login + ' !');
+                        MsgService.success('Bienvenue ' + self.user.prenom + ' ' + self.user.nom + ' !');
                     });
             };
 
@@ -156,7 +156,7 @@ angular.module('recrutement').directive('thesaurusSelect', ['$http', 'APP_URL', 
             this.is_checked = function(id){
                 return self.ngModel.indexOf(id)>-1;
             }
-            $http.get(APP_URL + '/thesaurus/ref/'+this.ref).then(function(resp){
+            $http.get(APP_URL + '/'+this.ref).then(function(resp){
                 resp.data.forEach(function(item){
                     self.choices.push(item)
                 });
@@ -181,7 +181,7 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
         controller: function(){
             var self = this;
             this.choices = [];
-            $http.get(APP_URL + '/thesaurus/'+this.ref).then(function(res){
+            $http.get(APP_URL + '/'+this.ref).then(function(res){
                 self.choices = res.data;
             });
         },
@@ -261,7 +261,6 @@ angular.module('recrutement').directive('fileUpload', ['Upload', '$http', functi
             };
 
             this.delete = function(item_id){
-                console.log('delete : ' + item_id);
                 $http.delete(self.url+'/'+item_id).then(
                         function(success){
                             self.ngModel = self.ngModel.filter(function(elem){return elem.id != item_id});

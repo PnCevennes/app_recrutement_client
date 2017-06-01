@@ -97,11 +97,11 @@
                         </div>
                         <div class="form-group">
                             <label for="services">Service</label>
-                            <http-select ref="services" ng-model="ctrl.current.service_id"></http-select>
+                            <http-select ref="thesaurus/ref/2" ng-model="ctrl.current.service_id"></http-select>
                         </div>
                         <div class="form-group">
                             <label for="contrats">Type de contrat</label>
-                            <http-select ref="contrats" ng-model="ctrl.current.type_contrat"></http-select>
+                            <http-select ref="thesaurus/ref/4" ng-model="ctrl.current.type_contrat"></http-select>
                         </div>
                         <div class="form-group" ng-if="ctrl.current.type_contrat==25">
                             <label for="referent">Adresse e-mail du tuteur</label>
@@ -113,11 +113,11 @@
                         </div>
                         <div class="form-group" ng-if="ctrl.current.type_contrat!=25">
                             <label for="ttrav">Catégorie</label>
-                            <http-select ref="ref/38" ng-model="ctrl.current.categorie"></http-select>
+                            <http-select ref="thesaurus/ref/38" ng-model="ctrl.current.categorie"></http-select>
                         </div>
                         <div class="form-group">
                             <label for="ttrav">Temps de travail</label>
-                            <http-select ref="ref/32" ng-model="ctrl.current.temps_travail"></http-select>
+                            <http-select ref="thesaurus/ref/32" ng-model="ctrl.current.temps_travail"></http-select>
                         </div>
                         <div class="form-group" ng-if="ctrl.current.temps_travail==37">
                             <label for="ttrav2">Temps de travail (autre)</label>
@@ -151,7 +151,7 @@
                         </div>
                         <div class="form-group">
                             <label for="lieux">Lieu d'affectation</label>
-                            <http-select ref="lieux" ng-model="ctrl.current.lieu"></http-select>
+                            <http-select ref="thesaurus/ref/1" ng-model="ctrl.current.lieu"></http-select>
                         </div>
                         <div class="form-group">
                             <label for="res_adm">Résidence administrative</label>
@@ -159,11 +159,11 @@
                         </div>
                         <div class="form-group">
                             <label for="logements">Logement</label>
-                            <http-select ref="logements" ng-model="ctrl.current.logement"></http-select>
+                            <http-select ref="thesaurus/ref/3" ng-model="ctrl.current.logement"></http-select>
                         </div>
                         <div class="form-group">
                             <label>Matériel à fournir</label>
-                            <thesaurus-select ref="26" ng-model="ctrl.current.materiel"></thesaurus-select>
+                            <thesaurus-select ref="thesaurus/ref/26" ng-model="ctrl.current.materiel"></thesaurus-select>
                         </div>
                         <div class="form-group">
                             <label for="observations">Observations</label>

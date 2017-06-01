@@ -45,7 +45,6 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     };
 
     this.sort_agents_init = function(){
-        console.log(self.sort_order);
         for(k in self.sort_order){
             if(self.sort_order[k]){
                 self.sort_order[k] = !self.sort_order[k];
@@ -84,7 +83,6 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
     this.edit = function(id){
         $http.get(APP_URL + '/recrutement/'+id).then(function(resp){
             self.current = resp.data;
-            console.log(self.current);
             self.agents.map(function(item){
                 if(item.id == id){
                     item.__selected__ = true;
