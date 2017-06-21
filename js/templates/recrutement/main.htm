@@ -86,6 +86,8 @@
                             <input id="notif" type="checkbox" ng-model="ctrl.current.ctrl_notif" />
                             <label for="notif">Notifier</label>
                             <p>Envoie une notification par e-mail aux administrateurs</p>
+                            <label>Autres personnes à notifier</label>
+                            <http-list url='annuaire/entites/' urlfilters='?type=correspondant&result=email&col=email' ng-model="ctrl.current.notif_list"></http-list>
                         </div>
                         <div class="form-group">
                             <label for="nom">Nom</label>
@@ -106,6 +108,10 @@
                         <div class="form-group" ng-if="ctrl.current.type_contrat==25">
                             <label for="referent">Adresse e-mail du tuteur</label>
                             <input type="mail" class="form-control" ng-model="ctrl.current.referent" />
+                        </div>
+                        <div class="form-group" ng-if="ctrl.current.type_contrat==25">
+                            <input type="checkbox" id="conv_sign" ng-model="ctrl.current.convention_signee" />
+                            <label for="conv_sign">Convention signée</label>
                         </div>
                         <div class="form-group" ng-if="ctrl.current.type_contrat==25">
                             <input id="gratif" type="checkbox" ng-model="ctrl.setGratification" ng-model-options="{getterSetter: true}" /> 
@@ -175,7 +181,7 @@
                         </div>
                     </form>
                 </div>
-                <div class="navbar" ng-show="ctrl.user_is_admin">
+                <div class="navbar">
                     <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                         <span class="glyphicon glyphicon-remove"></span>
                     </button>

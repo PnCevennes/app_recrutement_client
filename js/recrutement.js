@@ -15,7 +15,15 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
 
     }
     this.sort_order = AppGlobals.recrutement_sort_order;
-    this.current = {materiel: [], fichiers: [], ctrl_notif: true};
+
+    this.emptyModel = function(){
+        /*
+         * retourne un modele initialisé vide
+         */
+        return  {materiel: [], fichiers: [], ctrl_notif: true, notif_list: [], convention_signee: false};
+    };
+
+    this.current = this.emptyModel();
     this.arrivee_open = false;
     this.depart_open = false;
     if(params.annee){
@@ -91,6 +99,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                     item.__selected__ = false;
                 }
             });
+            self.current.notif_list = resp.data.notif_list.split(',').filter(x=>x.length); //transforme en liste et supprime les éléments vides
             self.current.arrivee = new Date(resp.data.arrivee);
             self.current.depart = new Date(resp.data.depart);
             self.current.meta_create = new Date(resp.data.meta_create);
@@ -114,6 +123,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
             var url = APP_URL + '/recrutement/';
             var update = false;
         }
+        this.current.notif_list = this.current.notif_list.join(',');
         $http.post(url, this.current).then(function(resp){
             if(update){
                 var current = self.agents.filter(function(x){return x.id == self.current.id})[0];
@@ -131,12 +141,12 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 return x>y;
             });
             MsgService.success("Le recrutement " + self.current.nom + " a été enregistré.");
-            self.current = {materiel: [], fichiers: []};
+            self.current = self.emptyModel();
         });
     };
 
     this.clear = function(){
-        this.current = {materiel: [], fichiers: [], ctrl_notif: true};
+        this.current = this.emptyModel();
         self.agents.map(function(item){
             item.__selected__ = false;
         });
@@ -150,7 +160,7 @@ angular.module('recrutement').controller('recrutementCtrl', ['$http', '$location
                 var idx = self.agents.indexOf(current);
                 self.agents.splice(idx, 1);
                 MsgService.info('Le recrutement de ' + self.current.nom + ' a été annulé.');
-                self.current = {materiel: [], fichiers: [], ctrl_notif: true};
+                self.current = self.emptyModel(); 
             });
         });
     };

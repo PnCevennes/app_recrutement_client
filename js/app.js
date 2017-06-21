@@ -102,14 +102,14 @@ angular.module('recrutement')
                         self.user = UserService.set_user(resp.data.user);
                         self.user_is_logged = true;
                         self.login_form_shown = false;
-                        MsgService.success('Bienvenue ' + self.user.prenom + ' ' + self.user.nom + ' !');
+                        MsgService.success('Bienvenue ' + self.user.prenom + ' !');
                     });
             };
 
             this.logout = function(){
                 $http.get(APP_URL + '/auth/logout').then(
                     function(resp){
-                        MsgService.success('Au revoir ' + self.user.login + ' !');
+                        MsgService.success('Au revoir ' + self.user.prenom + ' !');
                         self.user = UserService.set_user({});
                         self.user_is_logged = false;
                         self.user_is_admin = false;
@@ -181,7 +181,7 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
         controller: function(){
             var self = this;
             this.choices = [];
-            $http.get(APP_URL + '/'+this.ref).then(function(res){
+            $http.get(APP_URL + '/' + this.ref).then(function(res){
                 self.choices = res.data;
             });
         },
@@ -195,15 +195,17 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
 angular.module('recrutement').directive('httpSearch', ['$http', function($http){
     return {
         restrict: 'E',
-        scope: {url: '@', ngModel: '='},
+        scope: {url: '@', ngModel: '=', urlfilters: '@'},
         controller: function(){
             var self = this;
+            this.urlfilters = this.urlfilters || '';
+
             this.searchString = this.ngModel;
             if(!this.searchString.length){
                 this.searchString.push(null);
             }
             this.getSearch = function(searchStr){
-                return $http.get(this.url+searchStr).then(function(resp){
+                return $http.get(this.url + searchStr + this.urlfilters).then(function(resp){
                     return resp.data;
                 });
             };
@@ -234,6 +236,51 @@ angular.module('recrutement').directive('httpSearch', ['$http', function($http){
     `
     };
 }]);
+
+angular.module('recrutement').directive('httpList', ['$http', function($http){
+    return {
+        restrict: 'E',
+        scope: {url: '@', ngModel: '=', urlfilters: '@'},
+        controller: function(){
+            var self = this;
+            this.urlfilters = this.urlfilters || '';
+
+
+
+            this.getSearch = function(searchStr){
+                return $http.get(this.url + searchStr + this.urlfilters).then(function(resp){
+                    return resp.data;
+                });
+            };
+
+            this.addSearchItem = function(){
+                self.ngModel.push(self.search);
+                self.search = null;
+            };
+
+            this.removeSearchItem = function(idx){
+                self.ngModel.splice(idx, 1);
+            };
+
+        },
+        bindToController: true,
+        controllerAs: 'htlist',
+        template: `
+    <ul class="list list-unstyled">
+        <li ng-repeat="st in htlist.ngModel track by $index"><a href="mailto:{{st}}">{{st}}</a></li>
+    </ul>
+    <div class="input-group" >
+        <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
+        <input type="text" ng-model="htlist.search" uib-typeahead="elem for elem in htlist.getSearch($viewValue)" typeahead-loading="htlist.loadingSearch" typeahead-no-results="htlist.noResults" class="form-control">
+        <div class="input-group-addon" ng-show="htlist.loadingSearch"><span class="glyphicon glyphicon-refresh"></span></div>
+        <span class="input-group-btn">
+            <button type="button" class="btn btn-default" ng-click="htlist.addSearchItem()"><span class="glyphicon glyphicon-ok"></span></button>
+        </span>
+    </div>
+    `
+    };
+}]);
+
 
 angular.module('recrutement').directive('fileUpload', ['Upload', '$http', function(Upload, $http){
     return {
