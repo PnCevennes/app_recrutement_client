@@ -85,9 +85,9 @@
                         <div class="form-group">
                             <input id="notif" type="checkbox" ng-model="ctrl.current.ctrl_notif" />
                             <label for="notif">Notifier</label>
-                            <p>Envoie une notification par e-mail aux administrateurs</p>
+                            <p>Envoie une notification par e-mail aux administrateurs et aux personnes spécifiées</p>
                             <label>Autres personnes à notifier</label>
-                            <http-list url='annuaire/entites/' urlfilters='?type=correspondant&result=email&col=email' ng-model="ctrl.current.notif_list"></http-list>
+                            <http-list url='annuaire/entites/' urlfilters='?type=correspondant&result=email&col=email&filter=email' ng-model="ctrl.current.notif_list"></http-list>
                         </div>
                         <div class="form-group">
                             <label for="nom">Nom</label>
