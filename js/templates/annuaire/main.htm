@@ -1,6 +1,6 @@
 <div class="panel">
     <h3>Rechercher</h3>
-    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.searchString"></http-search>
+    <http-search url="{{ctrl.searchUrl}}" ng-model="ctrl.searchString" chars="2"></http-search>
     <button class="btn btn-success pull-right" ng-click="ctrl.search()">Afficher</button>
 </div>
 <div ng-if="ctrl.user_is_admin">
@@ -138,6 +138,7 @@
                 <p>Tapez votre recherche dans la barre du dessus et veillez bien à sélectionner un élément parmis ceux qui vous sont proposés. S'il n'y a aucune proposition en fonction de votre frappe, vous n'obtiendrez aucun résultat.</p>
                 <p>Vous pouvez rechercher directement sur le nom d'une personne ou d'une commune, ou rechercher par groupes. Par exemple une recherche sur PNC affichera tous les agents du Parc.</p>
                 <p>La liste de résultats affiche un résumé des informations diponibles pour chaque correspondant ou commune. Il suffit de cliquer sur un des résultats pour afficher des informations plus détaillées.</p>
+                <p class="text-danger">Les recherches se déclenchent à partir de 2 caractères saisis.</p>
                 <hr />
                 <h4>Affiner sa recherche</h4>
                 <p>Il est possible de saisir plusieurs critères de recherche en cliquant sur le bouton <span class="btn btn-xs btn-default glyphicon glyphicon-plus"></span> situé à droite de la barre de recherche. Les résultats affichés seront alors ceux qui correspondent à tous les critères de recherche saisis.<p>

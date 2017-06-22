@@ -195,16 +195,18 @@ angular.module('recrutement').directive('httpSelect', ['$http', 'APP_URL', funct
 angular.module('recrutement').directive('httpSearch', ['$http', function($http){
     return {
         restrict: 'E',
-        scope: {url: '@', ngModel: '=', urlfilters: '@'},
+        scope: {url: '@', ngModel: '=', urlfilters: '@', chars: '@'},
         controller: function(){
             var self = this;
             this.urlfilters = this.urlfilters || '';
+            if(!this.chars) this.chars = 1;
 
             this.searchString = this.ngModel;
             if(!this.searchString.length){
                 this.searchString.push(null);
             }
             this.getSearch = function(searchStr){
+                if(searchStr.length < this.chars) return;
                 return $http.get(this.url + searchStr + this.urlfilters).then(function(resp){
                     return resp.data;
                 });
