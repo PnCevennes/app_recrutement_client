@@ -16,10 +16,16 @@
 <body ng-controller="principal as princ_ctrl">
 <div class="container-fluid">
     <div class="navbar navbar-fixed-top navbar-inverse">
-        <div class="navbar-brand">TiZouTis</div>
+        <div class="navbar-brand">
+            <img src="./static/img/Spirale_orange.png" style="height: 30px; width: 30px; margin-top: -5px; display: inline;" alt="logo PNC" /> TiZouTis
+        </div>
         <div class="navbar-right" style="margin-right: 5px">
-            <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="princ_ctrl.toggle_login_form()" ng-if="!princ_ctrl.user_is_logged">Login</button>
-            <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="princ_ctrl.logout()" ng-if="princ_ctrl.user_is_logged">Logout {{princ_ctrl.user.login}}</button>
+            <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="princ_ctrl.toggle_login_form()" ng-if="!princ_ctrl.user_is_logged">
+                Login <span class="glyphicon glyphicon-log-in"></span>
+            </button>
+            <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="princ_ctrl.logout()" ng-if="princ_ctrl.user_is_logged">
+                Logout {{princ_ctrl.user.login}} <span class="glyphicon glyphicon-log-out"></span>
+            </button>
         </div>
     </div>
     <div class="contenu" ng-if="princ_ctrl.login_form_shown">
@@ -43,9 +49,9 @@
     </div>
     <div class="contenu" ng-if="!princ_ctrl.login_form_shown">
         <ul class="nav nav-pills">
-            <li><a href="#/annuaire">Annuaire</a></li>
-            <li><a href="#/recrutement">Recrutement</a></li>
-            <li ng-if="princ_ctrl.user_is_admin"><a href="#/admin">Administration</a></li>
+            <li><a href="#/annuaire"><span class="glyphicon glyphicon-book"></span> Annuaire</a></li>
+            <li><a href="#/recrutement"><span class="glyphicon glyphicon-user"></span> Recrutement</a></li>
+            <li ng-if="princ_ctrl.user_is_admin"><a href="#/admin"><span class="glyphicon glyphicon-wrench"></span> Administration</a></li>
         </ul>
         <div style="margin-top: 5px;">
             <ng-view></ng-view>

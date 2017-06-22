@@ -267,7 +267,10 @@ angular.module('recrutement').directive('httpList', ['$http', function($http){
         controllerAs: 'htlist',
         template: `
     <ul class="list list-unstyled">
-        <li ng-repeat="st in htlist.ngModel track by $index"><a href="mailto:{{st}}">{{st}}</a></li>
+        <li ng-repeat="st in htlist.ngModel track by $index">
+            <a class="marge_r2" href="mailto:{{st}}">{{st}}</a>
+            <a class="text-danger" href ng-click="htlist.removeSearchItem($index)"><span class="glyphicon glyphicon-remove"></span></a>
+        </li>
     </ul>
     <div class="input-group" >
         <span class="input-group-addon"><span class="glyphicon glyphicon-search"></span></span>
