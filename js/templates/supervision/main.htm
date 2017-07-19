@@ -1,0 +1,18 @@
+<h1>Supervision <span class="badge">{{ctrl.data.length}} machines</span></h1>
+<h3>{{ctrl.data[0].scan_time}}</h3>
+<p class="text-danger" ng-if="ctrl.down.length">{{ctrl.down.length}} machines off</p>
+<table class="table table-condensed">
+    <tr>
+        <th>IP</th>
+        <th>Nom</th>
+        <th>temps de réponse</th>
+        <th>up récent</th>
+    </tr>
+    <tr ng-repeat="item in ctrl.data"
+        ng-class="{'danger': item.down}">
+        <td>{{item.ip}}</td>
+        <td>{{item.name}}</td>
+        <td>{{item.delay}}</td>
+        <td>{{item.last_seen_up}}</td>
+    </tr>
+</table>

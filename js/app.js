@@ -15,6 +15,10 @@ angular.module('recrutement').config(['$routeProvider', function($routeProvider)
             controller: 'annuaireCtrl',
             controllerAs: 'ctrl',
             templateUrl: 'static/js/templates/annuaire/main.htm'})
+        .when('/supervision', {
+            controller: 'supervisionCtrl',
+            controllerAs: 'ctrl',
+            templateUrl: 'static/js/templates/supervision/main.htm'})
         .otherwise({redirectTo: '/annuaire'});
 }]);
 

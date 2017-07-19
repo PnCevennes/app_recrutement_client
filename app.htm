@@ -21,7 +21,7 @@
         </div>
         <div class="navbar-right" style="margin-right: 5px">
             <button type="button" class="btn btn-success navbar-btn navbar-inverse" ng-click="princ_ctrl.toggle_login_form()" ng-if="!princ_ctrl.user_is_logged">
-                Login <span class="glyphicon glyphicon-log-in"></span>
+                <span class="glyphicon glyphicon-log-in"></span> Login
             </button>
             <button type="button" class="btn btn-danger navbar-btn navbar-inverse" ng-click="princ_ctrl.logout()" ng-if="princ_ctrl.user_is_logged">
                 Logout {{princ_ctrl.user.login}} <span class="glyphicon glyphicon-log-out"></span>
@@ -41,7 +41,7 @@
                         <label for="password">Password</label>
                         <input id="password" type="password" class="form-control" ng-model="princ_ctrl.user.password" placeholder="Password" />
                         <hr />
-                        <button type="button" class="btn btn-success pull-right" ng-click="princ_ctrl.login()">Login</button>
+                        <button type="submit" class="btn btn-success pull-right" ng-click="princ_ctrl.login()">Login</button>
                     </div>
                 </div>
             </div>
@@ -52,8 +52,9 @@
             <li><a href="#/annuaire"><span class="glyphicon glyphicon-book"></span> Annuaire</a></li>
             <li><a href="#/recrutement"><span class="glyphicon glyphicon-user"></span> Recrutement</a></li>
             <li ng-if="princ_ctrl.user_is_admin"><a href="#/admin"><span class="glyphicon glyphicon-wrench"></span> Administration</a></li>
+            <li ng-if="princ_ctrl.user_is_admin"><a href="#/supervision"><span class="glyphicon glyphicon-fire"></span> Supervision</a></li>
         </ul>
-        <div style="margin-top: 5px;">
+        <div style="margin-top: 5px; background-image: url('static/img/Spirale_grise.png'); background-repeat: no-repeat; background-position: top right; ">
             <ng-view></ng-view>
         </div>
     </div>
@@ -64,5 +65,6 @@
 <script src="./static/js/admin.js"></script>
 <script src="./static/js/recrutement.js"></script>
 <script src="./static/js/annuaire.js"></script>
+<script src="./static/js/superv.js"></script>
 </body>
 </html>
