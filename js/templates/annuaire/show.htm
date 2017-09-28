@@ -18,6 +18,15 @@
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Code postal</th><td>{{ctrl.current.code_postal}}</td>
         </tr>
+        <tr ng-if="ctrl.current.type_entite=='entreprise'">
+            <th>Nom du contact</th><td>{{ctrl.current.nom_gerant}}</td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='entreprise'">
+            <th>Prénom du contact</th><td>{{ctrl.current.prenom_gerant}}</td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='entreprise'">
+            <th>Fonction du contact</th><td>{{ctrl.current.fonction_gerant}}</td>
+        </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>N° de téléphone</th><td>{{ctrl.current.telephone|formatTel}}<br />{{ctrl.current.telephone2|formatTel}}</td>
         </tr>
@@ -26,6 +35,9 @@
         </tr>
         <tr ng-if="ctrl.current.type_entite!='entite'">
             <th>Adresse email</th><td><a ng-href="mailto:{{ctrl.current.email}}">{{ctrl.current.email}}</a></td>
+        </tr>
+        <tr ng-if="ctrl.current.type_entite=='entreprise'&&ctrl.current.alt_email.length">
+            <th>Adresse email alternative</th><td><a ng-href="mailto:{{ctrl.current.alt_email}}">{{ctrl.current.alt_email}}</a></td>
         </tr>
         <tr ng-if="ctrl.current.type_entite=='commune'||ctrl.current.type_entite=='entreprise'">
             <th>Site internet</th><td><a ng-href="{{ctrl.current.site_internet}}">{{ctrl.current.site_internet}}</a></td>
