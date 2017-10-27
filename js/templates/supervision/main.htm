@@ -10,8 +10,8 @@
     </tr>
     <tr ng-repeat="item in ctrl.data"
         ng-class="{'danger': item.down}">
-        <td>{{item.ip}}</td>
-        <td>{{item.name}}</td>
+        <td><a ng-href="http://{{item.ip}}">{{item.ip}}</a></td>
+        <td><a ng-href="http://{{item.ip}}">{{item.name}}</a></td>
         <td>{{item.delay}}</td>
         <td>{{item.last_seen_up}}</td>
     </tr>
