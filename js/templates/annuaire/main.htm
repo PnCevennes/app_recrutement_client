@@ -12,7 +12,7 @@
 
 <div class="col-lg-6" ng-if="ctrl.showing" ng-include="'static/js/templates/annuaire/show.htm'">
 </div>
-<div ng-class="{'col-lg-12': !(ctrl.editing || ctrl.showing), 'col-lg-6': (ctrl.editing || ctrl.showing)}" ng-if="ctrl.searchResults['correspondant'].length||ctrl.searchResults['commune'].length||ctrl.searchResults['entite'].length">
+<div ng-class="{'col-lg-12': !(ctrl.editing || ctrl.showing), 'col-lg-6': (ctrl.editing || ctrl.showing)}" ng-if="ctrl.searchResults['correspondant'].length||ctrl.searchResults['commune'].length||ctrl.searchResults['entreprise'].length||ctrl.searchResults['entite'].length">
     <div class="panel panel-primary"> 
         <div class="panel-heading">
             <div class="panel-title">Resultats de la recherche</div>
@@ -162,7 +162,82 @@
                 <p>Le bouton <span class="btn btn-info btn-xs">VCARD</span> situé à droite de l'adresse email de chaque correspondant permet de télécharger la VCARD de cet unique correspondant</p>
             </div>
         </uib-tab>
-        <uib-tab index="1" heading="Comment saisir ?" ng-if="ctrl.user_is_admin">
+        <uib-tab index="1" heading="Référents saisie">
+            <div>&nbsp;</div>
+            <table class="table table-striped table-condensed">
+                <tr>
+                    <th colspan="6" class="bg-primary">Personnes chargées de la création de contacts</th>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <th colspan="5">Éléments saisis</th>
+                </tr>
+                <tr>
+                    <td>Martine DELPUECH</td>
+                    <td>Communes</td><td>Communautés de communes</td><td>Maires</td><td>Présidents</td><td>Élus référents</td>
+                </tr>
+                <tr>
+                    <td>Catherine BERNARDI</td>
+                    <td>Conseil d'administration</td><td colspan="4">Bureau</td>
+                </tr>
+                <tr>
+                    <td>Carine THOMAS</td>
+                    <td colspan="5">CESC</td>
+                </tr>
+                <tr>
+                    <td>Rolande MARTELL</td>
+                    <td>CS</td><td>Commission Biodiversité</td><td colspan="3">Commission Patrimoine Culturel</td>
+                </tr>
+                <tr>
+                    <td>Carine LALLEMAND</td>
+                    <td>Commission Architecture<br />Urbanisme Paysage</td><td>Commission Agriculture</td><td>Commission Forêt</td><td colspan="2">Commission Chasse</td>
+                </tr>
+                <tr>
+                    <td>Catherine VAMBAIRGUE</td>
+                    <td>Serre en Valats</td><td>Médias (presse, radio)</td><td colspan="3">Marqués</td>
+                </tr>
+                <tr>
+                    <td>Bénédicte MICHEL</td>
+                    <td>Commission EEDD Sensibilisation</td><td>Commission Tourisme</td><td>Offices de tourisme</td><td colspan="2">Relais d'information</td>
+                </tr>
+            </table>
+            <hr />
+            <table class="table table-striped table-condensed table-bordered">
+                <tr>
+                    <th colspan="4" class="bg-primary">Personnes chargées de la maintenance</th>
+                </tr>
+                <tr>
+                    <th>Nom</th>
+                    <th>Éléments saisis</th>
+                </tr>
+                <tr>
+                    <td>Martine DELPUECH</td>
+                    <td rowspan="2">Création de groupe</td>
+                    <td rowspan="2">Modifications de la structure de la base</td>
+                    <td rowspan="2">Toutes suppressions</td>
+                </tr>
+                <tr>
+                    <td>Carine THOMAS</td>
+                </tr>
+                <tr>
+                    <td>Catherine BERNARDI</td>
+                    <td colspan="3" rowspan="5">Actualisation des données personnelles</td>
+                </tr>
+                <tr>
+                    <td>Rolande MARTELL</td>
+                </tr>
+                <tr>
+                    <td>Carine LALLEMAND</td>
+                </tr>
+                <tr>
+                    <td>Catherine VAMBAIRGUE</td>
+                </tr>
+                <tr>
+                    <td>Bénédicte MICHEL</td>
+                </tr>
+            </table>
+        </uib-tab>
+        <uib-tab index="2" heading="Comment saisir ?" ng-if="ctrl.user_is_admin">
             <div style="border: 1px solid #ddd; border-top: none; padding: 1em;">
                 <p>
                 Une fois connecté, il suffit de cliquer sur le bouton <span class="btn btn-xs btn-success">Nouveau</span> pour créer un nouvel élément.

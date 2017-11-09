@@ -32,12 +32,16 @@
                     <input class="form-control" type="text" id="fonction" ng-model="ctrl.model.fonction"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
-                    <label for="nom_gerant">Nom du gérant</label>
+                    <label for="nom_gerant">Nom du contact</label>
                     <input class="form-control" type="text" id="nom_gerant" ng-model="ctrl.model.nom_gerant"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
-                    <label for="prenom_gerant">Prénom du gérant</label>
+                    <label for="prenom_gerant">Prénom du contact</label>
                     <input class="form-control" type="text" id="prenom_gerant" ng-model="ctrl.model.prenom_gerant"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
+                    <label for="fonction_gerant">Fonction du contact</label>
+                    <input class="form-control" type="text" id="fonction_gerant" ng-model="ctrl.model.fonction_gerant"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="adresse">Adresse</label>
@@ -60,6 +64,10 @@
                 <div class="form-group" ng-if="ctrl.model.type_entite!='entite'">
                     <label for="email">Adresse email</label>
                     <input class="form-control" type="email" id="email" ng-model="ctrl.model.email"/>
+                </div>
+                <div class="form-group" ng-if="ctrl.model.type_entite=='entreprise'">
+                    <label for="alt_email">Adresse email alternative</label>
+                    <input class="form-control" type="email" id="alt_email" ng-model="ctrl.model.alt_email"/>
                 </div>
                 <div class="form-group" ng-if="ctrl.model.type_entite=='commune' || ctrl.model.type_entite=='entreprise'">
                     <label for="www">Site internet</label>
