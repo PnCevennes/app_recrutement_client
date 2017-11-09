@@ -21,6 +21,9 @@
                             'glyphicon-chevron-up': ctrl.sort_order.nom === false,
                             }"></span></small>
                     </th>
+                    <th>
+                        Poste
+                    </th>
                     <th ng-click="ctrl.sort_agents_by('arrivee')">Arrivée
                         <small class="pull-right"><span class="glyphicon" ng-class="{
                             'glyphicon-chevron-down': ctrl.sort_order.arrivee === true,
@@ -45,6 +48,7 @@
                     <th>
                         <span class="glyphicon glyphicon-pencil" ng-if="agent.__selected__"></span> {{agent.nom}} {{agent.prenom}}
                     </th>
+                    <td>{{agent.intitule_poste}}</td>
                     <td>{{agent.arrivee|datefr}}</td>
                     <td>
                         <thesaurus ref="{{agent.service_id}}"></thesaurus>
