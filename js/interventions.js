@@ -7,7 +7,7 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
     this.user_is_admin = UserService.check_user_level(4, 2);
 
     this.emptyModel = function(){
-        return {fichiers: [], dmdr_contact_email: []};
+        return {dem_fichiers: [], rea_fichiers: [], dmdr_contact_email: []};
     };
     this.current = this.emptyModel();
 
@@ -28,9 +28,17 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
         $location.search({intervention: id});
     };
 
+    this.check_status = function(item){
+        if(item.rea_date !== null) return 2;
+        return 1;
+    }
+
     this.edit = function(id){
         $http.get(APP_URL + '/interventions/' + id).then(function(resp){
             self.current = angular.copy(resp.data);
+            if(self.current.rea_date !== null){
+                self.current.rea_date = new Date(self.current.rea_date)
+            }
             if(self.current.dmdr_contact_email === null){
                 self.current.dmdr_contact_email = [];
             }
@@ -49,7 +57,7 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
         $http.post(url, self.current).then(
             function(resp){
                 MsgService.success('Enregistrement effectué');
-                //self.current.id = resp.data.id;
+                $location.search({intervention: resp.data.id, timeid: Number(new Date())});
             },
             function(error){
                 MsgService.error('Erreur de saisie');
@@ -63,7 +71,20 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
     }
 
     this.remove = function(id){
-
+        MsgService.confirm('Êtes vous sûr de vouloir annuler cette intervention ?').then(function(){
+            $http.delete(APP_URL + '/interventions/' + self.current.id).then(
+                function(){
+                    var current = self.interventions.filter(function(x){return x.id == self.current.id})[0];
+                    var idx = self.interventions.indexOf(current);
+                    self.interventions.splice(idx, 1);
+                    MsgService.success('Suppression effectuée');
+                    $location.search({});
+                },
+                function(error){
+                    MsgService.error('Erreur de suppression');
+                }
+            );
+        });
     };
 
     this.get_data();

@@ -256,7 +256,6 @@ angular.module('recrutement').directive('httpList', ['$http', function($http){
             this.urlfilters = this.urlfilters || '';
 
 
-
             this.getSearch = function(searchStr){
                 return $http.get(this.url + searchStr + this.urlfilters).then(function(resp){
                     return resp.data;

@@ -15,7 +15,11 @@
             <th>Service</th>
             <th>Lieu</th>
         </tr>
-        <tr ng-repeat="intv in ctrl.interventions track by intv.id" ng-click="ctrl.edit_page(intv.id)">
+        <tr ng-repeat="intv in ctrl.interventions track by intv.id" ng-click="ctrl.edit_page(intv.id)" 
+            ng-class="{
+                'warning': ctrl.check_status(intv)==1, 
+                'success': ctrl.check_status(intv)==2
+            }">
             <td>{{intv.dem_date|datefr}}</td>
             <td><thesaurus ref="{{intv.dem_objet}}"></thesaurus></td>
             <td><thesaurus ref="{{intv.dmdr_service}}"></thesaurus></td>
@@ -42,7 +46,7 @@
             </div>
             <div class="form">
                 <form name="recrForm">
-                    <div class="panel panel-default">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">Demandeur</div>
                         <div class="panel-body">
                             <div class="form-group">
@@ -59,7 +63,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
+                    <div class="panel panel-primary">
                         <div class="panel-heading">Objet de la demande</div>
                         <div class="panel-body">
                             <div class="form-group">
@@ -80,11 +84,11 @@
                             </div>
                             <div class="form-group">
                                 <label for="fichiers">Fichiers joints</label>
-                                <file-upload url="/upload" ng-model="ctrl.current.fichiers" is-upload-allowed="true"></file-upload>
+                                <file-upload url="/upload" ng-model="ctrl.current.dem_fichiers" is-upload-allowed="true"></file-upload>
                             </div>
                         </div>
                     </div>
-                    <div class="panel panel-default">
+                    <div class="panel panel-danger" ng-show="ctrl.current.id||ctrl.user_is_admin">
                         <div class="panel-heading">
                             Réalisation
                         </div>
@@ -101,7 +105,19 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="rea_duree">Durée (en heures)</label>
-                                    <input type="test" id="rea_duree" ng-model="ctrl.current.rea_duree" />
+                                    <input type="text" id="rea_duree" class="form-control" ng-model="ctrl.current.rea_duree" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="rea_nb_agents">Nombre d'agents affectés</label>
+                                    <input type="number" id="rea_nb_agents" class="form-control" ng-model="ctrl.current.rea_nb_agents" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="rea_commentaire">Rapport de travaux</label>
+                                    <textarea id="rea_commentaire" class="form-control" ng-model="ctrl.current.rea_commentaire"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rea_fichiers">Fichiers joints</label>
+                                    <file-upload url="/upload" ng-model="ctrl.current.rea_fichiers" is-upload-allowed="true"></file-upload>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +126,7 @@
                         <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
-                        <div class="navbar-right" style="margin-right: 0px;">
+                        <div class="navbar-right" style="margin-right: 0px;" ng-show="!ctrl.current.id || (ctrl.current.id&&ctrl.user_is_admin)">
                             <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
                                 <span class="glyphicon glyphicon-erase"></span>
                             </button> 
