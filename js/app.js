@@ -34,6 +34,7 @@ angular.module('recrutement').constant('APP_URL', CFG_APPLICATION_URL);
 angular.module('recrutement').factory('AppGlobals', [function(){
     return {
         recrutement_list_annee: new Date().getFullYear(),
+        intervention_list_annee: new Date().getFullYear(),
     };
 }]);
 

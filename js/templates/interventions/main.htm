@@ -1,11 +1,19 @@
 <div class="col-lg-6">
     <div class="panel">
-        <div class="input-group">
-            <span class="input-group-addon">Année</span>
-            <input type="number" class="form-control" ng-model="ctrl.annee_recr_list" />
-            <span class="input-group-btn">
-                <button class="btn btn-default" ng-click="ctrl.setAnnee()">afficher</button>
-            </span>
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon">Année</span>
+                <input type="number" class="form-control" ng-model="ctrl.annee_intv_list" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" ng-click="ctrl.setAnnee()">afficher</button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="input-group">
+                <input id="hide_closed_intv" type="checkbox" ng-model="ctrl.hide_closed_intv" ng-click="ctrl.hide_closed_intv_switch()" />
+                <label for="hide_closed_intv">Masquer les interventions réalisées</label>
+            </div>
         </div>
     </div>
     <table class="table">
@@ -19,13 +27,20 @@
             ng-class="{
                 'warning': ctrl.check_status(intv)==1, 
                 'success': ctrl.check_status(intv)==2
-            }">
+            }"
+            ng-if="!(ctrl.hide_closed_intv&&ctrl.check_status(intv)==2)"
+            >
             <td>{{intv.dem_date|datefr}}</td>
             <td><thesaurus ref="{{intv.dem_objet}}"></thesaurus></td>
             <td><thesaurus ref="{{intv.dmdr_service}}"></thesaurus></td>
             <td><thesaurus ref="{{intv.dem_localisation}}"></thesaurus></td>
         </tr>
     </table>
+    <div class="pull-right">
+        Télécharger
+        <a ng-href="/interventions/?annee={{ctrl.annee_intv_list}}&format=csv" class="btn btn-xs btn-success">CSV</a>
+        <a ng-href="/interventions/?annee={{ctrl.annee_intv_list}}&format=tsv" class="btn btn-xs btn-warning">CSV Excel</a>
+    </div>
 </div>
 <div class="col-lg-6 form-container">
     
@@ -41,7 +56,7 @@
         </div>
         <div class="panel-body">
             <div>
-                    Date de création de la fiche : {{ctrl.current.dmd_date|datefr}}
+                    Date de création de la fiche : {{ctrl.current.dem_date|datefr}}
                 <hr />
             </div>
             <div class="form">
@@ -71,8 +86,16 @@
                                 <http-select ref="thesaurus/ref/46" ng-model="ctrl.current.dem_objet"></http-select>
                             </div>
                             <div class="form-group">
-                                <label>Lieu d'intervention</label>
+                                <label>Massif</label>
                                 <http-select ref="thesaurus/ref/1" ng-model="ctrl.current.dem_localisation"></http-select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dem_loc_commune">Commune</label>
+                                <input class="form-control" type="text" ng-model="ctrl.current.dem_loc_commune" />
+                            </div>
+                            <div class="form-group">
+                                <label for="dem_loc_libelle">Lieu d'intervention</label>
+                                <input class="form-control" type="text" ng-model="ctrl.current.dem_loc_libelle" />
                             </div>
                             <div class="form-group">
                                 <label for="dem_details">Détails de la demande</label>
@@ -85,6 +108,21 @@
                             <div class="form-group">
                                 <label for="fichiers">Fichiers joints</label>
                                 <file-upload url="/upload" ng-model="ctrl.current.dem_fichiers" is-upload-allowed="true"></file-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-warning" ng-show="ctrl.current.id||ctrl.user_is_admin">
+                        <div class="panel-heading">
+                            Planification 
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="plan_date">Date d'intervention prévisionnelle</label>
+                                <input type="text" class="form-control" ng-model="ctrl.current.plan_date" />
+                            </div>
+                            <div class="form-group">
+                                <label for="plan_commentaire">Commentaire de plantification</label>
+                                <textarea class="form-control" ng-model="ctrl.current.plan_commentaire"></textarea>
                             </div>
                         </div>
                     </div>

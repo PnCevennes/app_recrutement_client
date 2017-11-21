@@ -11,9 +11,27 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
     };
     this.current = this.emptyModel();
 
+    if(params.annee){
+        AppGlobals.intervention_list_annee = parseInt(params.annee)
+    }
+    if(AppGlobals.hide_closed_intv === undefined){
+        AppGlobals.hide_closed_intv = true;
+    }
+    this.hide_closed_intv = AppGlobals.hide_closed_intv;
+
+    this.annee_intv_list = AppGlobals.intervention_list_annee;
+
+    this.setAnnee = function(){
+        $location.search({annee: this.annee_intv_list});
+    }
+
+    this.hide_closed_intv_switch = function(){
+        AppGlobals.hide_closed_intv = self.hide_closed_intv;
+    }
+
     this.get_data = function(){
         self.interventions.splice(0);
-        $http.get(APP_URL + '/interventions/').then(function(resp){
+        $http.get(APP_URL + '/interventions/?annee='+AppGlobals.intervention_list_annee).then(function(resp){
             resp.data.forEach(function(item){
                 item.dem_date = new Date(item.dem_date);
                 self.interventions.push(item);
@@ -36,6 +54,7 @@ angular.module('recrutement').controller('interventionCtrl', ['$http', '$locatio
     this.edit = function(id){
         $http.get(APP_URL + '/interventions/' + id).then(function(resp){
             self.current = angular.copy(resp.data);
+            self.current.dem_date = new Date(self.current.dem_date);
             if(self.current.rea_date !== null){
                 self.current.rea_date = new Date(self.current.rea_date)
             }
