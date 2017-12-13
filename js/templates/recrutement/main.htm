@@ -21,6 +21,9 @@
                             'glyphicon-chevron-up': ctrl.sort_order.nom === false,
                             }"></span></small>
                     </th>
+                    <th>
+                        Poste
+                    </th>
                     <th ng-click="ctrl.sort_agents_by('arrivee')">Arrivée
                         <small class="pull-right"><span class="glyphicon" ng-class="{
                             'glyphicon-chevron-down': ctrl.sort_order.arrivee === true,
@@ -45,6 +48,7 @@
                     <th>
                         <span class="glyphicon glyphicon-pencil" ng-if="agent.__selected__"></span> {{agent.nom}} {{agent.prenom}}
                     </th>
+                    <td>{{agent.intitule_poste}}</td>
                     <td>{{agent.arrivee|datefr}}</td>
                     <td>
                         <thesaurus ref="{{agent.service_id}}"></thesaurus>
@@ -102,6 +106,14 @@
                             <http-select ref="thesaurus/ref/2" ng-model="ctrl.current.service_id"></http-select>
                         </div>
                         <div class="form-group">
+                            <label for="intitule_poste">Intitulé du poste</label>
+                            <input id="intitule_poste" type="text" class="form-control" ng-model="ctrl.current.intitule_poste" />
+                        </div>
+                        <div class="form-group">
+                            <label for="desc_mission">Description de la mission</label>
+                            <textarea id="desc_mission" class="form-control" ng-model="ctrl.current.desc_mission"></textarea>
+                        </div>
+                        <div class="form-group">
                             <label for="contrats">Type de contrat</label>
                             <http-select ref="thesaurus/ref/4" ng-model="ctrl.current.type_contrat"></http-select>
                         </div>
@@ -150,10 +162,6 @@
                                     </button>
                                 </span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="desc_mission">Description de la mission</label>
-                            <textarea id="desc_mission" class="form-control" ng-model="ctrl.current.desc_mission"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="lieux">Lieu d'affectation</label>
