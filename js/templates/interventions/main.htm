@@ -59,6 +59,16 @@
                     Date de création de la fiche : {{ctrl.current.dem_date|datefr}}
                 <hr />
             </div>
+            <div class="panel panel-danger" ng-if="!ctrl.current.id">
+                <div class="panel-heading">
+                    Attention !
+                </div>
+                <div class="panel-body">
+                    <p>Les informations saisies lors de la création d'une fiche d'intervention ne sont plus modifiables.</p>
+                    <p>Il est donc très important de bien avoir tous les éléments avant de créer une fiche.</p>
+                    <p>Si des informations saisies puis validées sont erronnées, contactez un responsable.</p>
+                </div>
+            </div>
             <div class="form">
                 <form name="recrForm">
                     <div class="panel panel-primary">
@@ -87,7 +97,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Massif</label>
-                                <http-select ref="thesaurus/ref/1" ng-model="ctrl.current.dem_localisation"></http-select>
+                                <http-select ref="thesaurus/ref/51" ng-model="ctrl.current.dem_localisation"></http-select>
                             </div>
                             <div class="form-group">
                                 <label for="dem_loc_commune">Commune</label>
@@ -121,7 +131,7 @@
                                 <input type="text" class="form-control" ng-model="ctrl.current.plan_date" />
                             </div>
                             <div class="form-group">
-                                <label for="plan_commentaire">Commentaire de plantification</label>
+                                <label for="plan_commentaire">Commentaire de planification</label>
                                 <textarea class="form-control" ng-model="ctrl.current.plan_commentaire"></textarea>
                             </div>
                         </div>
@@ -132,7 +142,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <label for="rea_date">Date</label>
+                                <label for="rea_date">Date de fin d'intervention</label>
                                 <div class="input-group">
                                     <input id="rea_date" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.rea_date" ng-model-options="{timezone: '-0000'}" is-open="ctrl.rea_date_open" />
                                     <span class="input-group-btn">
@@ -142,7 +152,7 @@
                                     </span>
                                 </div>
                                 <div class="form-group">
-                                    <label for="rea_duree">Durée (en heures)</label>
+                                    <label for="rea_duree">Durée totale en heures</label>
                                     <input type="text" id="rea_duree" class="form-control" ng-model="ctrl.current.rea_duree" />
                                 </div>
                                 <div class="form-group">
@@ -160,11 +170,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="navbar">
+                    <div class="navbar" ng-show="!ctrl.current.id || (ctrl.current.id&&ctrl.user_is_admin)">
                         <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
                             <span class="glyphicon glyphicon-remove"></span>
                         </button>
-                        <div class="navbar-right" style="margin-right: 0px;" ng-show="!ctrl.current.id || (ctrl.current.id&&ctrl.user_is_admin)">
+                        <div class="navbar-right" style="margin-right: 0px;">
                             <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
                                 <span class="glyphicon glyphicon-erase"></span>
                             </button> 
