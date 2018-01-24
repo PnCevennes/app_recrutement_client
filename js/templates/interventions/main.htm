@@ -18,22 +18,31 @@
     </div>
     <table class="table">
         <tr>
-            <th>Date de demande</th>
+            <th>Fiche</th>
+            <th>Date</th>
             <th>Intervention</th>
-            <th>Service</th>
             <th>Lieu</th>
         </tr>
-        <tr ng-repeat="intv in ctrl.interventions track by intv.id" ng-click="ctrl.edit_page(intv.id)" 
+        <tr ng-repeat="intv in ctrl.interventions track by intv.id" ng-click="ctrl.edit_page(intv.id)"
             ng-class="{
-                'warning': ctrl.check_status(intv)==1, 
+                'warning': ctrl.check_status(intv)==1,
                 'success': ctrl.check_status(intv)==2
             }"
             ng-if="!(ctrl.hide_closed_intv&&ctrl.check_status(intv)==2)"
             >
-            <td>{{intv.dem_date|datefr}}</td>
-            <td><thesaurus ref="{{intv.dem_objet}}"></thesaurus></td>
-            <td><thesaurus ref="{{intv.dmdr_service}}"></thesaurus></td>
-            <td><thesaurus ref="{{intv.dem_localisation}}"></thesaurus></td>
+            <td>
+                <span ng-if="intv.id==ctrl.current.id" class="glyphicon glyphicon-pencil"></span>
+                {{intv.num_intv}}
+            </td>
+            <td>
+                {{intv.dem_date|datefr}}
+            </td>
+            <td>
+                <thesaurus ref="{{intv.dem_objet}}"></thesaurus>
+            </td>
+            <td>
+                <thesaurus ref="{{intv.dem_loc_libelle}}"></thesaurus>
+            </td>
         </tr>
     </table>
     <div class="pull-right">
@@ -43,7 +52,6 @@
     </div>
 </div>
 <div class="col-lg-6 form-container">
-    
     <div ng-if="ctrl.current.id" class="hidden-print">
         <div class="navbar">
             <button class="btn btn-primary navbar-btn navbar-right" ng-click="ctrl.clear()">Nouvelle fiche</button>
@@ -71,6 +79,12 @@
             </div>
             <div class="form">
                 <form name="recrForm">
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">Numéro de fiche</div>
+                        <div class="panel-body">
+                            <input class="form-control" type="text" ng-model="ctrl.current.num_intv" required />
+                        </div>
+                    </div>
                     <div class="panel panel-primary">
                         <div class="panel-heading">Demandeur</div>
                         <div class="panel-body">
@@ -105,7 +119,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="dem_loc_libelle">Lieu d'intervention</label>
-                                <input class="form-control" type="text" ng-model="ctrl.current.dem_loc_libelle" />
+                                <input class="form-control" type="text" ng-model="ctrl.current.dem_loc_libelle" required />
                             </div>
                             <div class="form-group">
                                 <label for="dem_details">Détails de la demande</label>
@@ -123,7 +137,7 @@
                     </div>
                     <div class="panel panel-warning" ng-show="ctrl.current.id||ctrl.user_is_admin">
                         <div class="panel-heading">
-                            Planification 
+                            Planification
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
@@ -177,7 +191,7 @@
                         <div class="navbar-right" style="margin-right: 0px;">
                             <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
                                 <span class="glyphicon glyphicon-erase"></span>
-                            </button> 
+                            </button>
                             <button type="button" class="btn btn-success navbar-btn" ng-click="ctrl.save()" ng-disabled="!(recrForm.$dirty&&recrForm.$valid)" tooltip-placement="left" uib-tooltip="Enregistrer la fiche">
                                 <span class="glyphicon glyphicon-ok"></span>
                             </button>
