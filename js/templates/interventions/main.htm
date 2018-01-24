@@ -1,0 +1,130 @@
+<div class="col-lg-6">
+    <div class="panel">
+        <div class="input-group">
+            <span class="input-group-addon">Année</span>
+            <input type="number" class="form-control" ng-model="ctrl.annee_recr_list" />
+            <span class="input-group-btn">
+                <button class="btn btn-default" ng-click="ctrl.setAnnee()">afficher</button>
+            </span>
+        </div>
+    </div>
+    <table class="table">
+        <tr>
+            <th>Date de demande</th>
+            <th>Intervention</th>
+            <th>Service</th>
+            <th>Lieu</th>
+        </tr>
+        <tr ng-repeat="intv in ctrl.interventions track by intv.id" ng-click="ctrl.edit_page(intv.id)">
+            <td>{{intv.dem_date|datefr}}</td>
+            <td><thesaurus ref="{{intv.dem_objet}}"></thesaurus></td>
+            <td><thesaurus ref="{{intv.dmdr_service}}"></thesaurus></td>
+            <td><thesaurus ref="{{intv.dem_localisation}}"></thesaurus></td>
+        </tr>
+    </table>
+</div>
+<div class="col-lg-6 form-container">
+    
+    <div ng-if="ctrl.current.id" class="hidden-print">
+        <div class="navbar">
+            <button class="btn btn-primary navbar-btn navbar-right" ng-click="ctrl.clear()">Nouvelle fiche</button>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title" ng-if="ctrl.current.id">Modification de la fiche d'intervention n°{{ctrl.current.id}}</div>
+            <div class="panel-title" ng-if="!ctrl.current.id">Créer une nouvelle fiche d'intervention</div>
+        </div>
+        <div class="panel-body">
+            <div>
+                    Date de création de la fiche : {{ctrl.current.dmd_date|datefr}}
+                <hr />
+            </div>
+            <div class="form">
+                <form name="recrForm">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Demandeur</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Service</label>
+                                <http-select ref="thesaurus/ref/2" ng-model="ctrl.current.dmdr_service"></http-select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dmdr_contact_nom">Nom</label>
+                                <input class="form-control" type="text" ng-model="ctrl.current.dmdr_contact_nom" />
+                            </div>
+                            <div class="form-group">
+                                <label>Adresse email</label>
+                                <http-list url='annuaire/entites/' urlfilters='?type=correspondant&result=email&col=email&filter=email' ng-model="ctrl.current.dmdr_contact_email"></http-list>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Objet de la demande</div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label>Type d'intervention</label>
+                                <http-select ref="thesaurus/ref/46" ng-model="ctrl.current.dem_objet"></http-select>
+                            </div>
+                            <div class="form-group">
+                                <label>Lieu d'intervention</label>
+                                <http-select ref="thesaurus/ref/1" ng-model="ctrl.current.dem_localisation"></http-select>
+                            </div>
+                            <div class="form-group">
+                                <label for="dem_details">Détails de la demande</label>
+                                <textarea class="form-control" id="dem_details" ng-model="ctrl.current.dem_details"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="dem_delai">Délai souhaité</label>
+                                <input type="text" class="form-control" ng-model="ctrl.current.dem_delai" />
+                            </div>
+                            <div class="form-group">
+                                <label for="fichiers">Fichiers joints</label>
+                                <file-upload url="/upload" ng-model="ctrl.current.fichiers" is-upload-allowed="true"></file-upload>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Réalisation
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label for="rea_date">Date</label>
+                                <div class="input-group">
+                                    <input id="rea_date" type="text" uib-datepicker-popup="dd/MM/yyyy" class="form-control" ng-model="ctrl.current.rea_date" ng-model-options="{timezone: '-0000'}" is-open="ctrl.rea_date_open" />
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default" ng-click="ctrl.rea_date_open=!ctrl.rea_date_open">
+                                            <span class="glyphicon glyphicon-calendar"></span>
+                                        </button>
+                                    </span>
+                                </div>
+                                <div class="form-group">
+                                    <label for="rea_duree">Durée (en heures)</label>
+                                    <input type="test" id="rea_duree" ng-model="ctrl.current.rea_duree" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="navbar">
+                        <button type="button" class="btn btn-danger navbar-btn" ng-click="ctrl.remove()" ng-show="ctrl.current.id" tooltip-placement="right" uib-tooltip="Supprimer cette fiche">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <div class="navbar-right" style="margin-right: 0px;">
+                            <button type="button" class="btn btn-info navbar-btn" ng-click="ctrl.clear()" tooltip-placement="left" uib-tooltip="Nettoyer la fiche">
+                                <span class="glyphicon glyphicon-erase"></span>
+                            </button> 
+                            <button type="button" class="btn btn-success navbar-btn" ng-click="ctrl.save()" ng-disabled="!(recrForm.$dirty&&recrForm.$valid)" tooltip-placement="left" uib-tooltip="Enregistrer la fiche">
+                                <span class="glyphicon glyphicon-ok"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <pre>
+                        {{ctrl.current|json}}
+                    </pre>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
