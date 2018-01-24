@@ -10,8 +10,10 @@ angular.module('recrutement').controller('supervisionCtrl', ['$http', 'APP_URL',
                     ip: item.ip,
                     down: item.down,
                     delay: item.delay,
-                    scan_time: new Date(item.scan_time).toLocaleFormat('%d/%m/%Y %H:%M:%S'),
-                    last_seen_up: new Date(item.last_seen_up).toLocaleFormat('%d/%m/%Y %H:%M:%S')
+                    //scan_time: new Date(item.scan_time).toLocaleFormat('%d/%m/%Y %H:%M:%S'),
+                    scan_time: new Date(item.scan_time).toLocaleString(),
+                    //last_seen_up: new Date(item.last_seen_up).toLocaleFormat('%d/%m/%Y %H:%M:%S')
+                    last_seen_up: new Date(item.last_seen_up).toLocaleString()
                 }
             }).sort(function(a, b){return a.delay - b.delay});
             self.down = self.data.filter(item=>{return item.down});
