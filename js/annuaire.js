@@ -109,6 +109,13 @@ angular.module('recrutement').controller('annuaireCtrl', ['$http', '$location', 
         return (UserService.user.email || '') + '?bcc=' + mails.join(',');
     };
 
+    this.copymails = function(idtag){
+        sel = window.getSelection();
+        tag = document.getElementById(idtag);
+        sel.selectAllChildren(tag);
+        document.execCommand('copy');
+    };
+
     this._show = function(elem){
         for(_type in self.types_shown){
             self.current = self.searchResults[_type].filter(function(item){

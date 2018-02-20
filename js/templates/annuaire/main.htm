@@ -44,6 +44,7 @@
                                 <ul uib-dropdown-menu>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('correspondant')}}">Ecrire à tous</a></li>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('correspondant', 'bcc')}}">Ecrire à tous (copie cachée)</a></li>  
+                                    <li><a href ng-click="ctrl.copymails('mail_all_corresp')">Copier la liste</a></li>
                                 </ul>
                             </span>
                             <span uib-dropdown>
@@ -74,6 +75,7 @@
                                 <ul uib-dropdown-menu>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('commune')}}">Ecrire à tous</a></li>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('commune', 'bcc')}}">Ecrire à tous caché</a></li>
+                                    <li><a href ng-click="ctrl.copymails('mail_all_commune')">Copier la liste</a></li>
                                 </ul>
                             </span>
                             <span uib-dropdown>
@@ -101,6 +103,7 @@
                                 <ul uib-dropdown-menu>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('entreprise')}}">Ecrire à tous</a></li>
                                     <li><a ng-href="mailto:{{ctrl.mail_all('entreprise', 'bcc')}}">Ecrire à tous caché</a></li>
+                                    <li><a href ng-click="ctrl.copymails('mail_all_entreprise')">Copier la liste</a></li>
                                 </ul>
                             </span>
                             <span uib-dropdown>
@@ -127,6 +130,11 @@
                     </tr>
                 </tbody>
             </table>
+            <div style="height: 0px; witdh: 0px; overflow: hidden">
+                <code id="mail_all_corresp">{{ctrl.mail_all('correspondant')}}</code>
+                <code id="mail_all_commune">{{ctrl.mail_all('commune')}}</code>
+                <code id="mail_all_entreprise">{{ctrl.mail_all('entreprise')}}</code>
+            </div>
         </div>
     </div>
 </div>
